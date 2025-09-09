@@ -36,7 +36,7 @@ public class TestController {
         return testService.getAll();
     }
 
-    @GetMapping("/one/{id}")
+    @GetMapping("/{id}")
     public ResTestDTO getOne(@PathVariable long id) throws Exception {
         return testService.getOne(id);
     }

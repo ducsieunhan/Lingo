@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import AdminLayout from '../../layouts/AdminLayout';
 import { Button, Card, Form, Input, Progress, Select, Upload } from 'antd';
 import {
 
@@ -12,16 +11,47 @@ import TextArea from 'antd/es/input/TextArea';
 import { FaFileExcel } from "react-icons/fa";
 import { HiSpeakerWave } from "react-icons/hi2";
 import UploadDragger from '../../components/admin/UploadDragger';
+import { useDispatch, useSelector } from "react-redux";
+import { createTest } from '../../slice/tests';
+import { saveMultipleQuestions } from '../../slice/questions';
+import { useWatch } from 'antd/es/form/Form';
 
 const CreateTestPage = () => {
+    const initialTestState = {
+        id: null,
+        title: "",
+        type: "",
+        timeLimit: null,
+        numberQuestion: 0,
+        maxScore: 0,
+        description: ""
+    };
+    const [test, setTest] = useState(initialTestState);
+    const [submitted, setSubmitted] = useState(false);
+    const { questionList, answerList } = useSelector((state) => state.file);
+    const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const [basicProgress, setBasicProgress] = useState(0);
-    const [FileProgress, setFileProgress] = useState(0);
-    const [completeProgress, setCompleteProgress] = useState(0);
+    const testTitle = useWatch("title", form);
+    const mediaUrl = useWatch("mediaUrl", form);
     const onFinish = (values) => {
         console.log("BasicInfoValues:", values);
-    };
 
+        dispatch(createTest(values))
+            .unwrap()
+            .then(data => {
+                setTest(data);
+                setSubmitted(true);
+
+                dispatch(saveMultipleQuestions(questionList));
+            });
+
+    };
+    const newTest = () => {
+        setTest(initialTestState);
+        setSubmitted(false);
+    }
+    console.log("Questions:", questionList);
+    // console.log("Test title before upload:", form.getFieldValue("title"));
     return (
         <>
             <Card className="p-6 shadow rounded-2xl">
@@ -32,13 +62,13 @@ const CreateTestPage = () => {
 
                 <Form layout="vertical" form={form} onFinish={onFinish}>
                     <div className="grid grid-cols-2 gap-4">
-                        <Form.Item label="Tên bài thi" className="col-span-1" name="tittle">
-                            <Input placeholder="Nhập tên bài thi..." className='!h-12' />
+                        <Form.Item label="Tên bài thi" className="col-span-1" name="title">
+                            <Input placeholder="Nhập tên bài thi..." className='!h-12' onChange={() => { console.log("Test title before upload:", form.getFieldValue("title")); }} />
                         </Form.Item>
                         <Form.Item label="Loại bài thi" className="col-span-1" name="type">
                             <Select placeholder="Chọn loại bài thi" className='!h-12'>
-                                <Option value="ielts">IELTS</Option>
-                                <Option value="toeic">TOEIC</Option>
+                                <Option value="IELTS">IELTS</Option>
+                                <Option value="TOEIC">TOEIC</Option>
                             </Select>
                         </Form.Item>
                     </div>
@@ -46,7 +76,9 @@ const CreateTestPage = () => {
                     <div className="grid grid-cols-2 gap-6 my-6">
                         <div>
                             <p className="draggerTittle"><FaFileExcel className='text-green-600 text-lg' />File câu hỏi (Excel)</p>
-                            <UploadDragger type={"Excel"} />
+                            <UploadDragger type={"Excel"}
+                                testTitle={testTitle}
+                                mediaUrl={mediaUrl} />
                         </div>
 
                         <div>

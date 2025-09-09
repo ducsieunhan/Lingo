@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import java.util.List;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -18,16 +19,17 @@ public class Test {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
+    @Column(unique = true)
     String title;
     int maxScore;
     int timeLimit;
     @Enumerated(EnumType.STRING)
     TestType type;
 
-    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     List<Question> questions;
-//    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
-//    List<MediaResource> resources;
-    @OneToOne(mappedBy = "test", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    // @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
+    // List<MediaResource> resources;
+    @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     MediaResource resource;
 }

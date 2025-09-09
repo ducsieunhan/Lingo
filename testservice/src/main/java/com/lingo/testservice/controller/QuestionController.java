@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/question")
@@ -35,8 +37,14 @@ public class QuestionController {
         return questionService.getAll();
     }
 
-    @GetMapping("/one/{id}")
+    @GetMapping("/{id}")
     public ResQuestionDTO getOne(@PathVariable long id) throws Exception {
         return questionService.getOne(id);
     }
+
+    @PostMapping("/bulk")
+    public void saveAllQuestion(@RequestBody List<ReqCreateQuestionDTO> list) {
+        questionService.saveAll(list);
+    }
+
 }

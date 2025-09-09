@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface TestRepository extends JpaRepository<Test, Long> {
 
-    Optional<Test> findByTitle(String tittle);
+    Optional<Test> findTopByTitle(String tittle);
 }

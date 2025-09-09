@@ -15,6 +15,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,10 +25,16 @@ import java.util.stream.Collectors;
 
 public interface QuestionService {
     ResQuestionDTO add(ReqCreateQuestionDTO dto);
+
     ResQuestionDTO update(ReqQuestionDTO dto, long id);
+
     void delete(long id);
+
     List<ResQuestionDTO> getAll();
+
     ResQuestionDTO getOne(long id) throws Exception;
+
+    void saveAll(List<ReqCreateQuestionDTO> reqListQuestion);
 }
 
 @RequiredArgsConstructor
@@ -35,36 +43,35 @@ public interface QuestionService {
 @Service
 class QuestionServiceImpl implements QuestionService {
     QuestionRepository repository;
-//    AnswerRepository answerRepository;
+    // AnswerRepository answerRepository;
     TestRepository testRepository;
     QuestionMapper mapper;
     AnswerMapper answerMapper;
 
-
     @Override
     public ResQuestionDTO add(ReqCreateQuestionDTO dto) {
         Question question = mapper.toQuestion(dto);
-        Optional<Test> testOptional=testRepository.findByTitle(dto.getTestTitle());
+        Optional<Test> testOptional = testRepository.findTopByTitle(dto.getTestTitle());
         testOptional.ifPresent(question::setTest);
-        List<Answer> answerList=dto.getAnswers().stream().map(reqAnswerDTO -> {
-            Answer answer=answerMapper.toAnswer(reqAnswerDTO);
-//            answerRepository.save(answer);
+        List<Answer> answerList = dto.getAnswers().stream().map(reqAnswerDTO -> {
+            Answer answer = answerMapper.toAnswer(reqAnswerDTO);
+            // answerRepository.save(answer);
             answer.setQuestion(question);
             return answer;
         }).collect(Collectors.toList());
 
         question.setAnswers(answerList);
-        MediaResource resource= MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+        MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
         question.setResource(resource);
         repository.save(question);
-//        ResQuestionDTO response=mapper.toQuestionResponse(question);
-//        response.setMediaUrl(question.getResource().getMediaUrl());
+        // ResQuestionDTO response=mapper.toQuestionResponse(question);
+        // response.setMediaUrl(question.getResource().getMediaUrl());
         return mapper.toQuestionResponse(question);
     }
 
     @Override
     public ResQuestionDTO update(ReqQuestionDTO dto, long id) {
-        Optional<Question> questionOptional=repository.findById(id);
+        Optional<Question> questionOptional = repository.findById(id);
         questionOptional.ifPresent(question -> {
             question.setPart(dto.getPart());
             question.setCategory(dto.getCategory());
@@ -90,7 +97,29 @@ class QuestionServiceImpl implements QuestionService {
     @Override
     public ResQuestionDTO getOne(long id) throws Exception {
         return mapper.toQuestionResponse(
-                repository.findById(id).orElseThrow(() -> new Exception("Question not found"))
-        );
+                repository.findById(id).orElseThrow(() -> new Exception("Question not found")));
+    }
+
+    @Override
+    public void saveAll(List<ReqCreateQuestionDTO> dtos) {
+        List<Question> questions = dtos.stream().map(dto -> {
+            Question question = mapper.toQuestion(dto);
+            Optional<Test> testOptional = testRepository.findTopByTitle(dto.getTestTitle());
+            testOptional.ifPresent(question::setTest);
+            List<Answer> answerList = dto.getAnswers().stream().map(reqAnswerDTO -> {
+                Answer answer = answerMapper.toAnswer(reqAnswerDTO);
+                // answerRepository.save(answer);
+                answer.setQuestion(question);
+                return answer;
+            }).collect(Collectors.toList());
+
+            question.setAnswers(answerList);
+            MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+            question.setResource(resource);
+            return question;
+        })
+                .collect(Collectors.toList());
+        repository.saveAll(questions);
+
     }
 }

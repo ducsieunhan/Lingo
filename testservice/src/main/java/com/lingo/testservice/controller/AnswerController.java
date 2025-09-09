@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/api/v1/answer")
@@ -38,4 +40,10 @@ public class AnswerController {
     public ResAnswerDTO getOne(@PathVariable long id) throws Exception {
         return answerService.getOne(id);
     }
+
+    @PostMapping("/bulk")
+    public void saveAllAnswers(@RequestBody List<ReqAnswerDTO> answerDTOs) {
+        answerService.saveAllAnswers(answerDTOs);
+    }
+
 }
