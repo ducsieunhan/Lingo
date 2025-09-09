@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+  }
+  .uploadFrame {
+    @apply !border-dashed !border-3 !border-gray-200 text-center py-10 !h-80;
+  }
+  .ant-upload-drag-container {
+    @apply !flex !flex-col !justify-center !items-center;
+  }
+  .ant-upload-btn {
+    @apply !flex justify-center items-center;
+  }
+  .draggerTittle {
+    @apply font-semibold mb-4 flex items-center gap-2;
+  }
+  .createBtn {
+    @apply !flex-1 !h-12 !text-white !font-[600] !text-[15px];
+  }
+}

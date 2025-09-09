@@ -2,14 +2,18 @@ import { useState } from 'react'
 import './App.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminLayout from './layouts/AdminLayout';
-import DashboardPage from './pages/DashboardPage';
-import UserPage from './pages/UserPage';
-import TestPage from './pages/TestPage';
+
+
 import AuthLayout from './layouts/AuthLayout';
 import LoginPage from './pages/LoginPage';
 import ClientLayout from './layouts/ClientLayout';
 import HomePage from './pages/HomePage';
+import CreateTestPage from './pages/admin/CreateTestPage';
+import UserPage from './pages/admin/UserPage';
+import TestPage from './pages/admin/TestPage';
+import DashboardPage from './pages/admin/DashboardPage';
 function App() {
+
   const router = createBrowserRouter([
     {
       path: "/admin",
@@ -20,6 +24,7 @@ function App() {
         {
           index: true,
           element: <DashboardPage />
+
         },
         {
           path: "user",
@@ -28,6 +33,9 @@ function App() {
         {
           path: "test",
           element: <TestPage />
+        }, {
+          path: "createTest",
+          element: <CreateTestPage />
         }
       ]
     },
