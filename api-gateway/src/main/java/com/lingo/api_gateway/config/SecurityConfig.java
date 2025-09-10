@@ -24,7 +24,7 @@ public class SecurityConfig {
   SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
     http.csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchange -> exchange
-                    .pathMatchers("api/v1/public/**").permitAll()
+                    .pathMatchers("api/v1/public/**", "api/v1/account").permitAll()
 //                    .pathMatchers("api/v1/account/**").hasAuthority("ADMIN")
                     .anyExchange().authenticated()
             )

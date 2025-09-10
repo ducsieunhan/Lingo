@@ -11,6 +11,11 @@ spring:
           uri: http://localhost:9001
           predicates:
             - Path=/api/v1/account/**
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/Lingo
 
 eureka:
   client:
