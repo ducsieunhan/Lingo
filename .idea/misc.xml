@@ -9,6 +9,7 @@
         <option value="$PROJECT_DIR$/testservice/pom.xml" />
         <option value="$PROJECT_DIR$/common-library/pom.xml" />
         <option value="$PROJECT_DIR$/discoveryserver/pom.xml" />
+        <option value="$PROJECT_DIR$/fileservice/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
