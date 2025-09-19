@@ -64,24 +64,8 @@ function App() {
           index: true,
           element: <HomePage />,
         },
-        {
 
-          path: "test",
-          children: [
-            {
-              path: "beforeTest",
-              element: <></>
-            },
-            {
-              path: "havingTest",
-              element: <HavingTestPage />
-            },
-            {
-              path: "afterTest",
-              element: <></>
-            }
-          ]
-        }
+        {
 
           path: "tests/:id/:name",
           element: <BeforeTestPage />,
@@ -89,6 +73,10 @@ function App() {
         {
           path: "tests/:id/:name/results",
           element: <AfterTestPage />,
+        },
+        {
+          path: "tests/:id/:name/doTests",
+          element: <HavingTestPage />,
         },
 
       ],
