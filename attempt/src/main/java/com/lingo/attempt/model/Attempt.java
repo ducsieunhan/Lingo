@@ -1,0 +1,34 @@
+package com.lingo.attempt.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Table(name = "attempts")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Attempt {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long attemptId;
+  private Long userId;
+  private Long quizId;
+  private Long score;
+  private Long timeTaken;
+  private Date submittedAt;
+
+  @OneToMany(mappedBy = "attempt",cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<UserAnswers> userAnswers;
+
+  @PrePersist
+  protected void prePersist() {
+    if (this.submittedAt == null) submittedAt = new Date();
+  }
+}

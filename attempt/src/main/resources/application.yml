@@ -1,0 +1,16 @@
+resilience4j.circuitbreaker:
+  instances:
+    inventory-service:
+      registerHealthIndicator: true
+      slidingWindowSize: 10
+      failureRateThreshold: 50
+      slowCallRateThreshold: 50
+      slowCallDurationThreshold: 2s
+      permittedNumberOfCallsInHalfOpenState: 5
+      waitDurationInOpenState: 5s
+
+resilience4j.retry:
+  instances:
+    inventory-service:
+      maxAttempts: 3
+      waitDuration: 500ms
