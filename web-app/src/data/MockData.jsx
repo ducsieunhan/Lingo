@@ -22,6 +22,7 @@ export const questionOfTest =
       "point": 0,
       "answerKey": 0,
       "explanation": null,
+      "explanationResourceContent": null,
       "part": "Part 1",
       "testId": 1,
       "questionNumber": 1,
@@ -47,7 +48,7 @@ export const questionOfTest =
           "correct": "false"
         }
       ],
-      "resourceContent": 1
+      "resourceContent": null
     },
     {
       "id": 2,

@@ -22,9 +22,10 @@ public class Question {
     String title;
     long point;
     // fe pass question id to save key
-    long answerKey;
+    String answerKey;
     String explanation;
     String part;
+    int questionNumber;
     @Enumerated(value = EnumType.STRING)
     MediaResourceCategory category; // for reading or listening
     @ManyToOne

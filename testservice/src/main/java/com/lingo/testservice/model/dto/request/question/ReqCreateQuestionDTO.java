@@ -8,8 +8,9 @@ import java.util.List;
 
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ReqCreateQuestionDTO extends ReqQuestionDTO{
-    String mediaURL;
+public class ReqCreateQuestionDTO extends ReqQuestionDTO {
+    String resourceContent;
+    String explanationResourceContent;
     String testTitle;
     List<ReqAnswerDTO> answers;
 }

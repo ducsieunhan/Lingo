@@ -13,7 +13,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ResMediaResourceDTO {
     long id;
-    String mediaUrl;
+    String resourceContent;
+    String explanationResourceContent;
     String description;
     MediaResourceCategory category;
     long testId;

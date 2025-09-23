@@ -11,6 +11,8 @@ import com.lingo.testservice.model.dto.request.question.ReqQuestionDTO;
 import com.lingo.testservice.model.dto.response.ResQuestionDTO;
 import com.lingo.testservice.repository.QuestionRepository;
 import com.lingo.testservice.repository.TestRepository;
+import com.lingo.testservice.utils.enums.MediaResourceCategory;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -62,7 +64,8 @@ class QuestionServiceImpl implements QuestionService {
         }).collect(Collectors.toList());
 
         question.setAnswers(answerList);
-        MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+        MediaResource resource = MediaResource.builder().resourceContent(dto.getResourceContent()).question(question)
+                .explanationResourceContent(dto.getExplanationResourceContent()).build();
         question.setResource(resource);
         repository.save(question);
         // ResQuestionDTO response=mapper.toQuestionResponse(question);
@@ -115,7 +118,10 @@ class QuestionServiceImpl implements QuestionService {
             }).collect(Collectors.toList());
 
             question.setAnswers(answerList);
-            MediaResource resource = MediaResource.builder().mediaUrl(dto.getMediaURL()).question(question).build();
+            MediaResource resource = MediaResource.builder().resourceContent(dto.getResourceContent())
+                    .explanationResourceContent(dto.getExplanationResourceContent())
+                    .question(question)
+                    .category(MediaResourceCategory.LISTENING).build();
             question.setResource(resource);
             return question;
         })

@@ -10,6 +10,8 @@ import com.lingo.testservice.model.dto.request.test.ReqUpdateTestDTO;
 import com.lingo.testservice.model.dto.response.ResTestDTO;
 import com.lingo.testservice.repository.MediaResourceRepository;
 import com.lingo.testservice.repository.TestRepository;
+import com.lingo.testservice.utils.enums.MediaResourceCategory;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,9 +25,13 @@ import java.util.Optional;
 
 public interface TestService {
     ResTestDTO add(ReqCreateTestDTO dto);
+
     ResTestDTO update(long id, ReqUpdateTestDTO dto);
+
     void delete(long id);
+
     List<ResTestDTO> getAll();
+
     ResTestDTO getOne(long id) throws Exception;
 }
 
@@ -42,7 +48,7 @@ class TestServiceImpl implements TestService {
     @Override
     @Transactional
     public ResTestDTO add(ReqCreateTestDTO dto) {
-        Optional<MediaResource> resourceOptional = resourceRepository.findByMediaUrl(dto.getMediaUrl());
+        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getMediaUrl());
 
         Test test = mapper.toTest(dto);
         Test savedTest = testRepository.save(test);
@@ -53,28 +59,32 @@ class TestServiceImpl implements TestService {
         });
 
         ResTestDTO response = mapper.toTestResponse(savedTest);
-        resourceOptional.ifPresent(resource ->
-                response.setMediaUrl(resource.getMediaUrl())
-        );
-
+        resourceOptional.ifPresent(resource -> response.setMediaUrl(resource.getResourceContent()));
+        if (!resourceOptional.isPresent()) {
+            resourceRepository.save(MediaResource.builder().category(MediaResourceCategory.LISTENING)
+                    .resourceContent(dto.getMediaUrl())
+                    .test(savedTest).build());
+        }
         return response;
     }
 
     @Override
     public ResTestDTO update(long id, ReqUpdateTestDTO dto) {
-        Optional<Test> testOptional=testRepository.findById(id);
-        Optional<MediaResource> resourceOptional=resourceRepository.findByMediaUrl(dto.getMediaURL());
+        Optional<Test> testOptional = testRepository.findById(id);
+        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getMediaURL());
 
         testOptional.ifPresent(test -> {
             test.setTitle(dto.getTitle());
             test.setType(dto.getType());
             test.setMaxScore(dto.getMaxScore());
             test.setTimeLimit(dto.getTimeLimit());
-            // before update test media resource, should post another api to upload resource to cloud first and save to database then
-            if (resourceOptional.isPresent()){
+            // before update test media resource, should post another api to upload resource
+            // to cloud first and save to database then
+            if (resourceOptional.isPresent()) {
                 test.setResource(resourceOptional.get());
             } else {
-                resourceRepository.save(resourceMapper.toMediaResource(ReqCreateResourceDTO.builder().mediaUrl(dto.getMediaURL()).build()));
+                resourceRepository.save(resourceMapper
+                        .toMediaResource(ReqCreateResourceDTO.builder().resourceContent(dto.getMediaURL()).build()));
             }
         });
 
@@ -95,7 +105,6 @@ class TestServiceImpl implements TestService {
     @Override
     public ResTestDTO getOne(long id) throws Exception {
         return mapper.toTestResponse(
-                testRepository.findById(id).orElseThrow(() -> new Exception("Test not found"))
-        );
+                testRepository.findById(id).orElseThrow(() -> new Exception("Test not found")));
     }
 }

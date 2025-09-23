@@ -22,5 +22,6 @@ public class ResQuestionDTO {
     String part;
     long testId;
     List<ResAnswerDTO> answers;
-    String mediaUrl;
+    String resourceContent;
+    String explanationResourceContent;
 }

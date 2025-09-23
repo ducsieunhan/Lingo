@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as XLSX from "xlsx";
 import { extractData, readExcelFile, saveMultipleFiles } from '../../slice/files';
 
-const UploadDragger = ({ type, testTitle, mediaUrl, form }) => {
+const UploadDragger = ({ type, testTitle, mediaUrl, form, typeUpload }) => {
     const dispatch = useDispatch();
     const [fileList, setFileList] = useState([]);
     const { excelData, questionList, answerList, error, uploadedFiles, loading } = useSelector((state) => state.file);
@@ -22,11 +22,11 @@ const UploadDragger = ({ type, testTitle, mediaUrl, form }) => {
         return false;
     }
     const handleUploadResourceContent = (options) => {
-        console.log(options);
+        // console.log(options);
         const { file, onSuccess, onError } = options;
         const newFiles = [...fileList, file];
         setFileList(newFiles);
-        console.log("uploaded files when handle", newFiles)
+        // console.log("uploaded files when handle", newFiles)
         if (!form.getFieldValue("title")) {
             alert("Vui lòng nhập Tên bài thi trước khi upload");
             onError("Missing test title");

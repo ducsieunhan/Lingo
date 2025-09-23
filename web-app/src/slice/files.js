@@ -61,14 +61,16 @@ const fileSlice = createSlice({
 
                 const question = {
                     title: item.content,
-                    point: 0,
-                    answerKey: null,
-                    explanation: null,
+                    point: 5,
+                    answerKey: item.correct_answer,
+                    explanation: item.explanation,
                     part: item.part,
                     category: item.category,
-                    mediaUrl: mediaUrl,
+                    resourceContent: mediaUrl,
                     testTitle: testTitle,
                     answers: reqAnswer,
+                    explanationResourceContent: item.explanationResourceContent,
+                    questionNumber: item.number
                 };
 
                 questions.push(question);
@@ -80,6 +82,10 @@ const fileSlice = createSlice({
         updateProgress: (state, action) => {
             state.uploadPercent = action.payload
         },
+        updateQuestions: (state, action) => {
+            state.questionList = action.payload;
+        },
+
     },
 
     extraReducers: (builder) => {
@@ -112,4 +118,4 @@ const fileSlice = createSlice({
 
 const { reducer } = fileSlice;
 export default reducer;
-export const { extractData, updateProgress } = fileSlice.actions;
+export const { extractData, updateProgress, updateQuestions } = fileSlice.actions;

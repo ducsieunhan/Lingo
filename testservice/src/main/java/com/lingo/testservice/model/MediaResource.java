@@ -17,8 +17,10 @@ public class MediaResource {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
-    @Column(name = "media_url")
-    String mediaUrl;
+    @Column(name = "resource_content")
+    String resourceContent;
+    @Column(name = "explanation_resource_url")
+    String explanationResourceContent;
     @Nullable
     String description;
     @Enumerated(value = EnumType.STRING)
