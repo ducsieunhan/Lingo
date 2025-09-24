@@ -6,12 +6,17 @@ import com.lingo.attempt.dto.ResAttemptShortDTO;
 import com.lingo.attempt.dto.ResCorrectAns;
 import com.lingo.attempt.mapper.AttemptMapper;
 import com.lingo.attempt.model.Attempt;
+import com.lingo.attempt.model.AttemptSectionResult;
 import com.lingo.attempt.model.UserAnswers;
 import com.lingo.attempt.repository.AttemptRepository;
+import com.lingo.attempt.repository.AttemptSectionResultRepository;
 import com.lingo.attempt.repository.UserAnswersRepository;
 import com.lingo.attempt.utils.Constants;
+import com.lingo.common_library.exception.EmptyException;
 import com.lingo.common_library.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,33 +32,25 @@ import java.util.stream.Collectors;
 public class AttemptService {
   private final AttemptRepository attemptRepository;
   private final UserAnswersRepository userAnswersRepository;
+  private final AttemptSectionResultRepository attemptSectionResultRepository;
 //  private final FeignTestService feignTestService;
   private final AttemptMapper attemptMapper;
   private final TestServiceFallback feignTestService;
+  private static final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
   public ResAttemptDTO createAttempt(ReqAttemptDTO req) {
+    long start = System.currentTimeMillis();
+
+    validateRequest(req);
+
     // get all question id
-    List<Long> questionList = req.getAnswers().stream()
-            .filter(q -> q.getUserAnswer() != null )
-            .map(ReqAttemptDTO.AnswerDTO::getQuestionId)
-            .toList();
+    List<Long> questionList = extractQuestionIds(req);
+    Map<Long, String> answers = getCorrectAnswers(questionList);
 
-    if (questionList.isEmpty()) {
-      throw new IllegalArgumentException("No valid answers provided");
-    }
+    Attempt attempt = buildAttempt(req);
 
-    Map<Long, String> answers = this.feignTestService.getCorrectAnswer(questionList).stream()
-            .collect(Collectors.toMap(ResCorrectAns::getQuestionId, ResCorrectAns::getCorrectAnswer));
 
-    Attempt attempt = new Attempt();
-    attempt.setQuizId(req.getQuizId());
-    attempt.setTimeTaken(req.getTimeTaken());
-
-    // user id get with JWT
-    attempt.setUserId((long) 1);
-
-    int correctListening = 0 ;
-    int correctReading = 0 ;
+    int[] types = new int[req.getField().length];
     int questionCount = 1;
 
     List<UserAnswers> list = new ArrayList<>(); //db
@@ -75,8 +72,10 @@ public class AttemptService {
       userAnswers.setCorrect(isCorrect);
 
       if(isCorrect) {
-        if(questionCount <= 10) correctListening++;
-        else correctReading++;
+        if(req.getField().length >= 2) {   // more than 1 skill like listening and reading
+          if(questionCount <= (req.getAnswers().size() / 2)) types[0]++;
+          else types[1]++;
+        }
       }
       questionCount++;
 
@@ -84,20 +83,26 @@ public class AttemptService {
     }
 
     // count point
-    double score = PointCounting.calculatePoint(req.getType(), correctListening, correctReading);
+    double[] scores = PointCounting.calculatePoint(req.getType(), types);
 
+    // set section result
+    List<AttemptSectionResult> sectionResults = buildSectionResults(req, scores, types, attempt);
 
+    attempt.setSectionResults(sectionResults);
     attempt.setUserAnswers(list);
-    attempt.setScore((long) score);
-
+    double totalScore = 0;
+    for(double score : scores)   totalScore += score;
+    attempt.setScore((long) totalScore);
     attempt = this.attemptRepository.save(attempt);
 
+    List<AttemptSectionResult> saveSectionRes = this.attemptSectionResultRepository.saveAll(sectionResults);
     List<UserAnswers> savedAnswers = this.userAnswersRepository.saveAll(list);
-    ResAttemptDTO resAttemptDTO = this.attemptMapper.toResAttemptDTO(attempt);
-    List<ResAttemptDTO.Answers> answersDTO = savedAnswers.stream()
-            .map(this.attemptMapper::toResAnswerDTO)
-            .toList();
-    resAttemptDTO.setAnswers(answersDTO);
+
+
+    ResAttemptDTO resAttemptDTO = buildResponse(attempt, savedAnswers, saveSectionRes);
+
+    long end = System.currentTimeMillis();
+    logger.info("Execution time of doSomething(): {} ms", (end - start));
 
     return resAttemptDTO;
   }
@@ -106,15 +111,9 @@ public class AttemptService {
     Attempt attempt = this.attemptRepository.findById(attemptId)
             .orElseThrow(() -> new NotFoundException(Constants.ATTEMPT_NOT_FOUND));
 
-    ResAttemptDTO att = this.attemptMapper.toResAttemptDTO(attempt);
-    List<ResAttemptDTO.Answers> answers = attempt.getUserAnswers().stream()
-            .map(this.attemptMapper::toResAnswerDTO)
-            .toList();
-    att.setAnswers(answers);
+    ResAttemptDTO att = buildResponse(attempt, attempt.getUserAnswers(), attempt.getSectionResults());
 
     return att;
-
-
   }
 
   public List<ResAttemptDTO> getUserAttempts(Long userId){
@@ -146,4 +145,87 @@ public class AttemptService {
       throw new NotFoundException(Constants.USER_NOT_FOUND);
     }
   }
+
+  private void validateRequest(ReqAttemptDTO req) {
+    if (req == null || req.getAnswers() == null || req.getAnswers().isEmpty()) {
+      throw new EmptyException(Constants.EMPTY_REQUEST);
+    }
+    if (req.getField() == null || req.getField().length == 0) {
+      throw new IllegalArgumentException(Constants.EMPTY_REQUEST);
+    }
+  }
+
+  private List<Long> extractQuestionIds(ReqAttemptDTO req) {
+    List<Long> questionIds = req.getAnswers().stream()
+            .filter(q -> q.getUserAnswer() != null )
+            .map(ReqAttemptDTO.AnswerDTO::getQuestionId)
+            .toList();
+
+    if (questionIds.isEmpty()) {
+      throw new IllegalArgumentException("No valid answers provided");
+    }
+
+    return questionIds;
+  }
+
+  private Map<Long, String> getCorrectAnswers(List<Long> questionIds) {
+    try {
+      return feignTestService.getCorrectAnswer(questionIds).stream()
+              .collect(Collectors.toMap(
+                      ResCorrectAns::getQuestionId,
+                      ResCorrectAns::getCorrectAnswer
+              ));
+    } catch (Exception e) {
+//      log.error("Failed to fetch correct answers for questions: {}", questionIds, e);
+      throw new RuntimeException("Unable to retrieve correct answers", e);
+    }
+  }
+
+  private Attempt buildAttempt(ReqAttemptDTO req) {
+    Attempt attempt = new Attempt();
+    attempt.setQuizId(req.getQuizId());
+    attempt.setTimeTaken(req.getTimeTaken());
+    attempt.setType(req.getType());
+    // user id get with JWT
+    attempt.setUserId((long) 1);
+    return attempt;
+  }
+
+  private List<AttemptSectionResult> buildSectionResults(ReqAttemptDTO req, double[] scores, int[] sectionCounts, Attempt attempt) {
+    List<AttemptSectionResult> sectionResults = new ArrayList<>();
+
+    for (int i = 0; i < scores.length; i++) {
+      AttemptSectionResult sectionResult = new AttemptSectionResult();
+      sectionResult.setSectionScore(scores[i]);
+      sectionResult.setType(req.getField()[i]);
+      sectionResult.setMaxPossibleScore(Constants.TOEIC_MAX_SECTION_SCORE);
+      sectionResult.setCorrectAnswers(sectionCounts[i]);
+      sectionResult.setTotalQuestions(req.getAnswers().size() / req.getField().length);
+      sectionResult.setAttempt(attempt);
+      sectionResults.add(sectionResult);
+    }
+
+    return sectionResults;
+  }
+
+  private ResAttemptDTO buildResponse(Attempt attempt, List<UserAnswers> answers, List<AttemptSectionResult> sectionResults) {
+    ResAttemptDTO response = attemptMapper.toResAttemptDTO(attempt);
+
+    List<ResAttemptDTO.Answers> answersDTO = answers.stream()
+            .map(attemptMapper::toResAnswerDTO)
+            .toList();
+
+    List<ResAttemptDTO.SectionResult> sectionResultsDTO = sectionResults.stream()
+            .map(attemptMapper::toResSectionResultDTO)
+            .toList();
+
+    response.setAnswers(answersDTO);
+    response.setSectionResults(sectionResultsDTO);
+
+    return response;
+  }
+
+
+
+
 }

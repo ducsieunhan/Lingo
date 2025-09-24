@@ -23,9 +23,13 @@ public class Attempt {
   private Long score;
   private Long timeTaken;
   private Date submittedAt;
+  private String type ;
 
   @OneToMany(mappedBy = "attempt",cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserAnswers> userAnswers;
+
+  @OneToMany(mappedBy = "attempt", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<AttemptSectionResult> sectionResults;
 
   @PrePersist
   protected void prePersist() {

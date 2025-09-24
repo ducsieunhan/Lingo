@@ -13,6 +13,7 @@ public class ReqAttemptDTO {
   private Long quizId;
   private Long timeTaken;
   private String type; // toeic ielts
+  private String[] field;
   private List<AnswerDTO> answers;
 
   @Data

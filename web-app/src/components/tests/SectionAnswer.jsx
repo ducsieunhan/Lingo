@@ -8,13 +8,18 @@ import {
 import { useState } from "react";
 import DetailAnswer from "./DetailAnswer";
 import { PartLengthToeic, TestType } from "../../data/FixedData";
-import { attempt } from "../../data/MockData";
+import { useSelector } from "react-redux";
 
 const SectionAnswer = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [Choice, setChoice] = useState("");
   const [Correct, setCorrect] = useState("");
+  const { attempt } = useSelector(state => state.attempts);
+
+
+  console.log("print", attempt);
+
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -29,28 +34,6 @@ const SectionAnswer = () => {
   const Questions = ({ questionNumber, choice = "N", correct = "N" }) => {
 
     let check = choice === correct;
-
-    // return (
-    //   <Col xs={{ flex: '100%' }} sm={{ flex: '50%' }} lg={{ flex: '25%' }}
-    //   >
-    //     <div className={`flex items-center justify-center  space-x-2  border ${check ? "border-emerald-200 bg-emerald-50" : "border-rose-200 bg-rose-50"} rounded-lg px-3 py-2`}>
-    //       <span className={`w-6 h-6 md:w-4 md:h-4 ${check ? "bg-emerald-500" : "bg-rose-500"} text-[#ffffff] rounded-full flex items-center justify-center text-[8px] font-bold`}>{questionNumber}</span>
-    //       <span className="text-sm text-gray-700">{choice + "->" + correct}</span>
-    //       {check ?
-    //         <CheckOutlined className="!font-bold !text-emerald-400" />
-    //         :
-    //         <CloseOutlined className="!font-bold !text-rose-400" />
-    //       }
-    //       <Button icon={<EyeFilled />} size="small" type="primary" onClick={() => {
-    //         showModal();
-    //         setChoice(choice);
-    //         setCorrect(correct);;
-    //       }}>
-    //         Xem
-    //       </Button>
-    //     </div>
-    //   </Col>
-    // )
 
     return (
       <Col xs={{ flex: '100%' }} sm={{ flex: '50%' }} lg={{ flex: '25%' }}
@@ -83,8 +66,8 @@ const SectionAnswer = () => {
         <Row gutter={[16, 16]}>
           {Array.from({ length: part.length }).map((_, index) => (
             <Questions key={index} questionNumber={index + part.start}
-              choice={attempt.answers[index].user_answer}
-              correct={attempt.answers[index].correct_answer}
+              choice={attempt?.answers[index]?.userAnswer}
+              correct={attempt?.answers[index]?.correctAnswer}
             />
           ))}
         </Row>

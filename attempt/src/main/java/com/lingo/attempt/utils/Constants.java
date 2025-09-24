@@ -3,7 +3,7 @@ package com.lingo.attempt.utils;
 public class Constants {
   public static final String ATTEMPT_NOT_FOUND = "ATTEMPT_NOT_FOUND";
   public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
-  public static final String CHECKOUT_ITEM_NOT_EMPTY = "CHECKOUT_ITEM_NOT_EMPTY";
+  public static final String EMPTY_REQUEST = "REQUEST_ITEM_EMPTY";
   public static final String SIGN_IN_REQUIRED = "SIGN_IN_REQUIRED";
 
   public static final double TOEIC_POINT_PER_QUESTION = 5;

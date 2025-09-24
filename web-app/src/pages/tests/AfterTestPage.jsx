@@ -1,4 +1,4 @@
-import { Button, Card, Typography, Row, Col, Tabs } from "antd"
+import { Button, Card, Typography, Row, Col, Tabs, Spin } from "antd"
 import {
   ArrowLeftOutlined, BookOutlined, CheckCircleFilled,
   CheckOutlined,
@@ -13,45 +13,65 @@ import {
 import BoxComment from "../../components/tests/BoxComment";
 import RightSider from "../../components/tests/RightSider"
 import SectionAnswer from "../../components/tests/SectionAnswer";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { retrieveAttempt } from "../../slice/attempts";
+import { current } from "@reduxjs/toolkit";
+import { formatTime } from "../../service/GlobalFunction";
+import SectionPoint from "../../components/tests/AfterPage/SectionPoint";
 
 const AfterTestPage = () => {
   const { Text } = Typography;
-  const onChange = (key) => {
-    console.log(key);
-  };
+  const { attemptId } = useParams();
+
+  const dispatch = useDispatch();
+  const { attempt, loading } = useSelector(state => state.attempts);
+
+  const correctAnswers = attempt?.sectionResults.map(s => s?.correctAnswers).reduce((acc, curr) => acc + curr, 0);
+  const totalQuestions = attempt?.sectionResults.map(s => s?.totalQuestions).reduce((acc, curr) => acc + curr, 0);
+  const maxPoint = attempt?.sectionResults.map(s => s?.maxPossibleScore).reduce((acc, curr) => acc + curr, 0);
+  const totalPoint = attempt?.sectionResults.map(s => s?.sectionScore).reduce((acc, curr) => acc + curr, 0);
+
+  useEffect(() => {
+    dispatch(retrieveAttempt(attemptId));
+  }, [attemptId]);
+
+  console.log(attempt);
+
 
   const cols = [
     {
       "icon": <CheckCircleFilled className="!text-green-400" />,
-      "content": "200/200",
+      "content": `${correctAnswers}/${totalQuestions}`,
       "tag": "Số câu đúng",
       "bgColor": "bg-green-50",
       "tColor": "text-green-600"
     },
     {
       "icon": <PercentageOutlined className="!text-blue-400" />,
-      "content": "100%",
+      "content": `${Math.round(correctAnswers / totalQuestions * 100)}%`,
       "tag": "Độ chính xác",
       "bgColor": "bg-blue-50",
       "tColor": "text-blue-600"
     },
     {
       "icon": <ClockCircleOutlined className="!text-purple-400" />,
-      "content": "1:55;07",
+      "content": `${formatTime(attempt?.timeTaken)}`,
       "tag": "Thời gian hoàn thành",
       "bgColor": "bg-purple-50",
       "tColor": "text-purple-600"
     },
     {
       "icon": <CheckOutlined className="!text-green-400" />,
-      "content": "200",
+      "content": `${correctAnswers}`,
       "tag": "Trả lời đúng",
       "bgColor": "bg-green-50",
       "tColor": "text-green-600"
     },
     {
       "icon": <CloseOutlined className="!text-red-400" />,
-      "content": "0",
+      "content": `${totalQuestions - correctAnswers}`,
       "tag": "Trả lời sai",
       "bgColor": "bg-red-50",
       "tColor": "text-red-600"
@@ -81,6 +101,10 @@ const AfterTestPage = () => {
   const handleScroll = () => {
     document.getElementById("my-section")?.scrollIntoView({ behavior: "smooth" });
   };
+
+  if (loading) {
+    return <Spin spinning={loading} fullscreen={true} />
+  }
 
   return (
     <div className="bg-gray-50">
@@ -113,7 +137,7 @@ const AfterTestPage = () => {
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center space-x-3 mb-4">
                   <CrownOutlined className="text-4xl !text-yellow-300" />
-                  <h2 className="text-4xl font-bold text-gray-800">990/990</h2>
+                  <h2 className="text-4xl font-bold text-gray-800">{totalPoint + "/" + maxPoint}</h2>
                 </div>
                 <p className="text-lg text-gray-600">Điểm TOEIC</p>
               </div>
@@ -130,30 +154,16 @@ const AfterTestPage = () => {
             <Card className="!shadow-lg !pb-3 !mt-7">
               <h3 className="text-xl font-bold text-gray-800 mb-6">Điểm chi tiết theo kỹ năng</h3>
               <div className="space-y-6">
-                <div className="flex items-center justify-between p-4 bg-blue-50 rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <UserOutlined className="text-2xl !text-blue-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800">Listening</h4>
-                      <div className="text-2xl font-bold text-blue-600">495/495</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-lg font-semibold text-blue-600">100%</div>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-4 bg-green-50 rounded-lg">
-                  <div className="flex items-center space-x-4">
-                    <BookOutlined className="text-2xl !text-green-600" />
-                    <div>
-                      <h4 className="font-semibold text-gray-800">Listening</h4>
-                      <div className="text-2xl font-bold text-green-600">495/495</div>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-lg font-semibold text-blue-600">90%</div>
-                  </div>
-                </div>
+                {/* <SectionPoint skill="Listening" score={495} total={495} percent={100} />
+                <SectionPoint skill="Reading" score={495} total={495} percent={90} /> */}
+
+                {
+                  attempt.sectionResults.map(s => {
+                    return (
+                      <SectionPoint skill={s.type} score={s.sectionScore} total={s.maxPossibleScore} percent={Math.round(s.correctAnswers / s.totalQuestions * 100)} />
+                    )
+                  })
+                }
               </div>
             </Card>
 

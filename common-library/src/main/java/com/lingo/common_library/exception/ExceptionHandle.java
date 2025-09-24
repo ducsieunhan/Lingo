@@ -25,6 +25,14 @@ public class ExceptionHandle {
     return buildErrVM(status, message,null, ex, request, 404);
   }
 
+  @ExceptionHandler(EmptyException.class)
+  public ResponseEntity<ErrorVM> handleEmptyException(NotFoundException ex, WebRequest request) {
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    String message = ex.getMessage();
+
+    return buildErrVM(status, message,null, ex, request, 400);
+  }
+
   private ResponseEntity<ErrorVM> buildErrVM(HttpStatus status, String message, List<String> errors, Exception ex, WebRequest request, int statusCode) {
     ErrorVM errorVm = new ErrorVM(status.toString(), status.getReasonPhrase(), message, errors);
 

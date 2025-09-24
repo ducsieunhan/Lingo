@@ -70,7 +70,7 @@ function App() {
           element: <BeforeTestPage />,
         },
         {
-          path: "tests/:id/:name/results",
+          path: "tests/:id/:name/results/:attemptId",
           element: <AfterTestPage />,
         },
 

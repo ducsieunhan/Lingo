@@ -6,6 +6,11 @@ spring:
     name: api-gateway
   cloud:
     gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
       routes:
         - id: account-service
           uri: http://localhost:9001
@@ -16,10 +21,14 @@ spring:
           predicates:
             - Path=/api/v1/test/**, /api/v1/answer/**, /api/v1/resource/**, /api/v1/question/**
         - id: attempt-service
-          uri: http://localhost:9003
+          uri: lb://attempt-service
           predicates:
             - Path=/api/v1/attempt/**
 eureka:
+  instance:
+    hostname: localhost
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+      register-with-eureka: true
+      fetch-registry: true

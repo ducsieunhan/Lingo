@@ -6,8 +6,10 @@ const initialState = {
 
   ],
   attempt: {
-
+    sectionResults: [],
+    answers: []
   },
+  loading: false,
   error: null
 };
 
@@ -46,19 +48,29 @@ const attemptSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      .addCase(retrieveAttempts.pending, (state, action) => {
+        state.loading = true;
+      })
       .addCase(retrieveAttempts.fulfilled, (state, action) => {
         state.attempts = action.payload;
+        state.loading = false;
         state.error = null;
       })
       .addCase(retrieveAttempts.rejected, (state, action) => {
         state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(retrieveAttempt.pending, (state, action) => {
+        state.loading = true;
       })
       .addCase(retrieveAttempt.fulfilled, (state, action) => {
         state.attempt = action.payload;
+        state.loading = false;
         state.error = null;
       })
       .addCase(retrieveAttempt.rejected, (state, action) => {
         state.error = action.payload;
+        state.loading = false;
       });
   }
 });
