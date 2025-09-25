@@ -14,11 +14,17 @@ import CreateTestPage from './pages/admin/CreateTestPage';
 import UserPage from './pages/admin/UserPage';
 import TestPage from './pages/admin/TestPage';
 import DashboardPage from './pages/admin/DashboardPage';
+<<<<<<< HEAD
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import ForgetPage from './pages/auth/ForgetPage';
 import ResetPage from './pages/auth/ResetPage';
 import { ToastContainer } from 'react-toastify';
+=======
+import ListTestsPage from './pages/tests/ListTestsPage';
+import BeforeTestPage from './pages/tests/BeforeTestPage';
+import AfterTestPage from './pages/tests/AfterTestPage';
+>>>>>>> main
 function App() {
 
   const router = createBrowserRouter([
@@ -75,7 +81,16 @@ function App() {
         {
           index: true,
           element: <HomePage />,
-        }
+        },
+        {
+          path: "tests/:id/:name",
+          element: <BeforeTestPage />,
+        },
+        {
+          path: "tests/:id/:name/results",
+          element: <AfterTestPage />,
+        },
+
       ],
     },
   ]);
