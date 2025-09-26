@@ -17,11 +17,11 @@ export const getUserInfoApi = (access_token) =>
   });
 
 export const loginGoogleApi = (code) =>
-  instance.post(`/api/v1/auth/google/${code}`, {}, { withCredentials: true });
+  publicInstance.post(`/api/v1/auth/google/${code}`, {}, { withCredentials: true });
 
 export const registerGG = (userData, access_token) => {
-  instance.post(
-    `http://localhost:8080/api/v1/account/gg`,
+  publicInstance.post(
+    `/api/v1/account/gg`,
     userData,
     {
       headers: {

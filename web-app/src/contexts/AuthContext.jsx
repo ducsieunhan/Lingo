@@ -2,13 +2,18 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { getUserInfoApi, handleApiError, loginApi, registerApi } from "../config/api";
+import { useDispatch, useSelector } from 'react-redux';
+import { setIsAuthenticated } from "../slice/authentication";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.authentication);
 
 
   useEffect(() => {
@@ -16,9 +21,9 @@ export const AuthProvider = ({ children }) => {
       try {
         const token = localStorage.getItem("access_token");
         if (token) {
-          setIsAuthenticated(true);
+          dispatch(setIsAuthenticated(true));
         } else {
-          setIsAuthenticated(false);
+          dispatch(setIsAuthenticated(false));
         }
       } catch (error) {
         console.log("Cant't authorize user: " + error);

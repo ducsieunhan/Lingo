@@ -4,19 +4,27 @@ import AuthHeader from "../../components/auth/AuthHeader";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../contexts/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../../slice/authentication";
 
 
 const RegisterPage = () => {
 
   const navigate = useNavigate();
 
-  const { register, loading } = useContext(AuthContext);
+  // const { register, loading } = useContext(AuthContext);
+
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.authentication);
 
   const onFinish = async values => {
     console.log('Success:', values);
-
-    const response = await register(values);
-    if (response) navigate("/auth/login");
+    try {
+      await dispatch(register(values)).unwrap();
+      navigate("/auth/login")
+    } catch (err) {
+      console.log(err);
+    }
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
@@ -35,15 +43,15 @@ const RegisterPage = () => {
         >
 
           <Form.Item
-            label="Họ và tên"
+            label="Tên tài khoản"
             name="username" className="!font-semibold !text-lg  "
             rules={[
-              { required: true, message: "Vui lòng nhập họ và tên" },
+              { required: true, message: "Vui lòng nhập tên tài khoản" },
             ]}
           >
             <Input
               prefix={<UserOutlined twoToneColor="#2563eb" className="!mr-1" />}
-              placeholder="Nhập họ và tên của bạn " size="large"
+              placeholder="Nhập tên tài khoản của bạn  " size="large"
               className="!pl-4 !py-3 lift-on-focus"
             />
           </Form.Item>

@@ -1,0 +1,15 @@
+com\lingo\attempt\service\AttemptService.class
+com\lingo\attempt\repository\AttemptRepository.class
+com\lingo\attempt\service\FeignTestService.class
+com\lingo\attempt\model\Attempt.class
+com\lingo\attempt\config\SwaggerConfig.class
+com\lingo\attempt\dto\ResAttemptDTO.class
+com\lingo\attempt\dto\ReqAttemptDTO$AnswerDTO.class
+com\lingo\attempt\repository\UserAnswersRepository.class
+com\lingo\attempt\mapper\AttemptMapper.class
+com\lingo\attempt\dto\ReqAttemptDTO.class
+com\lingo\attempt\AttemptApplication.class
+com\lingo\attempt\dto\ResCorrectAns.class
+com\lingo\attempt\dto\ResAttemptDTO$Answers.class
+com\lingo\attempt\config\ModelMapperConfig.class
+com\lingo\attempt\model\UserAnswers.class

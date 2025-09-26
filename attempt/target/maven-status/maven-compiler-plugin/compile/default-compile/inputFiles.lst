@@ -1,0 +1,13 @@
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\AttemptApplication.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\config\ModelMapperConfig.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\config\SwaggerConfig.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\dto\ReqAttemptDTO.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\dto\ResAttemptDTO.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\dto\ResCorrectAns.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\mapper\AttemptMapper.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\model\Attempt.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\model\UserAnswers.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\repository\AttemptRepository.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\repository\UserAnswersRepository.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\service\AttemptService.java
+C:\Microservice-Project\New folder\Lingo\Lingo\attempt\src\main\java\com\lingo\attempt\service\FeignTestService.java

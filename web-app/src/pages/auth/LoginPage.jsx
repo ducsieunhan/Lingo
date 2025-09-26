@@ -1,25 +1,29 @@
 import { AppleFilled, FacebookFilled, FacebookOutlined, GoogleOutlined, LockFilled, LockOutlined, LockTwoTone, MailFilled, MailOutlined, MailTwoTone } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Spin } from "antd"
 import '../../styles/animation.css'
-import AuthHeader from "../../components/auth/AuthHeader";
-import { useContext } from "react";
-import AuthContext from "../../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../slice/authentication";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.authentication);
 
-  const { login, loading } = useContext(AuthContext);
+  // const { login, loading } = useContext(AuthContext);
 
   const onFinish = async values => {
     console.log('Success:', values);
-
     const { username, password } = values;
-
-    const successLogin = await login(username, password);
-    if (successLogin) navigate("/");
-
+    try {
+      await dispatch(login({ username, password })).unwrap();
+      navigate("/");
+      toast.info("Đăng nhập thành công");
+    } catch (err) {
+      return false;
+    }
   };
   const onFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
