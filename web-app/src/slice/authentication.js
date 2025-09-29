@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, registerApi, registerGG } from "../config/api";
+import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG } from "../config/api";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user_profile')) || null,
@@ -60,6 +60,21 @@ export const register = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  "authentication/logout",
+  async (clientId, thunkAPI) => {
+    try {
+      await logoutApi(clientId);
+      localStorage.clear();
+      delete axios.defaults.headers.common['Authorization'];
+      return true;
+    } catch (error) {
+      handleApiError(error, "Đăng ký thất bại")
+      return thunkAPI.rejectWithValue(error?.response?.data?.detail || "Đăng ký thất bại");
+    }
+  }
+);
+
 export const loginGoogle = createAsyncThunk(
   "authentication/loginGG",
   async (code, thunkAPI) => {
@@ -87,13 +102,6 @@ const authSlice = createSlice({
   name: "authentication",
   initialState,
   reducers: {
-    logout: (state, action) => {
-      localStorage.clear();
-      delete axios.defaults.headers.common['Authorization'];
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-    },
     setIsAuthenticated: (state, action) => {
       state.isAuthenticated = action.payload;
     }
@@ -138,6 +146,22 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
 
+      // normal register
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = false;
+        state.user = null;
+        state.token = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
       // google flow
 
       .addCase(loginGoogle.pending, (state) => {
@@ -161,4 +185,4 @@ const authSlice = createSlice({
 
 const { reducer } = authSlice;
 export default reducer;
-export const { logout, setIsAuthenticated } = authSlice.actions;
+export const { setIsAuthenticated } = authSlice.actions;

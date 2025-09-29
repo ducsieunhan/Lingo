@@ -1,6 +1,7 @@
 package com.lingo.api_gateway.controller;
 
 import com.lingo.api_gateway.dto.identity.ReqAccountDTO;
+import com.lingo.api_gateway.dto.identity.ReqLogoutDTO;
 import com.lingo.api_gateway.dto.identity.ReqTokenRefreshDTO;
 import com.lingo.api_gateway.dto.identity.TokenExchangeResponse;
 import com.lingo.api_gateway.service.AuthService;
@@ -53,6 +54,23 @@ public class AuthController {
             .build();
 
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body(res);
+  }
+
+  @PostMapping("/logout/{client_id}")
+  ResponseEntity<String> logoutAccount(@CookieValue(name = "refresh_token", defaultValue = "abc") String refresh_token,
+                                       @PathVariable String client_id, @RequestHeader("Authorization") String authorization){
+    log.info("Refresh Token: {}", refresh_token);
+    authService.postLogout(new ReqLogoutDTO(client_id, refresh_token), authorization);
+
+    ResponseCookie cookie = ResponseCookie.from("refresh_token", null)
+            .httpOnly(true)
+            .secure(true)
+            .sameSite("None")
+            .path("/")
+            .maxAge(0)
+            .build();
+
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString()).body("Logout successfully");
   }
 
   // different client id with backend

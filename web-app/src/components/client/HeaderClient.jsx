@@ -68,13 +68,15 @@ const HeaderClient = () => {
 
     const { user } = useSelector((state) => state.authentication);
     const userName = user?.email;
+    const clientId = user?.sub;
 
     const [openAnnounce, setOpenAnnouce] = useState(false);
     const location = useLocation();
     const dispatch = useDispatch();
 
-    const handleLogout = () => {
-        dispatch(logout());
+    const handleLogout = async () => {
+        await dispatch(logout(clientId)).unwrap();
+        window.location.reload();
     }
 
 
@@ -168,7 +170,7 @@ const HeaderClient = () => {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     <div className="flex items-center space-x-8 h-full">
-                        <div className="flex items-center space-x-3">
+                        <Link className="flex items-center space-x-3" to={"/"}>
                             <div className="w-10 h-10 bg-gradient-to-br bg-blue-500 rounded-xl flex items-center justify-center shadow-lg">
                                 <FaEarlybirds className="text-[#ffffff] text-2xl" />
                             </div>
@@ -177,7 +179,7 @@ const HeaderClient = () => {
                                     Lingo
                                 </span>
                             </div>
-                        </div>
+                        </Link>
                         <nav className="hidden lg:flex space-x-2 m-1 h-1/2">
                             <Link to={"/tests"} className={`${location.pathname === '/tests' ? "!text-blue-600 !bg-blue-50 !rounded-lg" : "!text-gray-700 hover:!text-blue-600"} 
                                 flex items-center justify-center h-full p-3` }>

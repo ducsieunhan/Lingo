@@ -1,13 +1,12 @@
 package com.lingo.api_gateway.service;
 
-import com.lingo.api_gateway.dto.identity.GoogleTokenRequest;
-import com.lingo.api_gateway.dto.identity.RefreshTokenExchangeRequest;
-import com.lingo.api_gateway.dto.identity.TokenExchangeRequest;
-import com.lingo.api_gateway.dto.identity.TokenExchangeResponse;
+import com.lingo.api_gateway.dto.identity.*;
 import feign.QueryMap;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "identity-service", url = "${idp.url}")
 public interface AuthenClient {
@@ -29,5 +28,14 @@ public interface AuthenClient {
           produces = MediaType.APPLICATION_JSON_VALUE
   )
   TokenExchangeResponse exchangeGoogleToken(GoogleTokenRequest token);
+
+  @PostMapping(value = "/realms/Lingo/protocol/openid-connect/logout",
+          consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+  )
+  String logoutAccount(@RequestParam("client_id") String clientId,
+                       @RequestParam("refresh_token") String refreshToken,
+                       @RequestHeader("Authorization") String authorization);
+
+
 
 }

@@ -80,14 +80,14 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
-  const logout = () => {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user_name');
-    delete axios.defaults.headers.common['Authorization'];
-    setIsAuthenticated(false);
-    setUser(null);
-  }
+  // const logout = () => {
+  //   localStorage.removeItem('access_token');
+  //   localStorage.removeItem('refresh_token');
+  //   localStorage.removeItem('user_name');
+  //   delete axios.defaults.headers.common['Authorization'];
+  //   setIsAuthenticated(false);
+  //   setUser(null);
+  // }
 
   const loginGoogle = async (code) => {
     try {

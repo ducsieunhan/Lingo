@@ -52,6 +52,26 @@ public class AuthService {
 
   }
 
+  public void postLogout(ReqLogoutDTO req, String authorization) {
+    log.info("loginAccount: {}", req.getRefresh_token());
+    try {
+      String clientId = req.getClient_id();
+      String refreshToken = req.getRefresh_token();
+
+      String res = this.authenClient.logoutAccount(
+              clientId,
+              refreshToken,
+              authorization
+      );
+      log.info("loginAccount: {}", res);
+
+    } catch (RuntimeException e) {
+      log.error("loginAccount error: {}", e.getMessage());
+      throw new RuntimeException(Constants.ErrorCode.LOGOUT_NOT_SUCCESS);
+    }
+
+  }
+
   public TokenExchangeResponse getGoogleToken(String code) {
     log.info("loginAccount: {}", code);
     try {

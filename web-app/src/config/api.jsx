@@ -19,6 +19,9 @@ export const getUserInfoApi = (access_token) =>
 export const loginGoogleApi = (code) =>
   publicInstance.post(`/api/v1/auth/google/${code}`, {}, { withCredentials: true });
 
+export const logoutApi = (client_id) =>
+  instance.post(`/api/v1/auth/logout/${client_id}`, {}, { withCredentials: true });
+
 export const registerGG = (userData, access_token) => {
   publicInstance.post(
     `/api/v1/account/gg`,
@@ -30,6 +33,8 @@ export const registerGG = (userData, access_token) => {
     }
   )
 }
+
+
 
 export const getListTests = (params) => {
   return instance.get("/api/v1/tests", { params });
