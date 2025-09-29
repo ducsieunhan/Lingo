@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface TestMapper {
     Test toTest(ReqTestDTO request);
-    @Mapping(target = "mediaUrl", source = "resource.mediaUrl")
+
+    @Mapping(target = "mediaUrl", source = "resource.resourceContent")
     ResTestDTO toTestResponse(Test test);
 }
