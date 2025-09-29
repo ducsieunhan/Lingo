@@ -1,7 +1,5 @@
 package com.lingo.fileservice.domain;
 
-import com.lingo.fileservice.enums.FileCategory;
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,12 +9,11 @@ import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileResponse {
-    String fileName;
-    String mediaUrl;
-    String message;
-    FileCategory fileCategory;
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ResAnswerDTO {
+    long id;
+    String content;
+    String correct;
 }
