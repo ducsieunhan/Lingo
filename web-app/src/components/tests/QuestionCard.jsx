@@ -35,14 +35,14 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
     };
 
     // handle selecting an answer
-    const handleAnswerChange = (qId, userAnswerId, isCorrect, questionTitle, userAnswer, questionNumber) => {
-        setAnswers((prev) => ({ ...prev, [qId]: { userAnswerId, isCorrect } }));
+    const handleAnswerChange = (qId, userAnswerChoice, isCorrect, questionTitle, userAnswer, questionNumber) => {
+        setAnswers((prev) => ({ ...prev, [qId]: { userAnswerChoice, isCorrect } }));
 
         dispatch(
             getUserAnswers({
                 questionId: qId,
                 questionTitle,
-                userAnswerId,
+                userAnswerChoice,
                 userAnswer,
                 isCorrect,
                 questionNumber,
@@ -262,13 +262,13 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                                                             q.questionNumber
                                                         )
                                                     }
-                                                    value={answers[q.id]?.userAnswerId}
+                                                    value={answers[q.id]?.userAnswerChoice}
                                                     className="!space-y-3 !flex !flex-col"
                                                 >
                                                     {q.answers?.map(
-                                                        (ans) =>
+                                                        (ans, index) =>
                                                             ans.content && (
-                                                                <Radio key={ans.id} value={ans.id} className="!text-base">
+                                                                <Radio key={ans.id} value={index === 0 ? "A" : index === 1 ? "B" : index === 2 ? "C" : "D"} className="!text-base">
                                                                     {ans.content}
                                                                 </Radio>
                                                             )

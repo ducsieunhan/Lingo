@@ -22,7 +22,8 @@ const HavingTestPage = () => {
         getQuestionsOfTest(id);
         getTestData(id);
     }, [id]);
-    console.log(test)
+    // console.log(test)
+    console.log(userAnswers)
     return (
         <>
             <TimeFrame editMode={editMode} setEditMode={setEditMode} questions={questions} />

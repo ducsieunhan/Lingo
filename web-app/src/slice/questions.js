@@ -61,37 +61,27 @@ const questionSlice = createSlice({
     initialState,
     reducers: {
         getUserAnswers: (state, action) => {
-            const { questionId, questionTitle, userAnswerId, userAnswer, isCorrect, questionNumber } = action.payload;
-            const answerExisting = state.userAnswers.find(
-                (answer) => answer?.question?.questionId === questionId
+            const { questionId, userAnswerChoice, userAnswer } = action.payload;
+            // console.log("debug", action.payload);
+            const answerIndex = state.userAnswers.findIndex(
+                answer => answer.questionId === questionId
             );
 
-            if (answerExisting) {
-                console.log("Update user answer")
-                answerExisting.userAnswer = userAnswer;
-                answerExisting.selectedAnswerId = userAnswerId;
-                answerExisting.isCorrect = isCorrect
+            if (answerIndex !== -1) {
+
+                state.userAnswers[answerIndex] = {
+                    ...state.userAnswers[answerIndex],
+                    userAnswer: userAnswerChoice
+                };
             } else {
                 state.userAnswers.push({
-                    // question: {
-                    //     questionId: questionId,
-                    //     questionTitle: questionTitle,
-                    //     questionNumber: questionNumber
-                    // },
-                    // isCorrect: isCorrect,
-                    // userAnswer: userAnswer,
-                    // selectedAnswerId: userAnswerId,
+                    questionId,
+                    userAnswer: userAnswerChoice,
 
-                    questionId: questionId,
-                    userAnswer: userAnswer.split(".")[0]
-                }
-
-                )
+                });
             }
-
-            // console.log(action.payload);
-
         }
+
     },
     extraReducers: (builder) => {
         builder
