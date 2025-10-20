@@ -184,7 +184,7 @@ const CreateTestPage = () => {
                         </Form.Item>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-6 my-6">
+                    <div className="md:grid md:grid-cols-2 flex flex-wrap gap-6 my-6">
                         <div>
                             <p className="draggerTittle"><FaFileExcel className='text-green-600 text-lg' />File câu hỏi (Excel)</p>
                             <UploadDragger type={"Excel"}
@@ -199,7 +199,7 @@ const CreateTestPage = () => {
                             <UploadDragger type={"LISTENING_AUDIO"} form={form} />
                         </div>
                         <div>
-                            <div className='flex items-center justify-between'>
+                            <div className='flex items-center lg:justify-between xl:flex-row flex-col'>
                                 <p className="draggerTittle">  <HiSpeakerWave className='text-blue-600 text-xl' />File âm thanh theo từng phần hoặc câu hỏi</p>
                                 <div className='flex gap-2 items-center mb-2'>
                                     <Button className="!bg-blue-400 hover:!bg-blue-600 hover:!text-black active:!bg-blue-600"
