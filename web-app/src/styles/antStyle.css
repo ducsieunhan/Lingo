@@ -12,3 +12,107 @@
   border-color: #3b82f6 !important;
   box-shadow: 0 0 0 1px #3b82f6 !important;
 } */
+
+/*
+ * ===================================================================
+ * CUSTOM ADMIN LAYOUT STYLES (Lấy cảm hứng từ Berry)
+ * ===================================================================
+ */
+
+/* 1. Tùy chỉnh Sider */
+.admin-sider {
+  /* Bóng mờ tinh tế (thay vì border-right) 
+    Lấy từ https://getcssscan.com/css-box-shadow-examples
+  */
+  box-shadow: rgba(0, 0, 0, 0.05) 1px 0px 10px;
+  z-index: 1001 !important; /* Đảm bảo Sider luôn trên cùng */
+}
+
+/* 2. Tùy chỉnh Menu (Đây là phần chính) */
+.custom-admin-menu {
+  background: transparent !important; /* Nền menu trong suốt để ăn theo nền Sider */
+  border: none !important;
+}
+
+/* 3. Tùy chỉnh các Menu Item (Trái tim của thiết kế) */
+.custom-admin-menu .ant-menu-item {
+  height: 48px !important;
+  line-height: 48px !important;
+  border-radius: 12px !important; /* <-- BO GÓC (Giống Berry) */
+  margin-bottom: 8px !important; /* <-- Thêm khoảng cách giữa các item */
+  margin-top: 0 !important;
+  width: 100% !important; /* Đảm bảo item chiếm toàn bộ chiều rộng */
+  margin-inline: 0 !important;
+}
+
+/* 4. Trạng thái ĐƯỢC CHỌN (SELECTED/ACTIVE) */
+.custom-admin-menu .ant-menu-item-selected {
+  /* Màu xanh nhạt (giống Berry 'primary.light') */
+  background-color: #e3f2fd !important;
+  /* Màu text (giống Berry 'primary.main') */
+  color: #2196f3 !important;
+  font-weight: 600 !important;
+}
+
+/* 5. Icon khi ĐƯỢC CHỌN */
+.custom-admin-menu .ant-menu-item-selected .ant-menu-item-icon {
+  color: #2196f3 !important;
+}
+
+/* 6. Trạng thái HOVER (Khi rê chuột) */
+.custom-admin-menu .ant-menu-item:not(.ant-menu-item-selected):hover {
+  background-color: #f0f2f5 !important; /* Màu xám rất nhạt */
+  color: inherit !important;
+}
+
+/* 7. Căn chỉnh Icon và Text */
+.custom-admin-menu .ant-menu-item-icon {
+  font-size: 1.15rem !important; /* Icon to hơn một chút */
+  vertical-align: middle;
+}
+
+.custom-admin-menu .ant-menu-title-content {
+  font-weight: 500; /* Chữ đậm hơn (Semibold) */
+  vertical-align: middle;
+  margin-left: 8px !important; /* Khoảng cách giữa icon và text */
+}
+
+/* 8. Tùy chỉnh Header */
+.admin-header {
+  /* Dùng border mỏng thay vì shadow dày */
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* 9. Nút Toggle Menu trong Header */
+.admin-header-toggle {
+  font-size: 1.25rem !important;
+  width: 48px !important;
+  height: 48px !important;
+  border-radius: 12px !important;
+}
+.admin-header-toggle:hover {
+  background-color: #f0f2f5 !important;
+}
+
+/* * ===================================================================
+ * BỔ SUNG CHO CSS Ở BƯỚC TRƯỚC
+ * ===================================================================
+ */
+
+/* 10. Tùy chỉnh Tiêu đề Nhóm (Menu Item Group) */
+.custom-admin-menu .ant-menu-item-group-title {
+  font-size: 0.75rem !important; /* 12px */
+  font-weight: 700 !important; /* Bold */
+  color: #9e9e9e !important; /* Màu xám (tương đương grey.600) */
+  text-transform: uppercase !important; /* VIẾT HOA */
+  letter-spacing: 0.5px;
+  padding-left: 16px !important; /* Căn lề trái */
+  margin-top: 16px !important; /* Khoảng cách với nhóm bên trên */
+  margin-bottom: 8px !important;
+  line-height: 1.5 !important;
+}
+
+/* Khi menu thu gọn, ẩn tiêu đề nhóm đi để đỡ rối */
+.ant-menu-inline-collapsed .ant-menu-item-group-title {
+  display: none;
+}

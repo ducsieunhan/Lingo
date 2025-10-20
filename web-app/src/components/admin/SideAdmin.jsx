@@ -1,39 +1,32 @@
+// src/components/admin/SideAdmin.jsx
 import React from 'react';
-import {
-    Layout,
-    Menu
-} from "antd";
-import {
-    FileAddOutlined,
-    UnorderedListOutlined,
-    TeamOutlined,
-    BarChartOutlined,
-    SettingOutlined,
-} from "@ant-design/icons";
+import { Layout } from "antd";
+// THAY ĐỔI: Import SiderMenuContent
+import SiderMenuContent from './SiderMenuContent';
 
-const { Header, Sider, Content } = Layout;
-const SideAdmin = ({ collapsed, setCollapsed }) => {
+const { Sider } = Layout;
 
+const SideAdmin = ({ collapsed, width, collapsedWidth }) => {
     return (
         <Sider
-            collapsible
+            trigger={null}
+            collapsible={false}
             collapsed={collapsed}
-            onCollapse={setCollapsed}
-            className="!bg-[#0F172A] !fixed left-0 h-[100vh] z-50 pt-5"
+            width={width}
+            collapsedWidth={collapsedWidth}
+            className="!bg-white admin-sider" //
+            style={{
+                overflow: 'auto',
+                height: '100vh',
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                zIndex: 1001,
+            }}
         >
-
-            <Menu
-                theme="dark"
-                mode="inline"
-                defaultSelectedKeys={["1"]}
-                items={[
-                    { key: "1", icon: <FileAddOutlined />, label: "Tạo bài thi" },
-                    { key: "2", icon: <UnorderedListOutlined />, label: "Danh sách bài thi" },
-                    { key: "3", icon: <TeamOutlined />, label: "Quản lý học viên" },
-                    { key: "4", icon: <BarChartOutlined />, label: "Thống kê" },
-                    { key: "5", icon: <SettingOutlined />, label: "Cài đặt" },
-                ]}
-            />
+            {/* THAY ĐỔI: Toàn bộ nội dung Sider giờ được quản lý bởi SiderMenuContent */}
+            <SiderMenuContent collapsed={collapsed} />
         </Sider>
     );
 };
