@@ -3,10 +3,7 @@ package com.lingo.account.service;
 import com.lingo.account.config.KeycloakPropsConfig;
 import com.lingo.account.dto.identity.ReqAccount;
 import com.lingo.account.dto.identity.TokenExchangeRequest;
-import com.lingo.account.dto.request.ReqAccountDTO;
-import com.lingo.account.dto.request.ReqAccountGGDTO;
-import com.lingo.account.dto.request.ReqAvatarDTO;
-import com.lingo.account.dto.request.ReqUpdateAccountDTO;
+import com.lingo.account.dto.request.*;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
 import com.lingo.account.mapper.AccountMapper;
@@ -26,15 +23,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.resource.RealmResource;
 import org.keycloak.admin.client.resource.UserResource;
+import org.keycloak.representations.idm.CredentialRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -51,10 +56,19 @@ public class AccountService {
   private final Keycloak keycloak;
   private final KeycloakPropsConfig keycloakPropsConfig;
   private final String USER = "USER";
+  private final RestTemplate restTemplate;
 
   @Value("${idp.client-id}")
   @NonFinal
   String clientId;
+
+  @Value("${idp.url}")
+  @NonFinal
+  String serverUrl;
+
+  @Value("${idp.realm}")
+  @NonFinal
+  String realm;
 
   @Value("${idp.client-secret}")
   @NonFinal
@@ -246,7 +260,50 @@ public class AccountService {
     log.info("Updated avatar for account: {}", account.getId());
   }
 
+  public void changePassword(ReqUpdatePassDTO dto) throws KeycloakException, NotFoundException {
+    checkOldPassword(dto.getEmail(), dto.getOldPassword());
+    try {
+      UserResource userResource = getUserResource(dto.getUserId());
+      CredentialRepresentation credential = createPasswordCredentials(dto.getNewPassword());
+      userResource.resetPassword(credential);
+    } catch (Exception e) {
+      throw new KeycloakException("Error when changing password: " + e.getMessage());
+    }
+  }
+  public void sendEmailVerification(String email, String purpose, String redirectUri) {
+      Account account = (Account) this.accountRepository.findByEmail(email)
+              .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
 
+    try {
+      String userId = account.getKeycloakId();
+      UserResource userResource = getUserResource(userId);
+//      userResource.executeActionsEmail(clientId, "http://localhost:5173/",Collections.singletonList(purpose));
+//      CredentialRepresentation credential = createPasswordCredentials("justfortest");
+//      userResource.resetPassword(credential);
+//      userResource.sendVerifyEmail();
+
+//      Keycloak keycloak = Keycloak.getInstance(
+//              "http://localhost:8180",
+//              "Lingo",
+//              email,
+//              "justfortest",
+//              "Lingo",
+//              clientSecret
+//      );
+//
+//      try {
+//        keycloak.tokenManager().getAccessToken();
+//        CredentialRepresentation credential = createPasswordCredentials("justfortest2");
+//        userResource.resetPassword(credential);
+//      } catch (Exception e) {
+//        log.error(e.getMessage());
+//      }
+
+
+    } catch (Exception e) {
+      throw new RuntimeException("Keycloak: ", e);
+    }
+  }
 
   private String extractUserId(ResponseEntity<?> response) {
     List<String> locations = response.getHeaders().get("Location");
@@ -265,9 +322,6 @@ public class AccountService {
     var token = this.identityClient.exchangeClientToken(newToken);
     return token.getAccessToken();
   }
-
-
-
   private void updateKeycloakUser(String userId, ReqUpdateAccountDTO request) {
     UserRepresentation userRepresentation = getUserRepresentation(userId);
 
@@ -291,6 +345,14 @@ public class AccountService {
     getUserResource(userId).update(userRepresentation);
   }
 
+  public static CredentialRepresentation createPasswordCredentials(String password) {
+    CredentialRepresentation passwordCredentials = new CredentialRepresentation();
+    passwordCredentials.setTemporary(false);
+    passwordCredentials.setType(CredentialRepresentation.PASSWORD);
+    passwordCredentials.setValue(password);
+    return passwordCredentials;
+  }
+
   private UserRepresentation getUserRepresentation(String userId) {
     UserRepresentation userRepresentation =
             keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation();
@@ -305,6 +367,31 @@ public class AccountService {
   private UserResource getUserResource(String userId) {
     RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
     return realmResource.users().get(userId);
+  }
+
+  private void checkOldPassword(String email, String oldPassword) throws KeycloakException, NotFoundException {
+    String tokenUrl = String.format("%s/realms/%s/protocol/openid-connect/token", serverUrl, realm);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+
+    MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+    map.add("grant_type", "password");
+    map.add("client_id", clientId);
+    map.add("client_secret", clientSecret);
+    map.add("username", email);
+    map.add("password", oldPassword);
+
+    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
+
+    try {
+      restTemplate.postForEntity(tokenUrl, request, String.class);
+      log.info("Old password verified for user: {}", email);
+
+    } catch (Exception e) {
+      log.error("Error during password verification for user {}: {}", email, e.getMessage(), e);
+      throw new KeycloakException("Internal error during password check.");
+    }
   }
 
 }

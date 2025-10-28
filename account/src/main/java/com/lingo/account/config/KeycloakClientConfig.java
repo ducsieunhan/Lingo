@@ -6,6 +6,7 @@ import org.keycloak.admin.client.Keycloak;
 import org.keycloak.admin.client.KeycloakBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class KeycloakClientConfig {
@@ -24,5 +25,10 @@ public class KeycloakClientConfig {
             .clientId(keycloakPropsConfig.getClientId())
             .clientSecret(keycloakPropsConfig.getClientSecret())
             .build();
+  }
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
   }
 }

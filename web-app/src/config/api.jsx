@@ -95,3 +95,7 @@ export const removeAccount = (accountId) => {
 export const updateAvatar = (userData) => {
   publicInstance.post("/api/v1/account/avatar", userData);
 }
+
+export const sendEmail = (email) => {
+  return publicInstance.post(`api/v1/account/sendEmail/${email}`);
+};

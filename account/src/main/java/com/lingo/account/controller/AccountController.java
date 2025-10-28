@@ -1,9 +1,6 @@
 package com.lingo.account.controller;
 
-import com.lingo.account.dto.request.ReqAccountDTO;
-import com.lingo.account.dto.request.ReqAccountGGDTO;
-import com.lingo.account.dto.request.ReqAvatarDTO;
-import com.lingo.account.dto.request.ReqUpdateAccountDTO;
+import com.lingo.account.dto.request.*;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
 import com.lingo.account.service.AccountService;
@@ -104,5 +101,18 @@ public class AccountController {
     this.accountService.updateAvatar(req);
 
     return ResponseEntity.ok("Avatar has been updated!");
+  }
+
+  @PostMapping("/sendEmail/{email}")
+  public ResponseEntity<String> sendEmail(@PathVariable String email) {
+    this.accountService.sendEmailVerification(email, "UPDATE_PASSWORD", "/");
+
+    return ResponseEntity.ok("Send email successfully!");
+  }
+
+  @PutMapping("/change-pass")
+  public ResponseEntity<String> changePassword(@RequestBody ReqUpdatePassDTO dto){
+    this.accountService.changePassword(dto);
+    return ResponseEntity.ok("Password has been changed successfully!");
   }
 }
