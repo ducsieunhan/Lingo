@@ -21,7 +21,7 @@ spring:
           predicates:
             - Path=/api/v1/test/**, /api/v1/answer/**, /api/v1/resource/**, /api/v1/question/**
         - id: attempt-service
-          uri: lb://attempt-service
+          uri: http://localhost:9003
           predicates:
             - Path=/api/v1/attempt/**
         - id: file-service

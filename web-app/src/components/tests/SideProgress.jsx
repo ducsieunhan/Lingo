@@ -1,7 +1,7 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-const SideProgress = ({ parts, questionsPerPart, currentIndex, setCurrentIndex, questionToGroupIndex, questionRefs, activeQuestion, setActiveQuestion }) => {
+const SideProgress = ({ parts, questionsPerPart, currentIndex, setCurrentIndex, questionToGroupIndex, questionRefs, activeQuestion, setActiveQuestion, isSideProgressOpen }) => {
     const { userAnswers } = useSelector((state) => state.questions);
     const handleClick = (qNum) => {
         const targetGroup = questionToGroupIndex[qNum];
@@ -18,7 +18,7 @@ const SideProgress = ({ parts, questionsPerPart, currentIndex, setCurrentIndex, 
     };
 
     return (
-        <div className="w-80 bg-white border-l border-gray-200 p-6 overflow-y-auto mt-6 rounded-xl mr-7">
+        <div className="lg:w-80 w-[100vw] bg-white border-l border-gray-200 p-6 overflow-y-auto mt-6 rounded-xl mr-7">
             {parts.map((part, index) => {
                 const numQuestionPreviousPart = parts
                     .slice(0, index)

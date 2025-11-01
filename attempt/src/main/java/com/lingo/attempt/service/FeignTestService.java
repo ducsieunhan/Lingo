@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-@FeignClient(value = "question", url = "http://localhost:9002/api/v1/question",
+@FeignClient(value = "question", url = "${con.test.url}", path = "/question",
 fallback = TestServiceFallback.class)
 public interface FeignTestService {
 

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { getUserInfoApi, handleApiError, loginApi, loginGoogleApi, logoutApi, registerApi, registerGG } from "../config/api";
 import { decodeToken } from "../utils/DecodeToken";
+import { updateAvatarAccount } from "./accounts";
 
 const initialState = {
   user: JSON.parse(localStorage.getItem('user_profile')) || null,
@@ -34,14 +35,14 @@ export const login = createAsyncThunk(
   async ({ username, password }, thunkAPI) => {
     try {
       const response = await loginApi(username, password);
-      const { access_token } = response.data;
+      const { access_token } = response;
       localStorage.setItem("access_token", access_token);
       const userInfo = decodeToken(access_token);
       localStorage.setItem('user_profile', JSON.stringify(userInfo));
       return { user: userInfo, token: access_token }
     } catch (error) {
       handleApiError(error, "Đăng nhập thất bại")
-      return thunkAPI.rejectWithValue(error?.response?.data?.detail || "Đăng nhập thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Đăng nhập thất bại");
     }
   }
 );
@@ -54,7 +55,7 @@ export const register = createAsyncThunk(
       return true;
     } catch (error) {
       handleApiError(error, "Đăng ký thất bại")
-      return thunkAPI.rejectWithValue(error?.response?.data?.detail || "Đăng ký thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Đăng ký thất bại");
     }
   }
 );
@@ -69,7 +70,7 @@ export const logout = createAsyncThunk(
       return true;
     } catch (error) {
       handleApiError(error, "Đăng ký thất bại")
-      return thunkAPI.rejectWithValue(error?.response?.data?.detail || "Đăng ký thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Đăng ký thất bại");
     }
   }
 );
@@ -79,8 +80,9 @@ export const loginGoogle = createAsyncThunk(
   async (code, thunkAPI) => {
     try {
       const response = await loginGoogleApi(code);
-      const { access_token } = response.data;   // public axios so need .data
-      console.log("google: ", access_token);
+      console.log(response);
+      const { access_token } = response;   // public axios so need .data
+      // console.log("google: ", access_token);
       localStorage.setItem("access_token", access_token);
       const userInfo = decodeToken(access_token);
 
@@ -92,7 +94,7 @@ export const loginGoogle = createAsyncThunk(
       return { user: userInfo, token: access_token }
     } catch (error) {
       handleApiError(error, "Đăng nhập google thất bại");
-      return thunkAPI.rejectWithValue(error?.response?.data?.detail || "Đăng xuất thất bại");
+      return thunkAPI.rejectWithValue(error?.response?.detail || "Đăng xuất thất bại");
     }
   }
 );
@@ -177,6 +179,11 @@ const authSlice = createSlice({
       .addCase(loginGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(updateAvatarAccount.fulfilled, (state, action) => {
+        const { avatar } = action.meta.arg;
+        state.user.avatar = avatar;
       })
 
   }

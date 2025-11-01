@@ -2,13 +2,12 @@ package com.lingo.account.controller;
 
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.request.ReqAccountGGDTO;
+import com.lingo.account.dto.request.ReqAvatarDTO;
 import com.lingo.account.dto.request.ReqUpdateAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
-import com.lingo.account.model.Account;
 import com.lingo.account.service.AccountService;
 import com.lingo.common_library.exception.CreateUserException;
-import com.turkraft.springfilter.boot.Filter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -34,13 +35,18 @@ public class AccountController {
   }
 
   @GetMapping
-  @Operation(summary = "Find all accounts", description = "Return 200 if getting all account successfully")
-  @ApiResponses({
-          @ApiResponse(responseCode = "200", description = "All accounts found", content = @Content(mediaType = "application/json")),
-          @ApiResponse(responseCode = "400", description = "Wrong/not valid accounts", content = @Content(mediaType = "application/json")),
-  })
-  public ResponseEntity<ResPaginationDTO> getAllAccounts(@Filter Specification<Account> spec, Pageable pageable) {
-    return ResponseEntity.ok(this.accountService.getAllAccounts(spec, pageable));
+  public ResponseEntity<ResPaginationDTO> getAllAccounts(
+          @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+          @RequestParam(value = "pageSize", defaultValue = "5", required = false) int pageSize,
+          @RequestParam(value = "search", defaultValue = "", required = false) String search,
+//          @RequestParam(value = "email", defaultValue = "", required = false) String email,
+          @RequestParam(value = "roles", defaultValue = "", required = false) List<String> role,
+          @RequestParam(value = "from", defaultValue = "", required = false) Long from,
+          @RequestParam(value = "to", defaultValue = "", required = false) Long to
+  ) {
+    return ResponseEntity.ok(this.accountService.getAllAccounts(
+            pageNo, pageSize, search, search, role, from, to
+    ));
   }
 
   @GetMapping("/{id}")
@@ -49,7 +55,7 @@ public class AccountController {
           @ApiResponse(responseCode = "200", description = "Account found", content = @Content(mediaType = "application/json")),
           @ApiResponse(responseCode = "400", description = "Wrong/not valid account", content = @Content(mediaType = "application/json")),
   })
-  public ResponseEntity<ResAccountDTO> getAccount(@PathVariable Long id){
+  public ResponseEntity<ResAccountDTO> getAccount(@PathVariable String id){
     return ResponseEntity.ok(this.accountService.getAccount(id));
   }
 
@@ -59,8 +65,19 @@ public class AccountController {
           @ApiResponse(responseCode = "200", description = "Account deleted", content = @Content(mediaType = "application/json")),
           @ApiResponse(responseCode = "400", description = "Wrong/not valid accounts", content = @Content(mediaType = "application/json")),
   })
-  public ResponseEntity<String> deleteAccount(@PathVariable Long id) {
+  public ResponseEntity<String> deleteAccount(@PathVariable String id) {
     this.accountService.deleteAccount(id);
+    return ResponseEntity.ok("Account deleted successfully");
+  }
+
+  @PostMapping("/enable")
+  @Operation(summary = "Delete account by id", description = "Return 200 if the account deleted successfully")
+  @ApiResponses({
+          @ApiResponse(responseCode = "200", description = "Account deleted", content = @Content(mediaType = "application/json")),
+          @ApiResponse(responseCode = "400", description = "Wrong/not valid accounts", content = @Content(mediaType = "application/json")),
+  })
+  public ResponseEntity<String> enableAccount(@RequestParam String id, @RequestParam boolean enable) {
+    this.accountService.updateEnableAccount(id, enable);
     return ResponseEntity.ok("Account deleted successfully");
   }
 
@@ -79,5 +96,13 @@ public class AccountController {
     ResAccountDTO dto = this.accountService.createAccountGG(req);
 
     return ResponseEntity.ok("Account has been created!");
+  }
+
+  @PostMapping("/avatar")
+  public ResponseEntity<String> updateAvatar(@RequestBody ReqAvatarDTO req) {
+
+    this.accountService.updateAvatar(req);
+
+    return ResponseEntity.ok("Avatar has been updated!");
   }
 }

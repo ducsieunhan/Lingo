@@ -1,14 +1,15 @@
-export const selectMergedTests = (state) => {
-  const { tests = [] } = state.tests;
-  const { attempts = [] } = state.attempts;
+import { createSelector } from 'reselect';
 
-  console.log("this attempts", attempts);
-  console.log("this result", tests);
+const selectTests = (state) => state.tests.tests || [];
+const selectAttempts = (state) => state.attempts.attempts || [];
 
+export const selectMergedTests = createSelector(
+  [selectTests, selectAttempts],
+  (tests, attempts) => {
+    return tests.map(test => {
+      const found = attempts.find(a => a.quizId === test.id);
+      return found ? { ...test, finish: true } : test;
+    });
+  }
+)
 
-
-  return tests.map(test => {
-    const found = attempts.find(a => a.quizId === test.id);
-    return found ? { ...test, finish: true } : test;
-  });
-};

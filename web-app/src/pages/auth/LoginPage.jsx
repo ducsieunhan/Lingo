@@ -21,6 +21,7 @@ const LoginPage = () => {
     try {
       await dispatch(login({ username, password })).unwrap();
       const from = location.state?.from?.pathname || "/";
+      console.log("from page: " + from);
       navigate(from, { replace: true });
       toast.info("Đăng nhập thành công");
     } catch (err) {

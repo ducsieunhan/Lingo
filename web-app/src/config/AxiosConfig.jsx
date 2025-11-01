@@ -16,7 +16,7 @@ export const refreshToken = async () => {
     try {
       const response = await publicInstance.post('/api/v1/auth/refresh');
       // SỬA LỖI #2: Lấy token từ response.data
-      const { access_token } = response.data;
+      const { access_token } = response;
 
       if (access_token) {
         localStorage.setItem("access_token", access_token);
@@ -53,11 +53,13 @@ instance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (error.response?.status === 401 && !originalRequest.headers[NO_RETRY_HEADER]) {
-      originalRequest.headers[NO_RETRY_HEADER] = 'true';
+      // originalRequest.headers[NO_RETRY_HEADER] = 'true';  // might be multi requests 
 
       const refreshSuccess = await refreshToken();
 
       if (refreshSuccess) {
+        const newAccessToken = localStorage.getItem('access_token');
+        originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
         return instance(originalRequest);
       }
       localStorage.removeItem('access_token');

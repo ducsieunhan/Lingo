@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +32,13 @@ public class AttemptMapper {
   public ResAttemptDTO.SectionResult toResSectionResultDTO(AttemptSectionResult result){
     if (result == null) return null;
     return modelMapper.map(result, ResAttemptDTO.SectionResult.class);
+  }
+
+  public List<ResAttemptShortDTO.SectionResult> toResShortSectionResultDTO(List<AttemptSectionResult> section){
+    if (section == null) return null;
+
+    return section.stream().map(sec ->
+            modelMapper.map(sec, ResAttemptShortDTO.SectionResult.class)).toList();
   }
 
   public ResAttemptShortDTO toResAttemptShortDTO(Attempt attempt){

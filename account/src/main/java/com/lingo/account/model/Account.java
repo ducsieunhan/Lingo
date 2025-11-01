@@ -1,18 +1,19 @@
 package com.lingo.account.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDate;
+import java.util.Collection;
 
 @Entity
 @Table(name = "accounts")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = "roles")
 public class Account {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +36,37 @@ public class Account {
 
   @Column(name = "enable")
   private boolean enable;
+
+  @Column(name = "avatar")
+  private String avatar;
+
+  @Column(name = "phone")
+  private String phone;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+          name = "users_roles",
+          joinColumns = @JoinColumn(
+                  name = "user_id", referencedColumnName = "keycloak_id"),
+          inverseJoinColumns = @JoinColumn(
+                  name = "role_id", referencedColumnName = "id"))
+  @JsonIgnore
+  private Collection<Role> roles;
+
+  @Column(name = "created_at", updatable = false)
+  private Instant createdAt;
+
+  @Column(name = "updated_at")
+  private Instant updatedAt;
+
+  @PrePersist
+  public void handleBeforeCreate() {
+    this.createdAt = Instant.now();
+  }
+
+  @PreUpdate
+  public void handleBeforeUpdate() {
+    this.updatedAt = Instant.now();
+  }
 
 }

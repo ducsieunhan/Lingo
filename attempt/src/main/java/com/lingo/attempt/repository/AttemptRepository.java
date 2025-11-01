@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface AttemptRepository extends JpaRepository<Attempt, Long> {
   List<Attempt> findByUserId(String userId);
 
-  @Query("SELECT new com.lingo.attempt.dto.ResAttemptShortDTO(a.attemptId, a.quizId, a.submittedAt, a.score, a.timeTaken) " +
+  @Query("SELECT new com.lingo.attempt.dto.ResAttemptShortDTO(a.attemptId, a.quizId, a.submittedAt, a.score, a.timeTaken, a.type,null) " +
           "FROM Attempt a WHERE a.userId = :userId")
   List<ResAttemptShortDTO> getUserAttemptsShort(String userId);
 }

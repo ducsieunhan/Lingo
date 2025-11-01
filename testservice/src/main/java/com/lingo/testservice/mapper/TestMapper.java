@@ -11,5 +11,6 @@ public interface TestMapper {
     Test toTest(ReqTestDTO request);
 
     @Mapping(target = "mediaUrl", source = "resource.resourceContent")
+    @Mapping(target = "resourceContentId", source = "resource.id")
     ResTestDTO toTestResponse(Test test);
 }

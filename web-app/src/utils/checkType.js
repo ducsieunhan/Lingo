@@ -1,6 +1,6 @@
 const checkType = (resourceContent) => {
     if (typeof resourceContent === "string" && resourceContent.includes("null")) {
-        console.log("catch null")
+        // console.log("catch null")
         return "null";
     }
     try {

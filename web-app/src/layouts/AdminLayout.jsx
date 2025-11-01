@@ -66,7 +66,9 @@ export default function AdminLayout() {
                     onClose={closeDrawer}
                     open={drawerVisible}
                     closable={false}
-                    bodyStyle={{ padding: 0 }} // Reset padding để menu vừa khít
+
+                    styles={{ padding: 0 }} // Reset padding để menu vừa khít
+
                     width={SIDER_WIDTH}
                     zIndex={1002} // Đảm bảo Drawer đè lên Header
                 >

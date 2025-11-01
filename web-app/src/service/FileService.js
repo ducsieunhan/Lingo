@@ -6,7 +6,8 @@ export const uploadOneFile = async (file, testTitle, fileCategory) => {
     const URL = "/file/upload";
     const bodyForm = new FormData();
     bodyForm.append("file", file);
-    bodyForm.append("testTitle", testTitle, fileCategory);
+    bodyForm.append("testTitle", testTitle);
+    bodyForm.append("fileCategory", fileCategory);
 
     const response = await instance.post(URL, bodyForm, {
         headers: {

@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
       const response = await loginApi(username, password);
 
-      const { access_token } = response.data;
+      const { access_token } = response;
 
       localStorage.setItem("access_token", access_token);
 
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }) => {
         { withCredentials: true }
       );
 
-      const { access_token } = response.data;
+      const { access_token } = response;
 
       localStorage.setItem("access_token", access_token);
 
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }) => {
 
     } catch (err) {
       console.log("Login failed with error: ", err?.message);
-      toast.error(err?.response?.data?.detail);
+      toast.error(err?.response?.detail);
       return false;
     }
     finally {

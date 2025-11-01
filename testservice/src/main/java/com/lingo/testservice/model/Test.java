@@ -30,10 +30,10 @@ public class Test {
     TestCategory category;
     int attempts;
     int numOfQuestions;
-    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     List<Question> questions;
     // @OneToMany(mappedBy = "test", cascade = CascadeType.ALL)
     // List<MediaResource> resources;
-    @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "test", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     MediaResource resource;
 }

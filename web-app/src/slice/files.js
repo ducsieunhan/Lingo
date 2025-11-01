@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import * as XLSX from "xlsx";
 import { modifyExplanationResourceMedia, modifyQuestionResourceMedia, uploadMultipleFiles, uploadOneFile } from "../service/FileService";
 import { FaFileUpload } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export const readExcelFile = createAsyncThunk(
     "files/readExcelFile",
@@ -114,14 +115,24 @@ const fileSlice = createSlice({
                 state.loading = false;
                 state.excelData = action.payload;
             })
-
+            .addCase(saveSingleFile.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(saveSingleFile.fulfilled, (state, action) => {
+                state.loading = false;
+                state.error = null;
+            })
+            .addCase(saveSingleFile.rejected, (state, action) => {
+                state.error = action.payload;
+                state.loading = false;
+            })
             .addCase(saveMultipleFiles.fulfilled, (state, action) => {
                 state.loading = false;
                 state.uploadedFiles.push(action.payload);
             })
             .addMatcher(
                 (action) =>
-                    [saveSingleFile.fulfilled, saveUpdatingResourceMedia.fulfilled, saveUpdatingExplanationResourceContent.fulfilled].includes(action.type),
+                    [saveUpdatingResourceMedia.fulfilled.type, saveUpdatingExplanationResourceContent.fulfilled.type].includes(action.type),
                 (state, action) => {
                     state.loading = false;
                     state.fileUpdating = action.payload
@@ -130,7 +141,7 @@ const fileSlice = createSlice({
 
             .addMatcher(
                 (action) =>
-                    [readExcelFile.pending, saveMultipleFiles.pending, saveSingleFile.pending, saveUpdatingResourceMedia.pending, saveUpdatingExplanationResourceContent.pending].includes(action.type),
+                    [readExcelFile.pending.type, saveMultipleFiles.pending.type, saveUpdatingResourceMedia.pending.type, saveUpdatingExplanationResourceContent.pending.type].includes(action.type),
                 (state) => {
                     state.loading = true;
                     state.error = null;
@@ -138,7 +149,7 @@ const fileSlice = createSlice({
             )
             .addMatcher(
                 (action) =>
-                    [readExcelFile.rejected, saveMultipleFiles.rejected, saveSingleFile.rejected, saveUpdatingResourceMedia.rejected, saveUpdatingExplanationResourceContent.rejected].includes(action.type),
+                    [readExcelFile.rejected, saveMultipleFiles.rejected, saveUpdatingResourceMedia.rejected, saveUpdatingExplanationResourceContent.rejected].includes(action.type),
                 (state, action) => {
                     state.loading = false;
                     state.error = action.payload;

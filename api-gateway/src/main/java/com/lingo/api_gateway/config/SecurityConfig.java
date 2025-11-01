@@ -25,54 +25,55 @@ import java.util.stream.Collectors;
 @EnableReactiveMethodSecurity
 public class SecurityConfig {
 
-  @Bean
-  SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
-    http
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .csrf(ServerHttpSecurity.CsrfSpec::disable)
-            .authorizeExchange(exchange -> exchange
-                    .pathMatchers("/api/v1/auth/**", "/api/v1/account",
-                            "/api/v1/test/**","/api/v1/question/**", "/api/v1/file/**","/api/v1/answer/**","/api/v1/resource/**")
-                            .permitAll()
-//                    .pathMatchers("api/v1/account/**").hasAuthority("ADMIN")
-                    .anyExchange().authenticated()
-            )
-            .oauth2ResourceServer(resourceServer -> resourceServer
-                    .jwt(Customizer.withDefaults())
-            );
-    return http.build();
-  }
+        @Bean
+        SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
+                http
+                                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                                .authorizeExchange(exchange -> exchange
+                                                .pathMatchers("/api/v1/auth/**", "/api/v1/account",
+                                                                "/api/v1/account/**",
+//                                                                "/api/v1/test/**", "/api/v1/question/**",
+                                                                "/api/v1/file/**",
+                                                                "/api/v1/resource/**")
+                                                .permitAll()
+                                                .pathMatchers("/api/v1/account/gg").authenticated()
+                                                // .pathMatchers("api/v1/account/**").hasAuthority("ADMIN")
+                                                .anyExchange().authenticated())
+                                .oauth2ResourceServer(resourceServer -> resourceServer
+                                                .jwt(Customizer.withDefaults()));
+                return http.build();
+        }
 
-  @Bean
-  public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
-    Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
-      Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
-      Collection<String> roles = realmAccess.get("roles");
-      return roles.stream()
-              .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-              .collect(Collectors.toList());
-    };
+        @Bean
+        public JwtAuthenticationConverter jwtAuthenticationConverterForKeycloak() {
+                Converter<Jwt, Collection<GrantedAuthority>> jwtGrantedAuthoritiesConverter = jwt -> {
+                        Map<String, Collection<String>> realmAccess = jwt.getClaim("realm_access");
+                        Collection<String> roles = realmAccess.get("roles");
+                        return roles.stream()
+                                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                                        .collect(Collectors.toList());
+                };
 
-    var jwtAuthenticationConverter = new JwtAuthenticationConverter();
-    jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+                var jwtAuthenticationConverter = new JwtAuthenticationConverter();
+                jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
 
-    return jwtAuthenticationConverter;
-  }
+                return jwtAuthenticationConverter;
+        }
 
-  @Bean
-  public CorsConfigurationSource corsConfigurationSource() {
-    CorsConfiguration corsConfig = new CorsConfiguration();
-    corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
-    corsConfig.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "OPTIONS"));
-    corsConfig.setAllowedHeaders(List.of("Content-Type", "X-Requested-With", "accept", "Origin",
-            "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization"));
-    corsConfig.setAllowCredentials(true);
-    corsConfig.setMaxAge(3600L);
+        @Bean
+        public CorsConfigurationSource corsConfigurationSource() {
+                CorsConfiguration corsConfig = new CorsConfiguration();
+                corsConfig.setAllowedOrigins(List.of("http://localhost:5173"));
+                corsConfig.setAllowedMethods(List.of("GET", "PUT", "POST", "DELETE", "OPTIONS"));
+                corsConfig.setAllowedHeaders(List.of("Content-Type", "X-Requested-With", "accept", "Origin",
+                                "Access-Control-Request-Method", "Access-Control-Request-Headers", "Authorization"));
+                corsConfig.setAllowCredentials(true);
+                corsConfig.setMaxAge(3600L);
 
-    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    source.registerCorsConfiguration("/**", corsConfig);
-    return source;
-  }
-
+                UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+                source.registerCorsConfiguration("/**", corsConfig);
+                return source;
+        }
 
 }

@@ -26,6 +26,9 @@ import TestListPage from './pages/tests/TestListPage';
 import ProtectedRoute from './components/share/ProtectedRoute';
 import NotFound from './components/share/NotFound';
 import RootLayout from './layouts/RouteLayout';
+import Analytics from './pages/user/Analytics';
+import Profile from './pages/user/Profile';
+import UserDetailPage from './pages/admin/UserDetailPage';
 function App() {
   const router = createBrowserRouter([
     {
@@ -54,16 +57,29 @@ function App() {
             },
             {
               path: "tests/:id/:name/doTests",
-              element: <HavingTestPage />,
+              element: (
+                <ProtectedRoute>
+                  <HavingTestPage />
+                </ProtectedRoute>
+              ),
             },
+            {
+              path: "analytics",
+              element: <Analytics />,
+            },
+            {
+              path: "profile",
+              element: <Profile />,
+            },
+
           ]
         },
         {
           path: "admin",
           element: (
-            // <ProtectedRoute>
-            <AdminLayout />
-            // </ProtectedRoute>
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
           ),
           children: [
             {
@@ -71,15 +87,19 @@ function App() {
               element: <DashboardPage />
             },
             {
-              path: "user",
-              element: <UserPage />
+              path: "users",
+              element: <UserPage />,
             },
             {
-              path: "test",
+              path: "users/:id",
+              element: <UserDetailPage />,
+            },
+            {
+              path: "tests",
               element: <TestPage />
             },
             {
-              path: "createTest",
+              path: "create-test",
               element: <CreateTestPage />
             }
           ]

@@ -22,7 +22,7 @@ export const createAttempts = createAsyncThunk(
       return res;
     } catch (err) {
       if (err.response && err.response.data) {
-        return rejectWithValue(err.response.data); // custom error từ backend
+        return rejectWithValue(err.response.data);
       }
       return rejectWithValue("Lỗi không xác định");
     }
@@ -34,10 +34,11 @@ export const retrieveAttempts = createAsyncThunk(
   async (userId, { rejectWithValue }) => {
     try {
       const res = await getAttemptUserShort(userId);
+      // return res;
       return res;
     } catch (err) {
       if (err.response && err.response.data) {
-        return rejectWithValue(err.response.data); // custom error từ backend
+        return rejectWithValue(err.response.data);
       }
       return rejectWithValue("Lỗi không xác định");
     }
@@ -52,7 +53,7 @@ export const retrieveAttempt = createAsyncThunk(
       return res;
     } catch (err) {
       if (err.response && err.response.data) {
-        return rejectWithValue(err.response.data); // custom error từ backend
+        return rejectWithValue(err.response.data);
       }
       return rejectWithValue("Lỗi không xác định");
     }

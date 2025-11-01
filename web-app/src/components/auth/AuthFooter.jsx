@@ -1,11 +1,13 @@
-import { AppleFilled, FacebookFilled, GoogleOutlined, InfoCircleFilled } from "@ant-design/icons"
+import { AppleFilled, FacebookFilled, GithubFilled, GoogleOutlined, InfoCircleFilled } from "@ant-design/icons"
 import { FaInfoCircle } from "react-icons/fa"
 import { Link, useLocation } from "react-router-dom"
 
 const AuthFooter = () => {
 
   const location = useLocation();
+  const faceAuthUrl = import.meta.env.VITE_FACEBOOK_AUTH_URL;
   const googleAuthUrl = import.meta.env.VITE_GOOGLE_AUTH_URL;
+  const gitAuthUrl = import.meta.env.VITE_GITHUB_AUTH_URL;
   return (
     <div>
       <div class="relative my-8">
@@ -18,15 +20,15 @@ const AuthFooter = () => {
       </div>
 
       <div class="grid grid-cols-3 gap-4">
-        <button class="lift-on-hover flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 cursor-pointer">
-          <i class="text-red-500 text-xl"><GoogleOutlined /></i>
-        </button>
         <Link to={googleAuthUrl} class="lift-on-hover flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 cursor-pointer">
+          <i class="text-red-500 text-xl"><GoogleOutlined /></i>
+        </Link>
+        <Link to={faceAuthUrl} class="lift-on-hover flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 cursor-pointer">
           <i class=" text-blue-600 text-xl"><FacebookFilled /></i>
         </Link>
-        <button class="lift-on-hover flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 cursor-pointer">
-          <i class="fab fa-apple text-gray-800 text-xl"><AppleFilled /></i>
-        </button>
+        <Link to={gitAuthUrl} class="lift-on-hover flex items-center justify-center py-3 px-4 border border-gray-300 rounded-xl hover:bg-gray-50 transition-all duration-300 cursor-pointer">
+          <i class="fab fa-apple text-gray-800 text-xl"><GithubFilled /></i>
+        </Link>
       </div>
       {
         location.pathname === "/auth/forget" ?

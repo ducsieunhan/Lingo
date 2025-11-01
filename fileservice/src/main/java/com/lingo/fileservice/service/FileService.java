@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -75,10 +76,11 @@ class FileServiceImpl implements FileService {
 
         public boolean doesFolderExist(String prefix) throws FileNotFoundException, IOException {
                 Storage storage = StorageOptions
-                                .newBuilder().setProjectId(projectId).setCredentials(ServiceAccountCredentials
-                                                .fromStream(new FileInputStream(
-                                                                "C:/Project/Lingo/fileservice/src/main/resources/keys/lingo-472101-15e886f10d3f.json")))
-                                .build().getService();
+                                .newBuilder().setProjectId(projectId)
+                        .setCredentials(ServiceAccountCredentials
+                                .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
+                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                        .build().getService();
                 Page<Blob> blobs = storage.list(bucketName, BlobListOption.pageSize(1));
                 return blobs.getValues().iterator().hasNext();
         }
@@ -86,9 +88,10 @@ class FileServiceImpl implements FileService {
         public String createFolder(String projectId, String bucketName, String folderName)
                         throws FileNotFoundException, IOException {
                 Storage storage = StorageOptions
-                                .newBuilder().setProjectId(projectId).setCredentials(ServiceAccountCredentials
-                                                .fromStream(new FileInputStream(
-                                                                "C:/Project/Lingo/fileservice/src/main/resources/keys/lingo-472101-15e886f10d3f.json")))
+                                .newBuilder().setProjectId(projectId)
+                        .setCredentials(ServiceAccountCredentials
+                                .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
+                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
                                 .build().getService();
                 String objectName = folderName.endsWith("/") ? folderName : folderName + "/";
 
@@ -120,10 +123,10 @@ class FileServiceImpl implements FileService {
                 // String filePath = "path/to/your/file"
 
                 Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
-                                .setCredentials(ServiceAccountCredentials
-                                                .fromStream(new FileInputStream(
-                                                                "C:/Project/Lingo/fileservice/src/main/resources/keys/lingo-472101-15e886f10d3f.json")))
-                                .build().getService();
+                        .setCredentials(ServiceAccountCredentials
+                                .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
+                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                        .build().getService();
                 String objectName = file.getOriginalFilename();
                 String sanitizedFileName = objectName.replaceAll(" ", "_");
                 sanitizedFileName = sanitizedFileName.replaceAll("[^a-zA-Z0-9._-]", "");
@@ -188,9 +191,10 @@ class FileServiceImpl implements FileService {
         @Override
         public void deleteFile(FileDeleteDTO dto) throws IOException {
                 Storage storage = StorageOptions
-                                .newBuilder().setProjectId(projectId).setCredentials(ServiceAccountCredentials
-                                                .fromStream(new FileInputStream(
-                                                                "C:/Project/Lingo/fileservice/src/main/resources/keys/lingo-472101-15e886f10d3f.json")))
+                                .newBuilder().setProjectId(projectId)
+                        .setCredentials(ServiceAccountCredentials
+                                .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
+                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
                                 .build().getService();
                 Blob blob = storage.get(bucketName, dto.getUpdatedFileName());
                 if (blob == null) {

@@ -61,39 +61,68 @@ const SiderMenuContent = ({ collapsed, onMenuClick }) => {
           theme="light"
           mode="inline"
           selectedKeys={[selectedKey]}
-          className="custom-admin-menu" //
-          // Thêm onClick để đóng Drawer khi chọn item (trên mobile)
+          className="custom-admin-menu"
           onClick={onMenuClick}
-        >
-          {/* --- Các ItemGroup và Item (Giữ nguyên như cũ) --- */}
-          <ItemGroup key="g_nav" title="Điều hướng">
-            <Item key="/admin" icon={<DashboardOutlined />}>
-              <Link to="/admin">Dashboard</Link>
-            </Item>
-          </ItemGroup>
-          <ItemGroup key="g_exam" title="Quản lý thi">
-            <Item key="/admin/tests" icon={<UnorderedListOutlined />}>
-              <Link to="/admin/tests">Danh sách bài thi</Link>
-            </Item>
-            <Item key="/admin/create-test" icon={<AppstoreAddOutlined />}>
-              <Link to="/admin/create-test">Tạo bài thi mới</Link>
-            </Item>
-            <Item key="/admin/question-bank" icon={<QuestionCircleOutlined />}>
-              <Link to="/admin/question-bank">Ngân hàng câu hỏi</Link>
-            </Item>
-          </ItemGroup>
-          <ItemGroup key="g_system" title="Hệ thống">
-            <Item key="/admin/users" icon={<TeamOutlined />}>
-              <Link to="/admin/users">Quản lý người dùng</Link>
-            </Item>
-            <Item key="/admin/analytics" icon={<BarChartOutlined />}>
-              <Link to="/admin/analytics">Thống kê & Báo cáo</Link>
-            </Item>
-            <Item key="/admin/settings" icon={<SettingOutlined />}>
-              <Link to="/admin/settings">Cài đặt chung</Link>
-            </Item>
-          </ItemGroup>
-        </Menu>
+          items={[
+            {
+              type: "group",
+              key: "g_nav",
+              label: "Điều hướng",
+              children: [
+                {
+                  key: "/admin",
+                  icon: <DashboardOutlined />,
+                  label: <Link to="/admin">Dashboard</Link>,
+                },
+              ],
+            },
+            {
+              type: "group",
+              key: "g_exam",
+              label: "Quản lý thi",
+              children: [
+                {
+                  key: "/admin/tests",
+                  icon: <UnorderedListOutlined />,
+                  label: <Link to="/admin/tests">Danh sách bài thi</Link>,
+                },
+                {
+                  key: "/admin/create-test",
+                  icon: <AppstoreAddOutlined />,
+                  label: <Link to="/admin/create-test">Tạo bài thi mới</Link>,
+                },
+                {
+                  key: "/admin/question-bank",
+                  icon: <QuestionCircleOutlined />,
+                  label: <Link to="/admin/question-bank">Ngân hàng câu hỏi</Link>,
+                },
+              ],
+            },
+            {
+              type: "group",
+              key: "g_system",
+              label: "Hệ thống",
+              children: [
+                {
+                  key: "/admin/users",
+                  icon: <TeamOutlined />,
+                  label: <Link to="/admin/users">Quản lý người dùng</Link>,
+                },
+                {
+                  key: "/admin/analytics",
+                  icon: <BarChartOutlined />,
+                  label: <Link to="/admin/analytics">Thống kê & Báo cáo</Link>,
+                },
+                {
+                  key: "/admin/settings",
+                  icon: <SettingOutlined />,
+                  label: <Link to="/admin/settings">Cài đặt chung</Link>,
+                },
+              ],
+            },
+          ]}
+        />
+
       </div>
     </div>
   );

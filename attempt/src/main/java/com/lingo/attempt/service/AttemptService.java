@@ -138,7 +138,16 @@ public Long createAttempt(ReqAttemptDTO req) {
 
   public List<ResAttemptShortDTO> getUserAttemptsShort(String userId){
     try {
-      return this.attemptRepository.getUserAttemptsShort(userId);
+      List<ResAttemptShortDTO> attempts = this.attemptRepository.getUserAttemptsShort(userId);
+
+      for (ResAttemptShortDTO attempt : attempts){
+        List<AttemptSectionResult> section = this.attemptSectionResultRepository.findByAttempt_AttemptId(attempt.getAttemptId());
+
+        List<ResAttemptShortDTO.SectionResult> ResSection = this.attemptMapper.toResShortSectionResultDTO(section);
+
+        attempt.setSectionResults(ResSection);
+      }
+      return attempts;
     } catch (NotFoundException e) {
       throw new NotFoundException(Constants.USER_NOT_FOUND);
     }

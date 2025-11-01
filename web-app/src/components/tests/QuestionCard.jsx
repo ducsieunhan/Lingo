@@ -129,7 +129,7 @@ const QuestionCard = ({ groupKey, questionRefs, resourceContent, editMode, quest
                 })),
             }}
         >
-            <div className="flex gap-8">
+            <div className="flex gap-8 xl:flex-row flex-col">
                 {/* Passage section */}
                 {editMode ? (
                     <div className="flex flex-col flex-1">

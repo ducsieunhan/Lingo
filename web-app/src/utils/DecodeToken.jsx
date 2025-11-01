@@ -7,12 +7,13 @@ export const decodeToken = (token) => {
       preferred_username,
       email,
       sub,
+      avatar
     } = decodeInf;
 
     const roles =
-      decodeInf?.resource_access?.["realm-management"]?.roles || ["NORMAL_USER"];
+      decodeInf?.realm_access?.["roles"] || ["USER"];
 
-    const userInf = { preferred_username, email, sub, roles };
+    const userInf = { preferred_username, email, sub, roles, avatar };
 
     return userInf;
   } catch (err) {

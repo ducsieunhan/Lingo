@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import testListSlice from "../slice/testListSlice";
 import attemptSlice from "../slice/attempts"
+import accountSlice from "../slice/accounts"
 import authReducer from '../slice/authentication';
 
 
@@ -18,6 +19,7 @@ const reducer = {
     authentication: authReducer,
     tests: testListSlice,
     attempts: attemptSlice,
+    accounts: accountSlice
 }
 export const store = configureStore({
     reducer: reducer,

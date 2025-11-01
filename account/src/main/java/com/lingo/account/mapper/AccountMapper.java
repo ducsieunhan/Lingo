@@ -3,6 +3,7 @@ package com.lingo.account.mapper;
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.model.Account;
+import com.lingo.account.model.Role;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,9 @@ public class AccountMapper {
       return null;
     }
 
-    return modelMapper.map(account, ResAccountDTO.class);
+    ResAccountDTO dto = modelMapper.map(account, ResAccountDTO.class);
+    dto.setRoles(account.getRoles().stream().map(Role::getName).toArray(String[]::new));
+
+    return dto;
   }
 }

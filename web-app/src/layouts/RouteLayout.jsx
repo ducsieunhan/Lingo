@@ -1,12 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { initializeAuth } from "../slice/authentication";
+import { Spin } from "antd";
 
 function RootLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { user, loading } = useSelector((state) => state.authentication);
+
 
   useEffect(() => {
     dispatch(initializeAuth());
@@ -25,6 +29,7 @@ function RootLayout() {
     };
   }, [navigate, dispatch]);
 
+  // if (loading) return <Spin spinning={loading} />
   return (
     <>
       <Outlet />

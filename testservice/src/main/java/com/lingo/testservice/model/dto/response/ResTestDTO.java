@@ -22,5 +22,6 @@ public class ResTestDTO {
     TestCategory category;
     int numOfQuestions;
     int attempts;
+    long resourceContentId;
 
 }

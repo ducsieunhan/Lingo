@@ -1,8 +1,13 @@
 import { Avatar, Button, Card } from "antd"
 import { CustomerServiceOutlined, StarFilled, UserOutlined } from '@ant-design/icons';
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 
 const RightSider = () => {
+  const { user } = useSelector((state) => state.authentication);
+  const navigate = useNavigate();
+
 
   const Recommend = (content) => {
     return (
@@ -25,7 +30,7 @@ const RightSider = () => {
         <div className="flex items-center gap-3 mb-4">
           <Avatar className="!bg-red-500" icon={<UserOutlined />} />
           <div>
-            <h3 className="font-semibold text-gray-900">Hoàng Minh</h3>
+            <h3 className="font-semibold text-gray-900">{user?.preferred_username}</h3>
             <p className="text-sm text-gray-600">Level 12 • 2,450 XP</p>
           </div>
         </div>
@@ -55,7 +60,7 @@ const RightSider = () => {
               <StarFilled className="!text-gray-100" />
             </div>
           </div>
-          <Button block color="primary" variant="solid" size="large">
+          <Button block color="primary" variant="solid" size="large" onClick={() => navigate("/analytics")}>
             Xem thống kê
           </Button>
         </div>

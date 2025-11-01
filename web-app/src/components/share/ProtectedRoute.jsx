@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Spin } from "antd";
 import NotPermitted from "./NotPermitted";
@@ -6,7 +6,7 @@ import NotPermitted from "./NotPermitted";
 const RoleBaseRoute = ({ children }) => {
   const userInfo = localStorage.getItem('user_profile');
   const userRole = JSON.parse(userInfo).roles;
-  if (!userRole.includes['NORMAL_USER']) {
+  if (!userRole.includes['ADMIN']) {
     return (<>{children}</>)
   } else {
     return (<NotPermitted />)
@@ -15,6 +15,7 @@ const RoleBaseRoute = ({ children }) => {
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useSelector(state => state.authentication);
+  const location = useLocation();
 
   return (
     <>
@@ -29,7 +30,7 @@ const ProtectedRoute = ({ children }) => {
               </RoleBaseRoute>
             </>
             :
-            <Navigate to='/login' replace />
+            <Navigate to='/auth/login' replace state={{ from: location }} />
           }
         </>
       }

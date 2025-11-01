@@ -6,7 +6,7 @@ import ExamCate from "../../components/tests/ListPage/ExamCate";
 import TestItem from "../../components/tests/ListPage/TestItem";
 import { createSearchParams, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { retrieveTests, setPage, setPageSize, setSearch, setSort, setTests } from "../../slice/testListSlice";
+import { retrieveTests, setPage, setPageSize, setSearch, setSort } from "../../slice/testListSlice";
 import { useEffect } from "react";
 import { retrieveAttempts } from "../../slice/attempts";
 
@@ -116,7 +116,7 @@ const TestListPage = () => {
             </div>
 
             {/* <Category /> */}
-            <ExamCate handleNavigate={handleNavigate} />
+            <div className="mb-8"><ExamCate handleNavigate={handleNavigate} /></div>
 
             {/* search */}
 

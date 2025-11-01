@@ -119,3 +119,247 @@ export const allTests = {
   ]
 };
 
+export const realData = [
+  {
+    "quizId": 1,
+    "quizInfo": {
+      "title": "IELTS Academic Reading Practice Test 1",
+      "details": "40 câu hỏi",
+    },
+    "score": 8.5,
+    "timeTaken": 3600,
+    "submittedAt": "2025-10-06T06:20:39.384+00:00",
+    "type": "IELTS",
+    "sectionResults": [
+      {
+        "type": "Reading",
+        "correctAnswers": 34,
+        "totalQuestions": 40,
+        "sectionScore": 8.5,
+        "maxPossibleScore": 9.0
+      }
+    ],
+  },
+  {
+    "quizId": 2,
+    "quizInfo": {
+      "title": "TOEIC Listening & Reading Test A",
+      "details": "200 câu hỏi",
+    },
+    "score": 650,
+    "timeTaken": 7200,
+    "submittedAt": "2025-09-20T08:30:00.000+00:00",
+    "type": "TOEIC",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 70,
+        "totalQuestions": 100,
+        "sectionScore": 350,
+        "maxPossibleScore": 495
+      },
+      {
+        "type": "Reading",
+        "correctAnswers": 60,
+        "totalQuestions": 100,
+        "sectionScore": 300,
+        "maxPossibleScore": 495
+      }
+    ],
+  },
+  {
+    "quizId": 3,
+    "quizInfo": {
+      "title": "IELTS Academic Listening Practice Test 2",
+      "details": "40 câu hỏi",
+    },
+    "score": 7.0,
+    "timeTaken": 2500,
+    "submittedAt": "2025-08-15T09:00:00.000+00:00",
+    "type": "IELTS",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 28,
+        "totalQuestions": 40,
+        "sectionScore": 7.0,
+        "maxPossibleScore": 9.0
+      }
+    ],
+  },
+  {
+    "quizId": 4,
+    "quizInfo": {
+      "title": "TOEIC Practice Test B",
+      "details": "200 câu hỏi ",
+    },
+    "score": 820,
+    "timeTaken": 7100,
+    "submittedAt": "2025-07-10T14:00:00.000+00:00",
+    "type": "TOEIC",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 85,
+        "totalQuestions": 100,
+        "sectionScore": 420,
+        "maxPossibleScore": 495
+      },
+      {
+        "type": "Reading",
+        "correctAnswers": 75,
+        "totalQuestions": 100,
+        "sectionScore": 400,
+        "maxPossibleScore": 495
+      }
+    ],
+  },
+  {
+    "quizId": 5,
+    "quizInfo": {
+      "title": "IELTS General Writing Practice Test",
+      "details": "2 task ",
+    },
+    "score": 6.5,
+    "timeTaken": 3600,
+    "submittedAt": "2025-06-05T09:45:00.000+00:00",
+    "type": "IELTS",
+    "sectionResults": [
+      {
+        "type": "Writing Task 1",
+        "correctAnswers": 0,
+        "totalQuestions": 1,
+        "sectionScore": 6.0,
+        "maxPossibleScore": 9.0
+      },
+      {
+        "type": "Writing Task 2",
+        "correctAnswers": 0,
+        "totalQuestions": 1,
+        "sectionScore": 7.0,
+        "maxPossibleScore": 9.0
+      }
+    ],
+  },
+  {
+    "quizId": 6,
+    "quizInfo": {
+      "title": "TOEIC Listening Practice Test C",
+      "details": "100 câu hỏi",
+    },
+    "score": 400,
+    "timeTaken": 2800,
+    "submittedAt": "2025-05-12T11:20:00.000+00:00",
+    "type": "TOEIC",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 50,
+        "totalQuestions": 100,
+        "sectionScore": 200,
+        "maxPossibleScore": 495
+      },
+      {
+        "type": "Reading",
+        "correctAnswers": 40,
+        "totalQuestions": 100,
+        "sectionScore": 200,
+        "maxPossibleScore": 495
+      }
+    ],
+  },
+  {
+    "quizId": 7,
+    "quizInfo": {
+      "title": "IELTS Academic Speaking Test",
+      "details": "3 part ",
+    },
+    "score": 7.5,
+    "timeTaken": 900,
+    "submittedAt": "2025-04-18T13:00:00.000+00:00",
+    "type": "IELTS",
+    "sectionResults": [
+      {
+        "type": "Speaking",
+        "correctAnswers": 0,
+        "totalQuestions": 1,
+        "sectionScore": 7.5,
+        "maxPossibleScore": 9.0
+      }
+    ],
+  },
+  {
+    "quizId": 8,
+    "quizInfo": {
+      "title": "TOEIC Reading Practice Test D",
+      "details": "100 câu hỏi ",
+    },
+    "score": 550,
+    "timeTaken": 4500,
+    "submittedAt": "2025-03-22T15:30:00.000+00:00",
+    "type": "TOEIC",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 55,
+        "totalQuestions": 100,
+        "sectionScore": 275,
+        "maxPossibleScore": 495
+      },
+      {
+        "type": "Reading",
+        "correctAnswers": 55,
+        "totalQuestions": 100,
+        "sectionScore": 275,
+        "maxPossibleScore": 495
+      }
+    ],
+  },
+  {
+    "quizId": 9,
+    "quizInfo": {
+      "title": "IELTS Academic Reading Practice Test 3",
+      "details": "40 câu hỏi",
+    },
+    "score": 5.5,
+    "timeTaken": 3500,
+    "submittedAt": "2025-02-14T08:00:00.000+00:00",
+    "type": "IELTS",
+    "sectionResults": [
+      {
+        "type": "Reading",
+        "correctAnswers": 22,
+        "totalQuestions": 40,
+        "sectionScore": 5.5,
+        "maxPossibleScore": 9.0
+      }
+    ],
+  },
+  {
+    "quizId": 10,
+    "quizInfo": {
+      "title": "TOEIC Full Test E",
+      "details": "200 câu hỏi ",
+    },
+    "score": 900,
+    "timeTaken": 7100,
+    "submittedAt": "2025-01-10T10:00:00.000+00:00",
+    "type": "TOEIC",
+    "sectionResults": [
+      {
+        "type": "Listening",
+        "correctAnswers": 90,
+        "totalQuestions": 100,
+        "sectionScore": 450,
+        "maxPossibleScore": 495
+      },
+      {
+        "type": "Reading",
+        "correctAnswers": 90,
+        "totalQuestions": 100,
+        "sectionScore": 450,
+        "maxPossibleScore": 495
+      }
+    ],
+  }
+];

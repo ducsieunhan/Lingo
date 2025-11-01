@@ -9,4 +9,7 @@ public class ReqAccountDTO {
   private String firstName;
   private String lastName;
   private String password;
+//  private String[] roles;
+  private String[] roles = new String[0];
+
 }
