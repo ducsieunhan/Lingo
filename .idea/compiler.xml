@@ -7,7 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="api-gateway" />
+        <module name="common-library" />
         <module name="discoveryserver" />
       </profile>
       <profile name="Annotation profile for testservice" enabled="true">
@@ -19,7 +19,6 @@
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.5.5.Final/mapstruct-processor-1.5.5.Final.jar" />
           <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.5.5.Final/mapstruct-1.5.5.Final.jar" />
         </processorPath>
-        <module name="testservice" />
       </profile>
       <profile name="Annotation profile for attempt" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -30,20 +29,20 @@
         </processorPath>
         <module name="attempt" />
       </profile>
-      <profile name="Annotation profile for fileservice" enabled="true">
+      <profile name="Annotation profile for account" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
           <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.38/lombok-1.18.38.jar" />
         </processorPath>
-        <module name="fileservice" />
         <module name="account" />
+        <module name="fileservice" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="common-library" target="17" />
       <module name="googledriveservice" target="17" />
+      <module name="testservice" target="17" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

@@ -2,6 +2,8 @@ package com.lingo.common_library.exception;
 
 import com.lingo.common_library.viewmodel.error.ErrorVM;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,11 +13,11 @@ import org.springframework.web.server.ServerWebExchange;
 import java.util.List;
 
 @RestControllerAdvice
-@Slf4j
+//@Slf4j
 public class ExceptionHandle {
 
   private static final String ERROR_LOG_FORMAT = "Error: URI: {}, ErrorCode: {}, Message: {}";
-
+  private static final Logger log = LoggerFactory.getLogger(ExceptionHandle.class);
   @ExceptionHandler(NotFoundException.class)
   public ResponseEntity<ErrorVM> handleNotFoundException(NotFoundException ex, ServerWebExchange request) {
     HttpStatus status = HttpStatus.NOT_FOUND;

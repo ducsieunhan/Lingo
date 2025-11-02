@@ -53,6 +53,7 @@ com\lingo\testservice\model\dto\response\ResQuestionDTO.class
 com\lingo\testservice\repository\AnswerRepository.class
 com\lingo\testservice\model\dto\response\ResQuestionDTO$ResQuestionDTOBuilder.class
 com\lingo\testservice\model\dto\request\resource\ReqMediaResourceDTO.class
+com\lingo\testservice\model\dto\response\ResShortTestDTO.class
 com\lingo\testservice\model\dto\response\ResPaginationDTO.class
 com\lingo\testservice\utils\enums\TestCategory.class
 com\lingo\testservice\mapper\MediaResourceMapper.class

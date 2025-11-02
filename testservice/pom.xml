@@ -107,7 +107,22 @@
     <dependency>
       <groupId>com.github.loki4j</groupId>
       <artifactId>loki-logback-appender</artifactId>
-      <version>1.5.2</version>
+      <version>1.5.0</version>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+    <dependency>
+      <groupId>org.springframework.data</groupId>
+      <artifactId>spring-data-redis</artifactId>
+
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-cache</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.lingo</groupId>
+      <artifactId>common-library</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
     </dependency>
   </dependencies>
   <dependencyManagement>
