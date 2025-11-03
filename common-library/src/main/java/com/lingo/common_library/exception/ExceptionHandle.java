@@ -39,7 +39,7 @@ public class ExceptionHandle {
     HttpStatus status = HttpStatus.NOT_FOUND;
     String message = ex.getMessage();
 
-    return buildErrVM(status, message, null, ex, request, 404);
+    return buildErrVM(status, message, null, ex, request, 400);
   }
 
   @ExceptionHandler(KeycloakException.class)

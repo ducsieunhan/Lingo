@@ -141,7 +141,20 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
-
+  frontend:
+    build:
+      context: ./web-app
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web-app:/app
+      - /app/node_modules
+    networks:
+      - backend
+    depends_on:
+      - apigateway
+      
 networks:
   backend:
     driver: bridge

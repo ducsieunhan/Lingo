@@ -1,8 +1,5 @@
 package com.lingo.account.service;
 
-import com.lingo.account.config.KeycloakPropsConfig;
-import com.lingo.account.dto.identity.ReqAccount;
-import com.lingo.account.dto.identity.TokenExchangeRequest;
 import com.lingo.account.dto.request.ReqAccountDTO;
 import com.lingo.account.dto.request.ReqAccountGGDTO;
 import com.lingo.account.dto.request.ReqAvatarDTO;
@@ -14,25 +11,17 @@ import com.lingo.account.model.Account;
 import com.lingo.account.model.Role;
 import com.lingo.account.repository.AccountRepository;
 import com.lingo.account.repository.AccountSpecifications;
-import com.lingo.account.repository.IdentityClient;
 import com.lingo.account.repository.RoleRepository;
 import com.lingo.account.utils.Constants;
 import com.lingo.common_library.exception.CreateUserException;
 import com.lingo.common_library.exception.KeycloakException;
 import com.lingo.common_library.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.keycloak.admin.client.Keycloak;
-import org.keycloak.admin.client.resource.RealmResource;
-import org.keycloak.admin.client.resource.UserResource;
-import org.keycloak.representations.idm.UserRepresentation;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,21 +33,11 @@ import java.util.*;
 @Transactional
 public class AccountService {
   private final AccountRepository accountRepository;
-  private final IdentityClient identityClient;
   private final AccountMapper accountMapper;
   private final RoleService roleService;
   private final RoleRepository roleRepository;
-  private final Keycloak keycloak;
-  private final KeycloakPropsConfig keycloakPropsConfig;
+  private final KeycloakService keycloakService;
   private final String USER = "USER";
-
-  @Value("${idp.client-id}")
-  @NonFinal
-  String clientId;
-
-  @Value("${idp.client-secret}")
-  @NonFinal
-  String clientSecret;
 
   public ResAccountDTO createNewAccount(ReqAccountDTO request) throws CreateUserException{
 
@@ -66,46 +45,26 @@ public class AccountService {
       throw new CreateUserException(Constants.ErrorCode.USER_NAME_ALREADY_EXITED);
     }
 
-    if (this.accountRepository.findByEmail(request.getUsername()).isPresent()){
+    if (this.accountRepository.findByEmail(request.getEmail()).isPresent()){
       throw new CreateUserException(Constants.ErrorCode.EMAIL_ALREADY_EXITED);
     }
 
-      var createAccountRes = identityClient.createAccount(
-              "Bearer " + getClientToken(),
-              ReqAccount.builder()
-                      .username(request.getUsername())
-                      .firstName(request.getFirstName())
-                      .lastName(request.getLastName())
-                      .email(request.getEmail())
-                      .enabled(true)
-                      .emailVerified(false)
-                      .credentials(List.of(ReqAccount.Credential.builder()
-                              .type("password")
-                              .temporary(false)
-                              .value(request.getPassword())
-                              .build()))
-                      .build());
-
-      String userId = extractUserId(createAccountRes);
-      Account account = accountMapper.toModel(request, userId);
-
+    try {
       List<String> roleNames = request.getRoles().length > 0 && request.getRoles()[0] != null
-            ? Arrays.asList(request.getRoles())
-            : List.of(USER);
+              ? Arrays.asList(request.getRoles())
+              : List.of(USER);
 
-      if (roleNames.size() > 1) {
-        this.roleService.assignRole(userId, roleNames);
-      } else {
-        this.roleService.assignRole(userId, roleNames);
-      }
+      String userId = this.keycloakService.createNewUser(request, roleNames );
+      Account account = accountMapper.toModel(request, userId);
 
       List<Role> roles = this.roleRepository.findAllByNameIn(roleNames);
       log.info("KEYCLOAK, User created with id: {}", userId);
-
       account.setRoles(roles);
       this.accountRepository.save(account);
       return accountMapper.toResDTO(account);
-
+    } catch (Exception e) {
+      throw new CreateUserException("Error while creating new user: ", e.getMessage());
+    }
   }
 
   public ResAccountDTO getAccount(String id) throws NotFoundException {
@@ -160,15 +119,11 @@ public class AccountService {
             .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
 
     try {
-      keycloak.realm(keycloakPropsConfig.getRealm()).users().delete(account.getKeycloakId());
+      this.keycloakService.deleteKeycloakUser(id);
       this.accountRepository.delete(account);
     } catch (Exception e) {
       throw new NotFoundException(Constants.ErrorCode.ERROR_DELETING_ACCOUNT);
     }
-  }
-
-  public void restoreAccount(String id) {
-    updateEnableAccount(id, true);
   }
 
   public ResAccountDTO updateAccount(ReqUpdateAccountDTO request) {
@@ -176,7 +131,7 @@ public class AccountService {
             .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
 
     // Update Keycloak user representation
-    updateKeycloakUser(request.getId(), request);
+    this.keycloakService.updateKeycloakUser(request.getId(), request);
 
     // Update local account
     account.setFirstName(request.getFirstName());
@@ -195,17 +150,11 @@ public class AccountService {
 
 
   public Account updateEnableAccount(String id, boolean enable) {
-    UserRepresentation userRepresentation =
-            keycloak.realm(keycloakPropsConfig.getRealm()).users().get(id).toRepresentation();
     Account account = (Account) this.accountRepository.findByKeycloakId(id)
             .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
 
-    if (userRepresentation != null) {
-      RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
-      UserResource userResource = realmResource.users().get(id);
-      userRepresentation.setEnabled(enable);
-      userResource.update(userRepresentation);
-
+    if (account != null) {
+      this.keycloakService.updateEnableKeycloakUser(id, enable);
       account.setEnable(enable);
       return this.accountRepository.save(account);
     } else {
@@ -239,72 +188,10 @@ public class AccountService {
 
     Map<String, List<String>> attributes = new HashMap<>();
     attributes.put("avatar", Collections.singletonList(req.getAvatar()));
-    updateKeycloakUserAttributes(req.getId(), attributes);
+    this.keycloakService.updateKeycloakUserAttributes(req.getId(), attributes);
 
     account.setAvatar(req.getAvatar());
     this.accountRepository.save(account);
     log.info("Updated avatar for account: {}", account.getId());
   }
-
-
-
-  private String extractUserId(ResponseEntity<?> response) {
-    List<String> locations = response.getHeaders().get("Location");
-    if (locations == null || locations.isEmpty()) {
-      throw new IllegalStateException("Location header is missing in the response");
-    }
-
-    String location = locations.get(0);
-    String[] splitedStr = location.split("/");
-    return splitedStr[splitedStr.length - 1];
-  }
-
-  private String getClientToken() {
-    TokenExchangeRequest newToken = new TokenExchangeRequest("client_credentials", clientId, clientSecret, "openid");
-
-    var token = this.identityClient.exchangeClientToken(newToken);
-    return token.getAccessToken();
-  }
-
-
-
-  private void updateKeycloakUser(String userId, ReqUpdateAccountDTO request) {
-    UserRepresentation userRepresentation = getUserRepresentation(userId);
-
-    userRepresentation.setFirstName(request.getFirstName());
-    userRepresentation.setLastName(request.getLastName());
-
-    Map<String, List<String>> attributes = userRepresentation.getAttributes();
-    if (attributes == null) {
-      attributes = new HashMap<>();
-    }
-    attributes.put("phone", Collections.singletonList(request.getPhone()));
-    userRepresentation.setAttributes(attributes);
-
-    // Update user in Keycloak
-    getUserResource(userId).update(userRepresentation);
-  }
-
-  private void updateKeycloakUserAttributes(String userId, Map<String, List<String>> attributes) {
-    UserRepresentation userRepresentation = getUserRepresentation(userId);
-    userRepresentation.setAttributes(attributes);
-    getUserResource(userId).update(userRepresentation);
-  }
-
-  private UserRepresentation getUserRepresentation(String userId) {
-    UserRepresentation userRepresentation =
-            keycloak.realm(keycloakPropsConfig.getRealm()).users().get(userId).toRepresentation();
-
-    if (userRepresentation == null) {
-      throw new KeycloakException(Constants.ErrorCode.KEYCLOAK_USER_NOT_FOUND);
-    }
-
-    return userRepresentation;
-  }
-
-  private UserResource getUserResource(String userId) {
-    RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
-    return realmResource.users().get(userId);
-  }
-
 }

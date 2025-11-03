@@ -78,7 +78,7 @@ public class AccountController {
   })
   public ResponseEntity<String> enableAccount(@RequestParam String id, @RequestParam boolean enable) {
     this.accountService.updateEnableAccount(id, enable);
-    return ResponseEntity.ok("Account deleted successfully");
+    return ResponseEntity.ok("Update account successfully");
   }
 
   @PutMapping()
