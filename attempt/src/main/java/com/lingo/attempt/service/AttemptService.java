@@ -38,6 +38,11 @@ public class AttemptService {
 //  private final TestServiceFallback feignTestService;
   private static final Logger logger = LoggerFactory.getLogger(AttemptService.class);
 
+  public List<ResAttemptDTO> getAllAttempts (){
+      return this.attemptRepository.findAll()
+              .stream().map(this.attemptMapper :: toResAttemptDTO)
+              .toList();
+  }
 public Long createAttempt(ReqAttemptDTO req) {
     long start = System.currentTimeMillis();
 

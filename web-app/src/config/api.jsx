@@ -58,6 +58,10 @@ export function handleApiError(err, defaultMsg = "Có lỗi xảy ra") {
   console.error(msg, err);
 };
 
+export const getAllAttempts = () => {
+  return instance.get(`api/v1/attempt/all`)
+}
+
 
 // account
 

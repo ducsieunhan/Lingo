@@ -14,6 +14,8 @@ public interface QuestionMapper {
     @Mapping(target = "resourceContent", source = "resource.resourceContent")
     @Mapping(target = "testId", source = "test.id")
     @Mapping(target = "resourceContentId", source = "resource.id")
+    @Mapping(target = "updatedAt", source = "updatedAt")
+    @Mapping(target = "createdAt", source = "createdAt")
     // @Mapping(target = "explanationResourceContentId", source = "resource.id")
     ResQuestionDTO toQuestionResponse(Question question);
 }

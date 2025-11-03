@@ -69,6 +69,7 @@ services:
       - backend
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
 
   accountservice:
     build:
@@ -88,6 +89,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/accountservice
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
   testservice:
     build:
       context: .
@@ -106,6 +108,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/testservice
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
   attemptservice:
     build:
       context: .
@@ -124,6 +127,7 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/attemptservice
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=123456
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
   fileservice:
     build:
       context: .
@@ -136,6 +140,7 @@ services:
       - discoveryserver
     environment:
       - SPRING_PROFILES_ACTIVE=docker
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
   frontend:
     build:
       context: ./web-app
@@ -149,7 +154,7 @@ services:
       - backend
     depends_on:
       - apigateway
-
+      
 networks:
   backend:
     driver: bridge

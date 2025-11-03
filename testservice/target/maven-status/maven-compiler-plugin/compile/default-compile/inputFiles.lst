@@ -1,3 +1,47 @@
+<<<<<<< HEAD
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\config\SwaggerConfig.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\controller\AnswerController.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\controller\MediaResourceController.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\controller\QuestionController.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\controller\TestController.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\mapper\AnswerMapper.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\mapper\MediaResourceMapper.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\mapper\QuestionMapper.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\mapper\TestMapper.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\Answer.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\answer\ReqAnswerDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\question\ReqCreateQuestionDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\question\ReqQuestionDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\question\ReqUpdateQuestionDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\resource\ReqCreateResourceDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\resource\ReqMediaResourceDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\resource\ReqUpdateResourceDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\test\ReqCreateTestDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\test\ReqTestDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\request\test\ReqUpdateTestDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResAnswerDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResCorrectAnswerDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResMediaResourceDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResPaginationDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResQuestionDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResShortTestDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\dto\response\ResTestDTO.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\MediaResource.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\Question.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\model\Test.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\repository\AnswerRepository.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\repository\MediaResourceRepository.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\repository\QuestionRepository.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\repository\TestRepository.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\service\AnswerService.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\service\MediaResourceService.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\service\QuestionService.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\service\TestService.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\TestserviceApplication.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\MediaResourceCategory.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\TestCategory.java
+C:\Project\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\TestType.java
+=======
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\config\SwaggerConfig.java
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\controller\AnswerController.java
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\controller\MediaResourceController.java
@@ -40,3 +84,4 @@ C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lin
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\MediaResourceCategory.java
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\TestCategory.java
 C:\Microservice-Project\New folder\Lingo\Lingo\testservice\src\main\java\com\lingo\testservice\utils\enums\TestType.java
+>>>>>>> 3460df9fbf41bfa8d0e75e34dee78191f513bb67

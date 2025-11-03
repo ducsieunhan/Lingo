@@ -1,0 +1,52 @@
+# on test progress (use old docker file in observability)
+
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./observability/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - backend
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "4000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./observability/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - backend
+    depends_on:
+      - prometheus
+      - loki
+
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    ports:
+      - "3200:3200"
+      - "9411:9411"
+    command: -config.file=/etc/tempo.yaml
+    volumes:
+      - ./observability/tempo/tempo.yml:/etc/tempo.yaml
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+    external: true

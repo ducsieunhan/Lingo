@@ -18,6 +18,9 @@
   .createBtn {
     @apply !flex-1 !h-12 !text-white !font-[600] !text-[15px];
   }
+  .statisticCard {
+    @apply w-13 h-13 flex items-center justify-center;
+  }
 }
 
 @layer components {

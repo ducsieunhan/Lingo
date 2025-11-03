@@ -10,12 +10,8 @@
         <option value="$PROJECT_DIR$/common-library/pom.xml" />
         <option value="$PROJECT_DIR$/discoveryserver/pom.xml" />
         <option value="$PROJECT_DIR$/fileservice/pom.xml" />
+        <option value="$PROJECT_DIR$/attempt/pom.xml" />
       </list>
-    </option>
-    <option name="ignoredFiles">
-      <set>
-        <option value="$PROJECT_DIR$/common-library/pom.xml" />
-      </set>
     </option>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_17" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
