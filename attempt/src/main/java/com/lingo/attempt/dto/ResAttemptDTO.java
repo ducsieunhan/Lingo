@@ -13,6 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ResAttemptDTO {
   private Long quizId;
+  private String userId;
   private Long score;
   private Long timeTaken;
   private Date submittedAt;

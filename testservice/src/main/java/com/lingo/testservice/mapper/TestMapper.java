@@ -12,5 +12,7 @@ public interface TestMapper {
 
     @Mapping(target = "mediaUrl", source = "resource.resourceContent")
     @Mapping(target = "resourceContentId", source = "resource.id")
+    @Mapping(target = "updatedAt", source = "updatedAt")
+    @Mapping(target = "createdAt", source = "createdAt")
     ResTestDTO toTestResponse(Test test);
 }

@@ -39,6 +39,7 @@ public class AttemptService {
             .stream().map(this.attemptMapper :: toResAttemptDTO)
             .toList();
   }
+  
   public Long createAttempt(ReqAttemptDTO req) {
     validateRequest(req);
     Attempt attempt = buildAttempt(req);

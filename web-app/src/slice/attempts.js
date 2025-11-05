@@ -1,8 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAttempt, getAttemptUserShort, postAttempt } from "../config/api";
+import { getAllAttempts, getAttempt, getAttemptUserShort, postAttempt } from "../config/api";
 
 const initialState = {
   attempts: [
+
+  ],
+  allAttempts: [
 
   ],
   attempt: {
@@ -30,7 +33,7 @@ export const createAttempts = createAsyncThunk(
 );
 
 export const retrieveAttempts = createAsyncThunk(
-  "attempts/retrieveAll",
+  "attempts/retrieveAllData",
   async (userId, { rejectWithValue }) => {
     try {
       const res = await getAttemptUserShort(userId);
@@ -59,6 +62,22 @@ export const retrieveAttempt = createAsyncThunk(
     }
   }
 );
+
+export const retrieveAllAttempts = createAsyncThunk(
+  "attempts/retrieveAll",
+  async () => {
+    try {
+      const res = await getAllAttempts();
+      return res;
+    } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data)
+      } else {
+        return rejectWithValue("Lỗi không xác định")
+      }
+    }
+  }
+)
 
 const attemptSlice = createSlice({
   name: "attempts",
@@ -101,7 +120,19 @@ const attemptSlice = createSlice({
       .addCase(retrieveAttempt.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
-      });
+      })
+      .addCase(retrieveAllAttempts.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(retrieveAllAttempts.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.allAttempts = action.payload;
+      })
+      .addCase(retrieveAllAttempts.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
   }
 });
 

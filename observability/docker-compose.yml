@@ -1,0 +1,32 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  loki:
+    image: grafana/loki
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/local-config.yaml
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - "4000:3000"
+    restart: unless-stopped
+    volumes:
+      - ./grafana/provisioning/datasources.yml:/etc/grafana/provisioning/datasources.yml
+  tempo:
+    image: grafana/tempo
+    container_name: tempo
+    ports:
+      - "3200:3200" #tempo
+      - "9411:9411" #zipkin
+    command: -config.file=/etc/tempo.yaml
+    volumes:
+      - ./tempo/tempo.yml:/etc/tempo.yaml

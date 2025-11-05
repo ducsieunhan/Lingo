@@ -41,4 +41,9 @@ public class AttemptController {
   public ResponseEntity<ResAttemptDTO> getSingleAttempt(@PathVariable Long attemptId){
     return ResponseEntity.ok(this.attemptService.getSingleAttempt(attemptId));
   }
+
+  @GetMapping("/all")
+  public ResponseEntity<List<ResAttemptDTO>> getAll(){
+    return ResponseEntity.ok(this.attemptService.getAllAttempts());
+  }
 }

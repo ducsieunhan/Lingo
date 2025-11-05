@@ -7,6 +7,8 @@ import com.lingo.testservice.utils.enums.MediaResourceCategory;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.time.Instant;
 import java.util.List;
 
 @Data
@@ -29,4 +31,6 @@ public class ResQuestionDTO {
     String resourceContent;
     String explanationResourceContent;
     long resourceContentId;
+    Instant createdAt;
+    Instant updatedAt;
 }

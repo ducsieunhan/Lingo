@@ -6,6 +6,8 @@ import com.lingo.testservice.utils.enums.MediaResourceCategory;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.time.Instant;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -19,4 +21,6 @@ public class ResMediaResourceDTO {
     MediaResourceCategory category;
     long testId;
     long questionId;
+    Instant createdAt;
+    Instant updatedAt;
 }

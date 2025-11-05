@@ -48,3 +48,21 @@ idp:
   client-id: Lingo
   client-secret: JK7Mc23PlhXx3TSCVlC3wKhq7PmohD8I
   realm: Lingo
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: "always"
+  info:
+    env:
+      enabled: true
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: "http://${HOST_IP_ADDRESS:localhost}:9411/api/v2/spans"

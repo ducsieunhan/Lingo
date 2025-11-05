@@ -1,5 +1,6 @@
 package com.lingo.testservice.model;
 
+import java.time.Instant;
 import java.util.List;
 
 import com.lingo.testservice.utils.enums.MediaResourceCategory;
@@ -30,4 +31,20 @@ public class MediaResource {
     Test test;
     @OneToMany(mappedBy = "resource", cascade = CascadeType.ALL)
     List<Question> questions;
+
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @Column(name = "updated_at")
+    private Instant updatedAt;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedAt = Instant.now();
+    }
 }
