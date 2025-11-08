@@ -50,6 +50,14 @@ public class ExceptionHandle {
     return buildErrVM(status, message, null, ex, request, 400);
   }
 
+  @ExceptionHandler(OtpException.class)
+  public ResponseEntity<ErrorVM> handleEmptyException(OtpException ex, ServerWebExchange request) {
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    String message = ex.getMessage();
+
+    return buildErrVM(status, message, null, ex, request, 404);
+  }
+
   private ResponseEntity<ErrorVM> buildErrVM(HttpStatus status, String message, List<String> errors, Exception ex,
       ServerWebExchange request, int statusCode) {
     ErrorVM errorVm = new ErrorVM(status.toString(), status.getReasonPhrase(), message, errors);

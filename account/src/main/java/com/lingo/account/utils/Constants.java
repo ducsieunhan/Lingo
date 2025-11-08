@@ -12,5 +12,12 @@ public final class Constants {
     public static final String ERROR_DELETING_ACCOUNT = "DELETE ACCOUNT FAILED";
     public static final String EMAIL_ALREADY_EXITED = "Email đã tồn tại";
     public static final String USER_NAME_ALREADY_EXITED = "Username đã tồn tại";
+    public static final String OTP_EXPIRATION = "OTP đã hết hạn";
+    public static final String OTP_INVALID = "OTP không khớp";
+  }
+
+  public static final class Value {
+    public static final int OTP_LENGTH = 6;
+    public static final int OTP_MINUTES = 5;
   }
 }

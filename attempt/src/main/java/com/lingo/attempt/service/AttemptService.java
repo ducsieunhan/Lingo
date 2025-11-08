@@ -127,6 +127,7 @@ public class AttemptService {
 
   private Map<Long, String> getCorrectAnswers(long testId) {
     try {
+      logger.info("Fetching correct answers for questions: {}", testId);
       return feignTestService.getCorrectAnswer(testId).stream()
               .collect(Collectors.toMap(
                       ResCorrectAns::getQuestionId,
@@ -189,6 +190,7 @@ public class AttemptService {
 
   private Attempt gradingLR(Attempt currentAttempt, ReqAttemptDTO req) {
     Map<Long, String> answers = getCorrectAnswers(req.getQuizId());
+    logger.info("Correct answers after fetch: {}", answers);
 
     int[] types = new int[req.getField().length];
     int questionCount = 1;
@@ -236,7 +238,7 @@ public class AttemptService {
     currentAttempt.setUserAnswers(list);
 
     double totalScore = calculateTotalScore(req.getType(), scores);
-    currentAttempt.setScore((long) (totalScore * 10));
+    currentAttempt.setScore((long) (totalScore));
 
     this.attemptSectionResultRepository.saveAll(sectionResults);
     this.userAnswersRepository.saveAll(list);

@@ -7,11 +7,14 @@ import com.lingo.account.dto.request.ReqUpdateAccountDTO;
 import com.lingo.account.dto.response.ResAccountDTO;
 import com.lingo.account.dto.response.ResPaginationDTO;
 import com.lingo.account.service.AccountService;
+import com.lingo.account.service.OtpService;
 import com.lingo.common_library.exception.CreateUserException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +25,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/account")
+@RequiredArgsConstructor
 public class AccountController {
-  private AccountService accountService;
-
-  public AccountController(AccountService accountService) {
-    this.accountService = accountService;
-  }
+  private final AccountService accountService;
+  private final OtpService otpService;
 
   @PostMapping
   public ResponseEntity<ResAccountDTO> createNewAccount(@RequestBody ReqAccountDTO request) throws CreateUserException {
@@ -104,5 +105,12 @@ public class AccountController {
     this.accountService.updateAvatar(req);
 
     return ResponseEntity.ok("Avatar has been updated!");
+  }
+
+  @PostMapping("/send-otp")
+  public ResponseEntity<String> sendOTP(@RequestParam String email){
+    String otp = this.otpService.generateOtp();
+    this.otpService.sendOtp(email, otp);
+    return ResponseEntity.ok("OTP has been sent!");
   }
 }
