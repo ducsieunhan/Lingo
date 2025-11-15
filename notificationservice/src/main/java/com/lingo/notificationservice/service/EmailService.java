@@ -39,14 +39,44 @@ public class EmailService {
 
     this.sendEmail(request.getTo(), Constants.MailContent.MAIL_WELCOME, model, "email-template.ftl");
   }
-  @RabbitListener(queues = "${notification.new-account-queue}")
-  public void sendWelcome(AccountMessage accountMessage) throws MessagingException {
-    log.info("Sending welcome mail to {}", accountMessage.getEmail());
+  public void sendWelcome(String email) throws MessagingException {
+    log.info("Sending welcome mail to {}", email);
     Map<String, Object> model = new HashMap<>();
-    model.put("email", accountMessage.getEmail());
-    model.put("username", accountMessage.getUsername());
+    model.put("email", email);
+    model.put("username", email);
 
-    this.sendEmail(accountMessage.getEmail(), Constants.MailContent.MAIL_WELCOME, model, "welcome-template.ftl");
+    this.sendEmail(email, Constants.MailContent.MAIL_WELCOME, model, "welcome-template.ftl");
+  }
+
+  /**
+   * Gửi một email thông báo chung, sử dụng template 'notification-template.ftl'.
+   * <p>
+   * Phương thức này được thiết kế để làm một hàm gửi email linh hoạt,
+   * phục vụ cho các loại thông báo nghiệp vụ cụ thể như:
+   * <ul>
+   * <li><b>LESSON_REMINDER:</b> Gửi email nhắc nhở lịch học sắp tới.</li>
+   * <li><b>COURSE_UPDATE:</b> Gửi email thông báo khi có cập nhật
+   * (ví dụ: bài giảng mới, thay đổi nội dung) trong một khóa học.</li>
+   * </ul>
+   * <p>
+   * Phương thức này sẽ sử dụng tham số {@code title} làm tiêu đề (subject)
+   * của email.
+   *
+   * @param email Địa chỉ email của người nhận.
+   * @param title Tiêu đề (subject) của email. Đây cũng là biến
+   * 'title' được sử dụng trong template .ftl.
+   * @param message Nội dung chính của thông báo (biến 'message'
+   * trong template .ftl).
+   * @throws MessagingException Nếu có lỗi xảy ra trong quá trình gửi email.
+   */
+  public void sendNotification(String email, String title, String message) throws MessagingException {
+    log.info("Sending notification mail to {}", email);
+    Map<String, Object> model = new HashMap<>();
+    model.put("email", email);
+    model.put("title", title);
+    model.put("message", message);
+
+    this.sendEmail(email, title, model, "notification-template.ftl");
   }
 
   @Async

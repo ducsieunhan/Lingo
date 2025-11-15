@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "accounts")
 public record RabbitMQPropsConfig(
   String notificationServiceUrl,
-  String accountEventExchange,
+  String notificationEventExchange,
   String newAccountQueue,
   String rabbitHost
 ){}

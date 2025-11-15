@@ -21,7 +21,7 @@ public class RabbitMQConfig {
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(properties.accountEventExchange());
+    return new DirectExchange(properties.notificationEventExchange());
   }
 
   @Bean
@@ -30,8 +30,8 @@ public class RabbitMQConfig {
   }
 
   @Bean
-  Binding binding(Queue queue, DirectExchange directExchange){
-    return BindingBuilder.bind(queue).to(directExchange).with(properties.newAccountQueue());
+  Binding binding(){
+    return BindingBuilder.bind(queue()).to(exchange()).with(properties.newAccountQueue());
   }
 
   @Bean

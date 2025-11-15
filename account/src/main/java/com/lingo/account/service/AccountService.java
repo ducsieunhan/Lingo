@@ -188,6 +188,7 @@ public class AccountService {
               this.roleService.assignRole(req.getSub(), Collections.singletonList(USER)); // assign in keycloak
               account.setRoles(this.roleRepository.findAllByNameIn(List.of(USER)));
               this.accountRepository.save(account);
+              messageService.sendMessage(account);
               log.info("Created new account for email {}", req.getEmail());
               return accountMapper.toResDTO(account);
             });

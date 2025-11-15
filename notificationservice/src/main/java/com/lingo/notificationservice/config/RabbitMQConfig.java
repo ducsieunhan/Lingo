@@ -21,17 +21,37 @@ public class RabbitMQConfig {
 
   @Bean
   DirectExchange exchange() {
-    return new DirectExchange(properties.accountEventExchange());
+    return new DirectExchange(properties.notificationEventExchange());
   }
 
   @Bean
-  public Queue queue(){
+  public Queue newAccountQueue(){
     return new Queue(properties.newAccountQueue(), true);
   }
 
   @Bean
-  Binding binding(Queue queue, DirectExchange directExchange){
-    return BindingBuilder.bind(queue).to(directExchange).with(properties.newAccountQueue());
+  Binding newAccountQueueBinding(){
+    return BindingBuilder.bind(newAccountQueue()).to(exchange()).with(properties.newAccountQueue());
+  }
+
+  @Bean
+  public Queue newNotificationQueue(){
+    return new Queue(properties.newNotificationQueue(), true);
+  }
+
+  @Bean
+  Binding newNotificationQueueBinding(){
+    return BindingBuilder.bind(newNotificationQueue()).to(exchange()).with(properties.newNotificationQueue());
+  }
+
+  @Bean
+  public Queue newBroadcastQueue(){
+    return new Queue(properties.newBroadcastNotificationQueue(), true);
+  }
+
+  @Bean
+  Binding newBroadcastQueueBinding(){
+    return BindingBuilder.bind(newBroadcastQueue()).to(exchange()).with(properties.newBroadcastNotificationQueue());
   }
 
   @Bean

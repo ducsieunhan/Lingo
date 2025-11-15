@@ -28,6 +28,7 @@ class MessageServiceImpl implements MessageService {
     log.info("Message starting send");
 
     AccountMessage message = new AccountMessage();
+    message.setUserId(account.getKeycloakId());
     message.setEmail(account.getEmail());
     message.setUsername(account.getUsername());
 

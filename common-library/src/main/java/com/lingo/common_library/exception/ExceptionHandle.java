@@ -55,7 +55,15 @@ public class ExceptionHandle {
     HttpStatus status = HttpStatus.BAD_REQUEST;
     String message = ex.getMessage();
 
-    return buildErrVM(status, message, null, ex, request, 404);
+    return buildErrVM(status, message, null, ex, request, 400);
+  }
+
+  @ExceptionHandler(NotificationException.class)
+  public ResponseEntity<ErrorVM> handleNotifyException(NotificationException ex, ServerWebExchange request) {
+    HttpStatus status = HttpStatus.BAD_REQUEST;
+    String message = ex.getMessage();
+
+    return buildErrVM(status, message, null, ex, request, 400);
   }
 
   private ResponseEntity<ErrorVM> buildErrVM(HttpStatus status, String message, List<String> errors, Exception ex,
