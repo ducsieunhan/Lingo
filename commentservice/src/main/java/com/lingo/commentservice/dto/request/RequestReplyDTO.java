@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class RequestReplyDTO {
     String userId;
+    String commentOwnerId;
     Long replyId;
     Long testId;
     String content;

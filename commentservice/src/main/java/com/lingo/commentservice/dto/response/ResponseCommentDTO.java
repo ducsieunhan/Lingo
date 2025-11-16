@@ -17,6 +17,7 @@ public class ResponseCommentDTO {
     long id;
     long testId;
     long replyId;
+    String testTitle;
     String userId;
     String content;
     String avatar;

@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Card, Input, Button, Select } from "antd";
 import SingleComment from "./SingleComment";
 import { retrieveCommentsOfTest, addComment } from "../../slice/commentSlice";
 import { retrieveAccountByUsername } from "../../slice/accounts";
+import { useParams } from "react-router-dom";
 
 const BoxComment = ({ testId }) => {
   const { TextArea } = Input;
@@ -11,7 +12,7 @@ const BoxComment = ({ testId }) => {
   const { commentOfTest, loading } = useSelector((state) => state.comments);
   const { user } = useSelector((state) => state.authentication);
   const { currentUser } = useSelector((state) => state.accounts);
-
+  const { name } = useParams();
   const [newComment, setNewComment] = useState("");
   const [sort, setSort] = useState("newest");
   const [currentCommentMode, setCurrentCommentMode] = useState("COMMENT");
@@ -56,6 +57,7 @@ const BoxComment = ({ testId }) => {
       addComment({
         content: newComment,
         testId,
+        testTitle: name.replaceAll("-", "_"),
         type: "COMMENT",
         userId: currentUser?.keycloakId || null,
       })
