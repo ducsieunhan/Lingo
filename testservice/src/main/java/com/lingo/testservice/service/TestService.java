@@ -109,10 +109,10 @@ class TestServiceImpl implements TestService {
         ReqNotificationPost requestNotify=new ReqNotificationPost();
         requestNotify.setNotificationTypeId(7);
         requestNotify.setUrl(String.format("/tests/%s/%s", entity.getId(), entity.getTitle().replaceAll("_","-")));
-        requestNotify.setMessage(dto.getTitle().replaceAll("_"," ") + " vừa được thêm, xem ngay");
+        requestNotify.setMessage(dto.getTitle().replaceAll("_"," ") + " vừa được cập nhật, xem ngay");
         requestNotify.setUserId(null);
         requestNotify.setTypeName("COURSE_UPDATE");
-        requestNotify.setTitle("Có bài test mới vừa được thêm");
+        requestNotify.setTitle("Có bài test mới vừa được cập nhật");
         notifyClient.createNotification(requestNotify);
         return mapper.toTestResponse(entity);
     }

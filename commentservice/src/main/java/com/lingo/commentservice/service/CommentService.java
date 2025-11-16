@@ -56,7 +56,7 @@ class CommentServiceImpl implements CommentService {
                 ReqNotificationPost requestNotify = new ReqNotificationPost();
                 requestNotify.setMessage(dto.getContent());
                 requestNotify.setUrl(String.format("/tests/%s/%s", dto.getTestId(), dto.getTestTitle().replaceAll("_","-")));
-                requestNotify.setUserId(dto.getUserId());
+                requestNotify.setUserId(dto.getCommentOwnerId());
                 requestNotify.setTypeName("COMMENT_REPLY");
                 requestNotify.setTitle("Một bình luận của bạn vừa được phản hồi");
                 requestNotify.setNotificationTypeId(6);

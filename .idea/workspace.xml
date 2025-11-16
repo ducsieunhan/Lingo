@@ -5,24 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/ReqNotificationPost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/httpclient/NotifyClient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/dto/ReqNotificationPost.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/dto/ResNotification.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/httpClient/NotifyClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/api-gateway/src/main/java/com/lingo/api_gateway/config/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commentservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestCommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestCommentDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/response/ResponseCommentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestReplyDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/dto/request/RequestReplyDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Comment.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/model/Comment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/service/CommentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notificationservice/src/main/java/com/lingo/notificationservice/service/NotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/notificationservice/src/main/java/com/lingo/notificationservice/service/NotificationService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/TestserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/TestserviceApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/TestService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -205,8 +192,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.NotificationserviceApplication" />
         <item itemvalue="Application.CommentserviceApplication" />
+        <item itemvalue="Application.NotificationserviceApplication" />
         <item itemvalue="Application.AccountApplication" />
         <item itemvalue="Application.ChatbotApplication" />
         <item itemvalue="Application.FileserviceApplication" />

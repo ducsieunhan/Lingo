@@ -22,6 +22,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     Long testId;
+    String commentOwnerId;
     String userId;
     String content;
     String testTitle;
