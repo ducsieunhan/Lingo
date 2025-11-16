@@ -13,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 public class RequestCommentDTO {
     String userId;
     Long testId;
+    String testTitle;
     @Nullable
     Long replyId;
     String content;

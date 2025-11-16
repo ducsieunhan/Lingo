@@ -66,9 +66,10 @@ public class NotificationService {
     Notification notification = this.buildNT(req);
     UserNotificationSettings userSetting = this.userSettingsService // check if user enables this type?
             .getUserSettingsByUserIdAndTypeId(req.getUserId(), req.getTypeName());
+    notification.setUrl(req.getUrl());
     this.notificationRepository.save(notification);
 
-    if (userSetting.isEmailEnabled()) { // if enable for email (ex: welcome-user)
+    if (userSetting != null && userSetting.isEmailEnabled()) { // if enable for email (ex: welcome-user)
       try {
         if (notification.getNotificationType().getName().equals("WELCOME_USER")) {
           this.emailService.sendWelcome(userSetting.getEmail());

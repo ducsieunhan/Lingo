@@ -24,7 +24,7 @@ public class Comment {
     Long testId;
     String userId;
     String content;
-
+    String testTitle;
     @Enumerated(value = EnumType.STRING)
     CommentStatus status;
     @Enumerated(value = EnumType.STRING)

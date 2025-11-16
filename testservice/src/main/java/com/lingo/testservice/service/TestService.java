@@ -1,5 +1,7 @@
 package com.lingo.testservice.service;
 
+import com.lingo.common_library.dto.ReqNotificationPost;
+import com.lingo.testservice.httpClient.NotifyClient;
 import com.lingo.testservice.mapper.MediaResourceMapper;
 import com.lingo.testservice.mapper.TestMapper;
 import com.lingo.testservice.model.MediaResource;
@@ -49,6 +51,7 @@ class TestServiceImpl implements TestService {
     MediaResourceRepository resourceRepository;
     TestMapper mapper;
     MediaResourceMapper resourceMapper;
+    NotifyClient notifyClient;
 
     @Override
     @Transactional
@@ -71,6 +74,14 @@ class TestServiceImpl implements TestService {
                     .resourceContent(dto.getMediaUrl())
                     .test(savedTest).build());
         }
+        ReqNotificationPost requestNotify=new ReqNotificationPost();
+        requestNotify.setNotificationTypeId(7);
+        requestNotify.setUrl(String.format("/tests/%s/%s", response.getId(), response.getTitle().replaceAll("_","-")));
+        requestNotify.setMessage(dto.getTitle().replaceAll("_"," ") + " vừa được thêm, xem ngay");
+        requestNotify.setUserId(null);
+        requestNotify.setTypeName("COURSE_UPDATE");
+        requestNotify.setTitle("Có bài test mới vừa được thêm");
+        notifyClient.createNotification(requestNotify);
         return response;
     }
 
@@ -95,6 +106,14 @@ class TestServiceImpl implements TestService {
         });
 
         Test entity = testRepository.save(testOptional.get());
+        ReqNotificationPost requestNotify=new ReqNotificationPost();
+        requestNotify.setNotificationTypeId(7);
+        requestNotify.setUrl(String.format("/tests/%s/%s", entity.getId(), entity.getTitle().replaceAll("_","-")));
+        requestNotify.setMessage(dto.getTitle().replaceAll("_"," ") + " vừa được thêm, xem ngay");
+        requestNotify.setUserId(null);
+        requestNotify.setTypeName("COURSE_UPDATE");
+        requestNotify.setTitle("Có bài test mới vừa được thêm");
+        notifyClient.createNotification(requestNotify);
         return mapper.toTestResponse(entity);
     }
 

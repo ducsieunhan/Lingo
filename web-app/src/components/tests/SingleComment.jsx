@@ -3,7 +3,7 @@ import { Avatar, Button, Input } from "antd";
 import { DislikeFilled, LikeFilled, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, retrieveCommentsOfTest } from "../../slice/commentSlice";
-
+import { useParams } from "react-router-dom";
 const SingleComment = ({
   comment,
   testId,
@@ -13,7 +13,7 @@ const SingleComment = ({
 }) => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.accounts);
-
+  const { name } = useParams();
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
   const [replyText, setReplyText] = useState("");
@@ -25,6 +25,7 @@ const SingleComment = ({
       addComment({
         content: replyText,
         testId,
+        testTitle: name.replaceAll("-", "_"),
         replyId: comment.id,
         userId: currentUser?.keycloakId || null,
         type: "ANSWER",

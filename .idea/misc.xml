@@ -13,6 +13,7 @@
         <option value="$PROJECT_DIR$/attempt/pom.xml" />
         <option value="$PROJECT_DIR$/commentservice/pom.xml" />
         <option value="$PROJECT_DIR$/chatbot/pom.xml" />
+        <option value="$PROJECT_DIR$/notificationservice/pom.xml" />
       </list>
     </option>
   </component>

@@ -6,9 +6,11 @@ import com.lingo.commentservice.dto.response.ResponseCommentDTO;
 import com.lingo.commentservice.enums.CommentStatus;
 import com.lingo.commentservice.enums.CommentType;
 import com.lingo.commentservice.httpclient.AccountClient;
+import com.lingo.commentservice.httpclient.NotifyClient;
 import com.lingo.commentservice.mapper.CommentMapper;
 import com.lingo.commentservice.model.Comment;
 import com.lingo.commentservice.repository.CommentRepository;
+import com.lingo.common_library.dto.ReqNotificationPost;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -36,6 +38,7 @@ class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
     private final AccountClient accountClient;
+    private final NotifyClient notifyClient;
 
     @Override
     @jakarta.transaction.Transactional
@@ -47,6 +50,22 @@ class CommentServiceImpl implements CommentService {
 
         if (dto.getReplyId() != null) {
             comment.setReply(commentRepository.findById(dto.getReplyId()).orElse(null));
+        }
+        if ("ANSWER".equalsIgnoreCase(String.valueOf(dto.getType()))) {
+            try {
+                ReqNotificationPost requestNotify = new ReqNotificationPost();
+                requestNotify.setMessage(dto.getContent());
+                requestNotify.setUrl(String.format("/tests/%s/%s", dto.getTestId(), dto.getTestTitle().replaceAll("_","-")));
+                requestNotify.setUserId(dto.getUserId());
+                requestNotify.setTypeName("COMMENT_REPLY");
+                requestNotify.setTitle("Một bình luận của bạn vừa được phản hồi");
+                requestNotify.setNotificationTypeId(6);
+
+                notifyClient.createNotification(requestNotify);
+                log.info("Notification sent to userId={}", dto.getUserId());
+            } catch (Exception e) {
+                log.error("Error sending notification", e);
+            }
         }
 
         Comment saved = commentRepository.save(comment);
