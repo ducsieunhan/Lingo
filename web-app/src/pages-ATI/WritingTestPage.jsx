@@ -4,47 +4,35 @@ import { useDispatch, useSelector } from "react-redux";
 import InputColumn from "../components-ATI/writing/InputColumn";
 import { toast } from "react-toastify";
 import { createAttempts } from "../slice/attempts";
-// (1. Import thunk để fetch câu hỏi)
-// Giả định bạn có thunk này từ slice 'questions'
 import { retrieveQuestionForTest } from "../slice/questions";
 
-// (2. Xóa MOCK_TEST_DATA)
-// const MOCK_TEST_DATA = { ... };
 
 function WritingTestPage() {
-  const [isLoading, setIsLoading] = useState(false); // Dùng cho việc 'nộp bài'
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id: testId } = useParams();
 
   const isLockMode = !!testId;
 
-  // (3. Lấy state từ Redux)
-  // Lấy 'pageLoading' và 'questions' từ slice (ví dụ: 'questions')
   const {
     questions,
-    loading: pageLoading, // 'pageLoading' giờ do Redux quản lý
+    loading: pageLoading,
     error
-  } = useSelector((state) => state.questions); // Giả định slice tên 'questions'
+  } = useSelector((state) => state.questions);
 
   const { user } = useSelector((state) => state.authentication);
 
 
-  // (4. Dùng useMemo để "chuyển đổi" data)
-  // Chuyển đổi response API (mảng) thành object 'lockedData'
   const lockedData = useMemo(() => {
-    // Nếu không ở 'lock mode' hoặc không có câu hỏi, trả về null
     if (!isLockMode || !questions || questions.length === 0) {
       return null;
     }
 
-    // Response API là một mảng, nhưng trang này chỉ hiển thị 1 task.
-    // Lấy phần tử đầu tiên (ví dụ: Task 1)
     const task = questions[0];
 
-    // "Chuyển đổi" trường mới (API) thành trường cũ (UI)
     return {
-      id: task.id,
+      id: task.testId,
       taskType: task.part,       // "Task 1"
       promptText: task.title,   // "The chart shows..."
       promptImage: task.resourceContent // Link ảnh (nếu có)
@@ -52,23 +40,18 @@ function WritingTestPage() {
   }, [isLockMode, questions]);
 
 
-  // (5. useEffect: Fetch dữ liệu thật)
   useEffect(() => {
     if (isLockMode) {
-      // 'setPageLoading(true)' không cần nữa vì Redux lo
       console.log(`Fetching test với ID: ${testId}`);
       dispatch(retrieveQuestionForTest(testId))
         .unwrap()
         .catch((error) => {
           console.error("Không tìm thấy bài test:", error);
           toast.error("Không tìm thấy bài test!");
-          // 'setLockedData(null)' không cần nữa vì useMemo sẽ xử lý
         });
     }
   }, [testId, isLockMode, dispatch]);
 
-  // Xử lý nộp bài: Chỉ lưu và chuyển hướng
-  // (Hàm này không cần thay đổi vì 'lockedData' đã được 'useMemo' chuẩn bị)
   const handleGrade = useCallback(
     async (formData) => {
       setIsLoading(true);
@@ -100,6 +83,9 @@ function WritingTestPage() {
           ]
         };
 
+        console.log("Tạo attempt với quiz id: ", quizId);
+
+
         const action = await dispatch(createAttempts(attemptData));
 
         if (!createAttempts.fulfilled.match(action)) {
@@ -128,11 +114,9 @@ function WritingTestPage() {
         setIsLoading(false);
       }
     },
-    // 'lockedData' giờ là dependency vì nó đến từ 'useMemo'
     [navigate, dispatch, isLockMode, lockedData, user]
   );
 
-  // (6. renderContent giờ đã được điều khiển bởi Redux)
   const renderContent = () => {
     if (isLockMode && pageLoading) {
       return (
@@ -145,7 +129,6 @@ function WritingTestPage() {
       );
     }
 
-    // Nếu có lỗi API (error) hoặc không có 'lockedData' (sau khi load xong)
     if (isLockMode && !pageLoading && (error || !lockedData)) {
       return (
         <div className="text-center p-20 bg-red-50 rounded-xl shadow-lg border border-red-200">

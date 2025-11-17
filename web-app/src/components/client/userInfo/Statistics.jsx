@@ -83,8 +83,8 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaClipboardList className="text-blue-600 text-xl" />}
             iconBg="bg-blue-100"
             value={totalDone}
-            label="Tổng số đề thi đã làm"
-            change={`+${totalPerWeek} tuần này`}
+            label="Total"
+            change={`+${totalPerWeek} this week `}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
@@ -92,8 +92,8 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaClock className="text-green-600 text-xl" />}
             iconBg="bg-green-100"
             value={totalHour.toFixed(1)}
-            label="Giờ luyện tập"
-            change={`+${totalHourWeek.toFixed(1)}h tuần này`}
+            label="Hours"
+            change={`+${totalHourWeek.toFixed(1)}h this week `}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
@@ -101,8 +101,8 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaBullseye className="text-purple-600 text-xl" />}
             iconBg="bg-purple-100"
             value={`${totalAccuracy}%`}
-            label="Độ chính xác"
-            change={`+${changeAcc.toFixed(1)}% tháng này`}
+            label="Accuracy"
+            change={`+${changeAcc.toFixed(1)}% this month`}
           />
         </Col>
         <Col xs={24} md={12} lg={6}>
@@ -110,8 +110,8 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaStar className="text-orange-600 text-xl" />}
             iconBg="bg-orange-100"
             value={roundNearest5(totalAverage)}
-            label="Điểm trung bình"
-            change={`+${changeAverage.toFixed(1)} tháng này`}
+            label="Overall"
+            change={`+${changeAverage.toFixed(1)} this month`}
           />
         </Col>
       </Row>
@@ -122,7 +122,7 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaStopwatch className="text-indigo-600 text-lg" />}
             iconBg="bg-indigo-100"
             value={totalDone ? (totalHour / totalDone * 60).toFixed(1) : 0}
-            label="Thời gian trung bình (phút)"
+            label="Average Time Per Test"
           />
         </Col>
         <Col xs={24} md={8}>
@@ -130,7 +130,7 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaTrophy className="text-yellow-600 text-lg" />}
             iconBg="bg-yellow-100"
             value={attemptData.length ? Math.max(...attemptData.map(a => a.score)) : 0}
-            label="Điểm cao nhất"
+            label="Highest Score"
           />
         </Col>
         <Col xs={24} md={8}>
@@ -138,7 +138,7 @@ export default function Statistics({ attemptData = [] }) {
             icon={<FaFire className="text-red-600 text-lg" />}
             iconBg="bg-red-100"
             value={` ${maxStreak}`}
-            label="Streak dài nhất"
+            label="Longest Streak"
           />
         </Col>
       </Row>

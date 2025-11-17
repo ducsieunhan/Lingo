@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Link, useParams } from "react-router-dom"; // Bỏ useLocation
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   GraduationCap,
@@ -11,11 +11,10 @@ import {
 } from "lucide-react";
 import { retrieveResult } from "../slice-ATI/speaking";
 import { retrieveAttempt } from "../slice/attempts";
+
 function SpeakingResultPage() {
   const dispatch = useDispatch();
-
   const { attemptId } = useParams();
-
 
   const {
     result: assessmentResult,
@@ -29,32 +28,59 @@ function SpeakingResultPage() {
     error: attemptError,
   } = useSelector((state) => state.attempts);
 
+  // ✅ SỬA LỖI: Dùng useRef để track việc đã fetch (không trigger re-render)
+  const attemptFetchedRef = useRef(false);
+  const resultFetchedRef = useRef(false);
+  const lastAttemptIdRef = useRef(null);
+  const lastGradingIdRef = useRef(null);
 
+  // ✅ Reset refs khi attemptId thay đổi
   useEffect(() => {
-    if (attemptId) {
-      if (!attempt || attempt.id !== attemptId) {
-        dispatch(retrieveAttempt(attemptId));
-      }
-
-      if (
-        attempt &&
-        attempt.gradingIeltsId &&
-        assessmentResult?.submission_id !== attempt.gradingIeltsId &&
-        !assessmentLoading
-      ) {
-        dispatch(retrieveResult(attempt.gradingIeltsId));
-      }
+    if (lastAttemptIdRef.current !== attemptId) {
+      console.log('🔄 AttemptId changed, resetting refs');
+      attemptFetchedRef.current = false;
+      resultFetchedRef.current = false;
+      lastAttemptIdRef.current = attemptId;
+      lastGradingIdRef.current = null;
     }
-  }, [
-    dispatch,
-    attemptId,
-    attempt,
-    assessmentResult,
-    assessmentLoading,
-  ]);
+  }, [attemptId]);
+
+  // ✅ Hook 1: Fetch attempt CHỈ MỘT LẦN
+  useEffect(() => {
+    if (!attemptId || attemptFetchedRef.current) {
+      return;
+    }
+
+    // Kiểm tra xem đã có attempt với đúng ID chưa
+    const hasCorrectAttempt = attempt && String(attempt.id) === String(attemptId);
+
+    if (!hasCorrectAttempt && !attemptLoading) {
+      console.log('📥 Fetching attempt:', attemptId);
+      attemptFetchedRef.current = true;
+      dispatch(retrieveAttempt(attemptId));
+    }
+  }, [attemptId, attemptLoading]); // ❌ BỎ 'attempt' khỏi dependencies
+
+  // ✅ Hook 2: Fetch result CHỈ MỘT LẦN
+  useEffect(() => {
+    if (!attempt || !attempt.gradingIeltsId || resultFetchedRef.current) {
+      return;
+    }
+
+    // Kiểm tra xem gradingId có thay đổi không
+    const gradingIdChanged = lastGradingIdRef.current !== attempt.gradingIeltsId;
+
+    if (gradingIdChanged && !assessmentLoading) {
+      console.log('📥 Fetching result for gradingId:', attempt.gradingIeltsId);
+      resultFetchedRef.current = true;
+      lastGradingIdRef.current = attempt.gradingIeltsId;
+      dispatch(retrieveResult(attempt.gradingIeltsId));
+    }
+  }, [attempt?.gradingIeltsId, assessmentLoading]); // ❌ BỎ 'assessmentResult' khỏi dependencies
 
   const isLoading =
     assessmentLoading || (attemptId && attemptLoading && !attempt);
+
   const combinedError = assessmentError || attemptError;
   const hasError = !attemptId || combinedError;
 
@@ -102,7 +128,7 @@ function SpeakingResultPage() {
     );
   }
 
-  const finalAudioUrl = attempt?.answers[0]?.userAnswer;
+  const finalAudioUrl = attempt?.answers?.[0]?.userAnswer;
 
   if (assessmentResult) {
     return (
@@ -132,7 +158,6 @@ function SpeakingResultPage() {
 
   return null;
 }
-
 
 const AssessmentResult = ({ result, recordingUrl }) => {
   const { scores, feedback, transcript } = result || { scores: {}, feedback: {} };
@@ -228,7 +253,6 @@ const AssessmentResult = ({ result, recordingUrl }) => {
   );
 };
 
-// Component phụ
 const SubScoreCard = ({ title, score, icon, color }) => {
   const colors = {
     blue: "text-blue-600 bg-blue-50",
@@ -254,7 +278,6 @@ const SubScoreCard = ({ title, score, icon, color }) => {
   );
 };
 
-// Component phụ
 const FeedbackCard = ({ icon, title, content, color = "gray", isMain = false }) => {
   const colors = {
     blue: "border-blue-500 bg-blue-50 text-blue-800",

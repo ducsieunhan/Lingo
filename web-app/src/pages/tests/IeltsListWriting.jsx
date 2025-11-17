@@ -56,7 +56,7 @@ const TestCard = ({ test }) => {
         {Math.round(progress)}%
       </div>
       <Link
-        to={`/tests/${test.id}/${test.title}`}
+        to={`/writing-test/${test.id}`}
         className="w-full !bg-orange-600 hover:!bg-orange-700 !text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
       >
         <LightningIcon />

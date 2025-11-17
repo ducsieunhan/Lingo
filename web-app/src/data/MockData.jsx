@@ -363,3 +363,70 @@ export const realData = [
     ],
   }
 ];
+
+export const SPEAKING_QUESTIONS = [
+  // Part 1
+  { type: "Part 1", text: "What is your full name?" },
+  { type: "Part 1", text: "Can I see your ID?" },
+  { type: "Part 1", text: "Where are you from?" },
+  { type: "Part 1", text: "Do you work or are you a student?" },
+  { type: "Part 1", text: "What subjects are you studying?" },
+  // Part 2
+  {
+    type: "Part 2",
+    text: "Describe a website you often visit.\n\nYou should say:\n- What it is about\n- How you found it\n- How often you visit it\n- And explain why you find it useful.",
+  },
+  // Part 3
+  {
+    type: "Part 3",
+    text: "What are the advantages and disadvantages of the internet?",
+  },
+  {
+    type: "Part 3",
+    text: "Do you think older people and younger people use the internet differently?",
+  },
+  {
+    type: "Part 3",
+    text: "How much has the internet changed people's lives?",
+  },
+  {
+    type: "Part 3",
+    text: "Should the government control the information available on the internet?",
+  },
+  {
+    type: "Part 3",
+    text: "What will be the next big development online?",
+  },
+];
+
+
+export const MOCK_ASSESSMENT_DATA = {
+  submission_id: "GyrCkqnqntmnJVitatmZD3",
+  user_id: "user123",
+  status: "COMPLETED",
+  topic_prompt: "wedding",
+  transcript:
+    "I'm a wedding planner. My job brings me a lot of pleasure. Today is an amazing day. I am planning my sister's wedding. She will wear a beautiful white dress. I also get to wear a lovely dress. After the wedding, all the guests will have a nice dinner and will dance for hours. In the evening, my sister and her new husband will cut a cake that I designed. I hope they like it a lot.",
+  scores: {
+    fluency: 8.0,
+    pronunciation: 5.0,
+    task_response: 6.0,
+    grammar: 6.0,
+    vocabulary: 5.5,
+    overall: 6.1,
+  },
+  feedback: {
+    task_response:
+      "The candidate addresses the topic directly and maintains relevance throughout. The ideas are logically connected, providing a clear narrative flow (job description → current task → specific wedding events). The response is coherent, with clear sequencing (e.g., 'After the wedding,' 'In the evening'). However, the response is brief, limiting the opportunity to fully develop complex points or demonstrate sustained discourse. For higher scores, the candidate would need to extend the response, perhaps by elaborating on the challenges of planning or the emotional significance of the event, rather than just listing activities.",
+    grammar:
+      "Grammatical accuracy is very high; there are virtually no errors in this sample. The candidate controls simple tenses (simple present: 'brings,' 'am planning') and the simple future ('will wear,' 'will dance') effectively. However, the range is limited. The response consists primarily of simple, short sentences connected by basic coordination. There is a lack of complex grammatical structures, such as subordinate clauses, passive voice, or varied relative clauses, which is necessary to achieve scores of 7.0 and above. The candidate needs to practice embedding ideas using complex structures to demonstrate flexibility.",
+    vocabulary:
+      "The candidate uses adequate vocabulary for the topic, including 'wedding planner' and specific terms like 'designed' (the cake). However, the vocabulary tends to be basic and common, relying heavily on simple adjectives such as 'amazing,' 'beautiful,' 'lovely,' and 'nice.' There is no evidence of sophisticated or low-frequency vocabulary, precise collocations, or idiomatic language (e.g., 'tying the knot,' 'a momentous occasion'). To improve, the candidate should aim to replace vague adjectives (like 'nice') with more precise descriptive language and incorporate a wider range of academic or specialized terminology.",
+    overall:
+      "The candidate delivers a clear, accurate, and relevant response. The main strength is the high level of accuracy in basic grammar. The primary limitation is the lack of complexity and extension across all criteria. To reach a higher band, the candidate must actively practice extending their answers using a variety of complex sentence structures and demonstrating a broader, more nuanced vocabulary repertoire. The response is currently too short and structurally simple for advanced levels.",
+    fluency:
+      "Fluency is strong, with speech delivered at a natural pace. There is minimal hesitation.",
+    pronunciation:
+      "Pronunciation has some inaccuracies with certain vowel sounds and word stress, which occasionally impacts clarity.",
+  },
+};

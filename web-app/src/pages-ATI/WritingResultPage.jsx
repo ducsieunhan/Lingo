@@ -1,33 +1,28 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useParams, useLocation, Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import WritingDisplayPanel from "../components-ATI/writing/WritingDisplayPanel";
 import WritingAnalysisPanel from "../components-ATI/writing/WritingAnalysisPanel";
-import { retrieveAttempt } from "../slice/attempts";
-import { createSubmit, resetWritingResult } from "../slice-ATI/writing";
-
-const MOCK_TEST_DATA = {
-  id: 1,
-  taskType: 1,
-  promptText:
-    "The chart below shows the changes in the percentage of the population in four European countries who bought different types of products online from 2018 to 2022.",
-  promptImage: "https://i.imgur.com/gim2k9g.png",
-};
+import { retrieveAttempt, updateAttempt } from "../slice/attempts";
+// (Import action 'setWritingResult' mới)
+import { createSubmit, resetWritingResult, setWritingResult } from "../slice-ATI/writing";
+import { retrieveQuestionForTest } from "../slice/questions";
 
 export default function WritingResultPage() {
   const [leftWidth, setLeftWidth] = useState(50);
   const [isResizing, setIsResizing] = useState(false);
   const containerRef = useRef(null);
   const [promptImageUrl, setPromptImageUrl] = useState(null);
-  const [isAiCallInitiated, setIsAiCallInitiated] = useState(false);
+  // (Đổi tên cờ: cờ này có nghĩa là "Đã xử lý xong")
+  const [isProcessed, setIsProcessed] = useState(false);
 
   const { id: attemptId } = useParams();
   const location = useLocation();
   const dispatch = useDispatch();
 
-  // ✅ LẤY task VÀ essay TỪ LOCATION STATE
   const taskFromState = location.state?.task;
   const essayFromState = location.state?.essay;
+  const imageFromState = location.state?.promptImage;
 
   const {
     attempt,
@@ -41,53 +36,99 @@ export default function WritingResultPage() {
     error: assessmentError
   } = useSelector((state) => state.writing);
 
-  const [quizData, setQuizData] = useState(null);
-  const [quizLoading, setQuizLoading] = useState(true);
+  const {
+    questions,
+    loading: quizLoading,
+    error: quizError
+  } = useSelector((state) => state.questions);
 
-  // Reset state khi vào trang mới
+  const quizData = useMemo(() => {
+    if (!questions || questions.length === 0) {
+      return null;
+    }
+    const task = questions[0];
+    return {
+      id: task.testId,
+      questionId: task.id,
+      taskType: task.part,
+      promptText: task.title,
+      promptImage: task.resourceContent
+    };
+  }, [questions]);
+
+
+  // useEffect 1: Reset state khi ID thay đổi
   useEffect(() => {
     dispatch(resetWritingResult());
-    setIsAiCallInitiated(false);
+    setIsProcessed(false); // Reset cờ xử lý
   }, [attemptId, dispatch]);
 
-  // Fetch attempt
+  // useEffect 2: Fetch attempt (Luôn chạy)
   useEffect(() => {
     if (attemptId) {
       dispatch(retrieveAttempt(attemptId));
     }
   }, [attemptId, dispatch]);
 
-  // Fetch quiz data (chỉ để hiển thị ảnh nếu có)
+  // useEffect 3: Fetch quiz data (Nếu cần)
   useEffect(() => {
-    const quizId = attempt?.quizId;
+    const quizId = attempt?.quizId; // e.g., 23
 
-    if (!attemptLoading && attempt) {
-      if (quizId && quizId > 0 && (quizData?.id !== quizId)) {
-        setQuizLoading(true);
-        setTimeout(() => {
-          setQuizData(MOCK_TEST_DATA);
-          setQuizLoading(false);
-        }, 500);
-      } else {
-        setQuizLoading(false);
+    if (!attemptLoading && attempt && quizId && quizId > 0) {
+      const isDataMissing = !questions || questions.length === 0;
+      const isDataMismatched = questions && questions.length > 0 && questions[0]?.testId !== quizId;
+
+      if (isDataMissing || isDataMismatched) {
+        console.log(`(Flow Mới/F5) Fetching đề bài thật với ID: ${quizId}`);
+        dispatch(retrieveQuestionForTest(quizId));
       }
     }
-  }, [attempt, attemptLoading, quizData?.id]);
+  }, [attempt, attemptLoading, dispatch, questions]);
 
-  // ✅ GỌI AI NGAY KHI CÓ task VÀ essay (TỪ STATE)
+  // (LOGIC MỚI) useEffect 4: Xử lý xem lịch sử (History Flow)
   useEffect(() => {
-    if (
-      taskFromState &&
-      essayFromState &&
-      !assessmentResult &&
-      !assessmentLoading &&
-      !isAiCallInitiated
-    ) {
-      console.log("📤 Gửi bài cho AI chấm điểm...");
-      console.log("Task:", taskFromState);
-      console.log("Essay:", essayFromState.substring(0, 100) + "...");
+    // Nếu 'attempt' đã tải VÀ 'attempt' có chứa feedback cũ (giả sử tên là 'aiFeedback')
+    // VÀ chúng ta chưa xử lý
+    // (Giả định: 'attempt.aiFeedback' là trường bạn lưu JSON nhận xét)
+    if (attempt && attempt.aiFeedback && !isProcessed) {
+      console.log("🌀 (Flow Lịch sử): Tìm thấy feedback cũ, đang tải vào Redux...");
+      try {
+        // (Giả định 'aiFeedback' là một JSON string, cần parse)
+        const feedback = typeof attempt.aiFeedback === 'string'
+          ? JSON.parse(attempt.aiFeedback)
+          : attempt.aiFeedback;
 
-      setIsAiCallInitiated(true);
+        // Dùng action 'setWritingResult' để đưa feedback vào Redux
+        dispatch(setWritingResult(feedback));
+        setIsProcessed(true); // Đánh dấu là đã xử lý xong (Không gọi AI nữa)
+      } catch (e) {
+        console.error("Lỗi parse AI feedback cũ:", e);
+        // Nếu parse lỗi, vẫn đánh dấu đã xử lý để tránh gọi AI
+        setIsProcessed(true);
+      }
+    }
+  }, [attempt, isProcessed, dispatch]);
+
+
+  // (LOGIC SỬA ĐỔI) useEffect 5: Xử lý chấm bài mới (New Submission Flow)
+  useEffect(() => {
+    // Chỉ chạy nếu 'attempt' đã tải VÀ nó KHÔNG có feedback cũ
+    const isReadyForNewCall = attempt && !attempt.aiFeedback;
+
+    // Phải có dữ liệu từ location.state (chứng tỏ đây là flow nộp bài)
+    const isNewSubmission = taskFromState && essayFromState;
+
+    // Điều kiện gọi AI
+    const canInitiateAiCall =
+      isReadyForNewCall &&  // Phải là attempt mới
+      isNewSubmission &&  // Phải là flow nộp bài
+      !assessmentResult &&  // Redux store rỗng
+      !assessmentLoading && // Không đang gọi
+      !isProcessed;         // Chưa xử lý
+
+    if (canInitiateAiCall) {
+      console.log("📤 (Flow Mới): Không có feedback, đang gọi AI...");
+      setIsProcessed(true); // Đánh dấu là đang xử lý
 
       const aiFormData = {
         task: taskFromState,
@@ -98,17 +139,44 @@ export default function WritingResultPage() {
         .unwrap()
         .then((result) => {
           console.log("✅ Nhận được kết quả AI:", result);
+          const score = result?.overall_band_score;
+
+          if (attemptId && (score !== null && score !== undefined)) {
+            console.log(`✨ Đang cập nhật attempt [${attemptId}] với điểm VÀ feedback...`);
+
+            // (BỔ SUNG) Gửi 'aiFeedback' (dưới dạng JSON string)
+            const attemptData = {
+              attemptId: attemptId,
+              score: Math.round(score),
+              // Gửi TOÀN BỘ 'result' (JSON)
+              // Bạn cần đảm bảo backend có thể nhận trường 'aiFeedback' (ví dụ: kiểu Text/JSON)
+              aiFeedback: JSON.stringify(result)
+            };
+
+            dispatch(updateAttempt(attemptData))
+              .unwrap()
+              .then(() => console.log(`✅ Cập nhật attempt [${attemptId}] thành công.`))
+              .catch((err) => console.error(`❌ Lỗi khi cập nhật attempt:`, err));
+          }
         })
         .catch((error) => {
           console.error("❌ Lỗi khi gọi AI:", error);
+          setIsProcessed(false); // Cho phép thử lại nếu lỗi
         });
     }
-  }, [taskFromState, essayFromState, assessmentResult, assessmentLoading, isAiCallInitiated, dispatch]);
+  }, [
+    taskFromState, essayFromState,
+    attempt, // 'attempt' giờ rất quan trọng
+    assessmentResult, assessmentLoading,
+    isProcessed, dispatch, attemptId
+  ]);
+
+  // --- (Các useEffect và logic còn lại không đổi) ---
 
   // Handle image URL
   useEffect(() => {
     let imageUrl = null;
-    const imageSource = quizData?.promptImage;
+    const imageSource = imageFromState || quizData?.promptImage;
     if (imageSource) {
       if (typeof imageSource === "string") {
         imageUrl = imageSource;
@@ -122,7 +190,7 @@ export default function WritingResultPage() {
         URL.revokeObjectURL(imageUrl);
       }
     };
-  }, [quizData?.promptImage]);
+  }, [imageFromState, quizData?.promptImage]);
 
   // Handle resize
   useEffect(() => {
@@ -151,7 +219,7 @@ export default function WritingResultPage() {
   }, [isResizing]);
 
   const isLoading = attemptLoading || quizLoading || assessmentLoading;
-  const combinedError = attemptError || assessmentError;
+  const combinedError = attemptError || assessmentError || quizError;
 
   // Loading state
   if (isLoading) {
@@ -177,24 +245,24 @@ export default function WritingResultPage() {
   }
 
   // Error state
-  if (combinedError || !attempt) {
+  if (combinedError || (!attempt && !attemptLoading)) {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-8">
         <h1 className="text-2xl font-bold text-red-700 mb-4">
           Lỗi Tải Dữ Liệu
         </h1>
         <p className="text-gray-600">
-          {combinedError ? combinedError.message : "Không tìm thấy bài làm với ID này."}
+          {combinedError ? (typeof combinedError === 'object' ? combinedError.message : combinedError) : "Không tìm thấy bài làm với ID này."}
         </p>
         <Link to="/" className="text-blue-600 mt-4">Quay về trang chủ</Link>
       </div>
     );
   }
 
-  // ✅ LẤY DỮ LIỆU ĐỂ HIỂN THỊ
-  const task = quizData?.taskType || 1;
-  const promptText = taskFromState || quizData?.promptText || "Không có đề bài";
-  const essayText = essayFromState || attempt.answers[0]?.userAnswer || "";
+  // LẤY DỮ LIỆU ĐỂ HIỂN THỊ
+  const task = (quizData?.taskType === "Task 1" ? 1 : 2) || (taskFromState === "Task 1" ? 1 : 2) || 1;
+  const promptText = taskFromState || quizData?.promptText || "Đang tải đề bài...";
+  const essayText = essayFromState || attempt?.answers[0]?.userAnswer || "";
   const wordCount = essayText
     ? essayText.trim().split(/\s+/).filter(Boolean).length
     : 0;
@@ -220,6 +288,8 @@ export default function WritingResultPage() {
 
         <WritingAnalysisPanel
           width={100 - leftWidth}
+          // 'assessmentResult' giờ sẽ là feedback cũ (History)
+          // hoặc feedback mới (New)
           aiData={assessmentResult}
           wordCount={wordCount}
         />

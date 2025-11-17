@@ -1,4 +1,3 @@
-// src/components/AIIELTS.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Landmark, ArrowRight } from "lucide-react";
@@ -10,11 +9,7 @@ import {
   FieldTimeOutlined,
   CloseOutlined, // Thêm icon này
 } from "@ant-design/icons";
-import BeeMascot from "../images/bee.png"
-// === THÊM MỚI: Tạo component cho Modal ===
-// Component này nhận 2 props:
-// - isOpen: boolean để quyết định có hiển thị modal hay không
-// - onClose: hàm để đóng modal khi nhấn nút X hoặc lớp phủ
+
 const PracticeModeModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
@@ -51,16 +46,15 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
               Luyện tập với thời gian gian tùy chỉnh cùng sự hỗ trợ của AI.
             </p>
             <Link
-              to="/ai-assessment-page"
-              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white !font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
-              onClick={onClose} // Đóng modal khi nhấn link
+              to="/writing-test"
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              onClick={onClose}
             >
               <RocketOutlined />
               Luyện tập với AI
             </Link>
           </div>
 
-          {/* Cột 2: Chế độ thi thử (Style theo ảnh) */}
           <div className="text-center flex flex-col items-center p-6">
             <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
               <ClockCircleOutlined style={{ fontSize: "40px" }} />
@@ -72,9 +66,9 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
               Mô phỏng thi thật với thời gian giới hạn và không có AI hỗ trợ.
             </p>
             <Link
-              to="/Writing"
-              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white !font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
-              onClick={onClose} // Đóng modal khi nhấn link
+              to="/speaking"
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              onClick={onClose}
             >
               <FieldTimeOutlined />
               Thi thử tính giờ
@@ -97,7 +91,7 @@ const AIIELTS = () => {
         {/* ... (Phần tiêu đề và con ong giữ nguyên) ... */}
         <div className="flex justify-center mb-8">
           <img
-            src={BeeMascot}
+            src="/images/bee.png"
             alt="Bee Mascot"
             className="w-50 h-auto transition-transform duration-300 hover:scale-110"
           />
@@ -126,7 +120,7 @@ const AIIELTS = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-900 !text-white px-6 py-2.5 rounded-lg font-medium btn-hover w-34 h-10 !text-[16.5px]"
+                className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
               >
                 Academic
               </button>
@@ -148,7 +142,7 @@ const AIIELTS = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-900 !text-white px-6 py-2.5 rounded-lg font-medium btn-hover w-34 h-10 !text-[16.5px]"
+                className="bg-blue-600 hover:bg-blue-900 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
               >
                 Academic
               </button>

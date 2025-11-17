@@ -12,7 +12,7 @@ export const createSubmit = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await submitWriting(formData);
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message || "Lỗi không xác định");
     }
@@ -25,6 +25,11 @@ const writingSlice = createSlice({
   reducers: {
     resetWritingResult: (state) => {
       state.result = null;
+      state.loading = false;
+      state.error = null;
+    },
+    setWritingResult: (state, action) => {
+      state.result = action.payload;
       state.loading = false;
       state.error = null;
     }
@@ -42,9 +47,11 @@ const writingSlice = createSlice({
       .addCase(createSubmit.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+        state.result = null;
       })
   },
 })
 
-export const { resetWritingResult } = writingSlice.actions;
+// Export action mới
+export const { resetWritingResult, setWritingResult } = writingSlice.actions;
 export default writingSlice.reducer;

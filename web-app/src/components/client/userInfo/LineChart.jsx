@@ -3,21 +3,22 @@ import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
 
-const LineChart = ({ attemptData }) => {
-  const scoreData = attemptData.map(a => a.score).slice(0, 10);
-  const dateData = attemptData
+const LineChart = ({ attemptData, type }) => {
+  const lineData = type ? attemptData.filter(attempt => attempt?.sectionResults?.[0]?.type.toLowerCase() === type.toLowerCase()) : attemptData;
+  const scoreData = lineData.map(a => a.score).slice(0, 10);
+  const dateData = lineData
     .map(a => a.submittedAt.split("T")[0])
     // .concat(Array(10).fill(null))
     .slice(0, 10);
 
-  // console.log(aData);
+  console.log("scoreData", scoreData);
 
 
   const data = {
     labels: dateData,
     datasets: [
       {
-        label: "Điểm số",
+        label: "Score",
         data: scoreData,
         borderColor: "#3b82f6",
         backgroundColor: "rgba(59, 130, 246, 0.1)",
@@ -43,7 +44,7 @@ const LineChart = ({ attemptData }) => {
       },
       title: {
         display: false,
-        text: 'Biểu đồ điểm số 10 lần gần nhất',
+        text: 'Score chart of the last 10 attempts',
         align: 'start',
         font: {
           size: 20
