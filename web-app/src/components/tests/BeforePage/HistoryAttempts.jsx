@@ -42,7 +42,7 @@ const HistoryAttempts = () => {
     {
       key: 'action',
       dataIndex: "detail",
-      render: (_, record) => <Link to={`${path}/results/${record?.attemptId}`} className='!text-blue-700 text-base hover:!text-blue-900'>Xem chi tiết</Link>,
+      render: (_, record) => <Link to={`${path}/results/${record?.attemptId}`} className='!text-blue-700 text-base hover:!text-blue-900'>Detail</Link>,
     },
   ];
 

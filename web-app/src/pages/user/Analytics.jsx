@@ -15,7 +15,8 @@ const Analytics = () => {
   const { attempts } = useSelector(state => state.attempts);
   const { user } = useSelector((state) => state.authentication);
   const params = new URLSearchParams(window.location.search);
-  const category = params.get("category");
+  const [lineType, setLineType] = useState("")
+  // const category = params.get("category");
 
   const userId = user?.sub;
 
@@ -32,37 +33,47 @@ const Analytics = () => {
     })
   };
 
-  const filterAttempts = attempts.filter((attempt) => attempt.type.toLowerCase() === category);
-
-
-
+  const filterAttempts = attempts;
+  // console.log(filterAttempts);
 
   return (
 
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 ">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Thống kê lịch sử làm bài</h1>
-        <p className="text-gray-600">Theo dõi tiến độ học tập và phân tích kết quả của bạn</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Test history statistics</h1>
+        <p className="text-gray-600">Track your learning progress and analyze your results</p>
       </div>
 
-      <Card className="!shadow-md !mb-7 ">
+      {/* <Card className="!shadow-md !mb-7 ">
         <ExamCate handleNavigate={handleNavigate} analytics={true} />
-      </Card>
+      </Card> */}
 
 
       <Statistics attemptData={filterAttempts} />
       <Card className="!shadow-md !mb-7 ">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-semibold text-gray-900">Biểu đồ điểm số 10 lần gần nhất</h2>
-          <div className="flex items-center space-x-2 text-sm text-gray-600">
+          <h2 className="text-xl font-semibold text-gray-900">Score chart of the last 10 attempts</h2>
+          <div className="flex items-center !space-x-3 text-sm text-gray-600">
             <div className="flex items-center">
               <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-              <span>Điểm số</span>
+              <span>Score</span>
             </div>
+            <Select
+              defaultValue="All "
+              style={{ width: 120 }}
+              onChange={(value) => setLineType(value)}
+              options={[
+                { value: '', label: 'All ' },
+                { value: 'Reading', label: 'Reading' },
+                { value: 'Listening', label: 'Listening' },
+                { value: 'Writing', label: 'Writing' },
+                { value: 'Speaking', label: 'Speaking' },
+              ]}
+            />
           </div>
         </div>
         <div className="h-96">
-          <LineChart attemptData={filterAttempts} />
+          <LineChart attemptData={filterAttempts} type={lineType} />
         </div>
       </Card>
 

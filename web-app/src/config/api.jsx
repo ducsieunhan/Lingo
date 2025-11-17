@@ -73,6 +73,10 @@ export const postAttempt = (testData) => {
   return publicInstance.post("/api/v1/attempt", testData);
 };
 
+export const putAttempt = (attemptData => {
+  return publicInstance.put("/api/v1/attempt", attemptData);
+})
+
 export const getAttemptUserShort = (userId) => {
   // return publicInstance.get("api/v1/attempt", { params: { userId } })
   return publicInstance.get("api/v1/attempt", { params: { userId } })
@@ -120,7 +124,9 @@ export const createAccount = (userData) =>
 export const updateAccount = (userData) =>
   publicInstance.put("/api/v1/account", userData
   );
-
+export const getAccountByUsername = (username) => {
+  return publicInstance.get(`api/v1/account/getByUsername/${username}`);
+};
 
 export const removeAccount = (accountId) => {
   return publicInstance.delete(`api/v1/account/${accountId}`);

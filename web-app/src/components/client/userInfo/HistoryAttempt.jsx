@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 import dayjs from 'dayjs';
 const columns = [
   {
-    title: 'Ngày làm ',
+    title: 'Date',
     dataIndex: 'submittedAt',
     key: 'submittedAt',
     sorter: (a, b) => new Date(a.submittedAt).getTime() - new Date(b.submittedAt).getTime(),
@@ -20,7 +20,7 @@ const columns = [
     )
   },
   {
-    title: 'Tên đề thi',
+    title: 'Test title',
     dataIndex: 'quizInfo',
     render: (_, record) => (
       <div>
@@ -30,7 +30,7 @@ const columns = [
     )
   },
   {
-    title: 'Loại',
+    title: 'Type',
     dataIndex: 'type',
     key: 'type',
     render: (_, record) => {
@@ -50,7 +50,7 @@ const columns = [
     }
   },
   {
-    title: 'Kết quả',
+    title: 'Score',
     dataIndex: 'score',
     key: 'score',
     render: (_, record) => {
@@ -72,8 +72,8 @@ const columns = [
       let displayScore = 0;
 
       if (record.type === "IELTS") {
-        displayScore = ((totalCorrect / totalQuestions) * 9).toFixed(1);
-        mainScore = `${displayScore}/9.0`;
+        displayScore = record?.score;
+        mainScore = `${record?.score}/9.0`;
       } else if (record.type === "TOEIC") {
         displayScore = record.sectionResults?.reduce(
           (sum, sec) => sum + (sec.sectionScore || 0),
@@ -112,7 +112,7 @@ const columns = [
     }
   },
   {
-    title: 'Thời gian',
+    title: 'Time',
     dataIndex: 'timeTaken',
     key: 'timeTaken',
     render: (_, record) => <div> <ClockCircleOutlined /> {formatTime(record.timeTaken)}</div>
@@ -122,8 +122,8 @@ const columns = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Link className="!text-blue-600 hover:!text-blue-900 !mr-3"><EyeOutlined /> Xem chi tiết</Link>
-        <Link className="!text-green-600 hover:!text-green-900"><ReloadOutlined /> Làm lại</Link>
+        <Link className="!text-blue-600 hover:!text-blue-900 !mr-3"><EyeOutlined /> Detail</Link>
+        <Link className="!text-green-600 hover:!text-green-900"><ReloadOutlined /> Retry</Link>
       </Space>
     ),
   },
@@ -140,7 +140,7 @@ const HistoryAttempt = () => {
 
   const filterByType = (list, type) => {
     if (!type) return list;
-    return list.filter(attempt => attempt.type.toLowerCase() === type.toLowerCase());
+    return list.filter(attempt => attempt?.sectionResults?.[0]?.type.toLowerCase() === type.toLowerCase());
   };
 
   const filterByTime = (list, time) => {
@@ -168,17 +168,18 @@ const HistoryAttempt = () => {
     <>
       <div className="py-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-semibold text-gray-900">Lịch sử làm bài chi tiết</h2>
+          <h2 className="text-xl font-semibold text-gray-900">History</h2>
           <div className="flex items-center !space-x-3">
             <Select
-              defaultValue="Tất cả loại bài"
+              defaultValue="All "
               style={{ width: 120 }}
               onChange={(value) => setHisType(value)}
               options={[
-                { value: '', label: 'Tất cả loại bài' },
-                { value: 'ielts', label: 'IELTS' },
-                { value: 'toeic', label: 'TOEIC' },
-                { value: 'toefl', label: 'TOEFL' },
+                { value: '', label: 'All ' },
+                { value: 'Reading', label: 'Reading' },
+                { value: 'Listening', label: 'Listening' },
+                { value: 'Writing', label: 'Writing' },
+                { value: 'Speaking', label: 'Speaking' },
               ]}
             />
             <Select
@@ -186,10 +187,10 @@ const HistoryAttempt = () => {
               style={{ width: 120 }}
               onChange={(value) => setHisTime(value)}
               options={[
-                { value: '30', label: '30 ngày gần nhất' },
-                { value: '7', label: '7 ngày gần nhất' },
-                { value: '3', label: '3 tháng gần nhất' },
-                { value: '', label: 'Tất cả' },
+                { value: '30', label: 'The last 30 day' },
+                { value: '7', label: 'The last 7 day' },
+                { value: '3', label: 'The last 3 month' },
+                { value: '', label: 'All' },
               ]}
             />
           </div>

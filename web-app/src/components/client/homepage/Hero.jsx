@@ -55,7 +55,7 @@ const Hero = () => {
                                 Practice by Test Set
                             </Link>
                             <Link
-                                to="/ai-assessment"
+                                to="/ai-assessment-page"
                                 className="!bg-white border-2 !border-gray-400 !text-gray-700 hover:!bg-gray-100 hover:!border-gray-500 px-8 py-4 rounded-[8px] text-lg font-semibold btn-hover"
                             >
                                 Practice by Skills

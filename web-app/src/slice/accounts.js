@@ -1,11 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { createAccount, enableAccount, getAccount, getAllAccounts, handleApiError, removeAccount, updateAccount, updateAvatar } from "../config/api";
+import { createAccount, enableAccount, getAccount, getAccountByUsername, getAllAccounts, handleApiError, removeAccount, updateAccount, updateAvatar } from "../config/api";
 import { toast } from "react-toastify";
 
 const initialState = {
   accounts: [
 
   ],
+  currentUser: {
+
+  },
   pageNo: 0,
   pageSize: 10,
   meta: {},
@@ -19,6 +22,20 @@ export const retrieveAccounts = createAsyncThunk(
   async (params, { rejectWithValue }) => {
     try {
       const res = await getAllAccounts(params);
+      return res;
+    } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data);
+      }
+      return rejectWithValue("Lỗi không xác định");
+    }
+  }
+);
+export const retrieveAccountByUsername = createAsyncThunk(
+  "accounts/retrieveByUsername",
+  async (username, { rejectWithValue }) => {
+    try {
+      const res = await getAccountByUsername(username);
       return res;
     } catch (err) {
       if (err.response && err.response.data) {
@@ -94,6 +111,7 @@ const accountSlice = createSlice({
   name: "accounts",
   initialState: {
     initialState,
+
   },
   reducers: {
     setPageNo: (state, action) => {
@@ -112,6 +130,18 @@ const accountSlice = createSlice({
         state.error = null;
       })
       .addCase(retrieveAccounts.rejected, (state, action) => {
+        state.error = action.payload;
+        state.loading = false;
+      })
+      .addCase(retrieveAccountByUsername.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(retrieveAccountByUsername.fulfilled, (state, action) => {
+        state.currentUser = action.payload;
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(retrieveAccountByUsername.rejected, (state, action) => {
         state.error = action.payload;
         state.loading = false;
       })

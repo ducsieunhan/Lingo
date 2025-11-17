@@ -8,13 +8,11 @@ import questionReducer from "../slice/questions";
 import answerReducer from "../slice/answers";
 import fileReducer from "../slice/files";
 import resourceReducer from "../slice/resource";
-
-import chatReducer from "../slice/chat";
-import commentReducer from "../slice/commentSlice"
-
+import speakingSlice from "../slice-ATI/speaking";
+import writingSlice from "../slice-ATI/writing";
 import notificationSlice from "../slice/notifications";
 import settingsSlice from "../slice/notificationSettings";
-
+import chatReducer from "../slice/chat";
 const reducer = {
     test: testReducer,
     questions: questionReducer,
@@ -26,12 +24,11 @@ const reducer = {
     tests: testListSlice,
     attempts: attemptSlice,
     accounts: accountSlice,
-
-    comments: commentReducer,
+    speaking: speakingSlice,
+    writing: writingSlice,
     notifications: notificationSlice,
     settings: settingsSlice
-
-}
+};
 export const store = configureStore({
     reducer: reducer,
     devTools: true

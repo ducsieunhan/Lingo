@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { getAllAttempts, getAttempt, getAttemptUserShort, postAttempt } from "../config/api";
+import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
+import { getAllAttempts, getAttempt, getAttemptUserShort, postAttempt, putAttempt } from "../config/api";
 
 const initialState = {
   attempts: [
@@ -22,6 +22,21 @@ export const createAttempts = createAsyncThunk(
   async (testData, { rejectWithValue }) => {
     try {
       const res = await postAttempt(testData);
+      return res;
+    } catch (err) {
+      if (err.response && err.response.data) {
+        return rejectWithValue(err.response.data);
+      }
+      return rejectWithValue("Lỗi không xác định");
+    }
+  }
+);
+
+export const updateAttempt = createAsyncThunk(
+  "attempts/update",
+  async (attemptData, { rejectWithValue }) => {
+    try {
+      const res = await putAttempt(attemptData);
       return res;
     } catch (err) {
       if (err.response && err.response.data) {
@@ -65,7 +80,7 @@ export const retrieveAttempt = createAsyncThunk(
 
 export const retrieveAllAttempts = createAsyncThunk(
   "attempts/retrieveAll",
-  async () => {
+  async ({ rejectWithValue }) => {
     try {
       const res = await getAllAttempts();
       return res;
@@ -84,55 +99,51 @@ const attemptSlice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
-
-      .addCase(createAttempts.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(createAttempts.fulfilled, (state, action) => {
-        state.attemptId = action.payload;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(createAttempts.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(retrieveAttempts.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(retrieveAttempts.fulfilled, (state, action) => {
-        state.attempts = action.payload;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(retrieveAttempts.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(retrieveAttempt.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(retrieveAttempt.fulfilled, (state, action) => {
-        state.attempt = action.payload;
-        state.loading = false;
-        state.error = null;
-      })
-      .addCase(retrieveAttempt.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
-      .addCase(retrieveAllAttempts.pending, (state, action) => {
-        state.loading = true;
-      })
-      .addCase(retrieveAllAttempts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.error = null;
-        state.allAttempts = action.payload;
-      })
-      .addCase(retrieveAllAttempts.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      })
+      .addMatcher(
+        isPending(createAttempts, updateAttempt, retrieveAttempts, retrieveAttempt, retrieveAllAttempts),
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addMatcher(
+        isFulfilled(createAttempts),
+        (state, action) => {
+          state.attemptId = action.payload;
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        isFulfilled(updateAttempt, retrieveAttempt),
+        (state, action) => {
+          state.attempt = action.payload;
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        isFulfilled(retrieveAttempts),
+        (state, action) => {
+          state.attempts = action.payload;
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        isFulfilled(retrieveAllAttempts),
+        (state, action) => {
+          state.allAttempts = action.payload;
+          state.loading = false;
+          state.error = null;
+        }
+      )
+      .addMatcher(
+        isRejected(createAttempts, updateAttempt, retrieveAttempts, retrieveAttempt, retrieveAllAttempts),
+        (state, action) => {
+          state.error = action.payload;
+          state.loading = false;
+        }
+      );
   }
 });
 
