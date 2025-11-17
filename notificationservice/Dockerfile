@@ -12,7 +12,7 @@ RUN mvn -f ./notificationservice/pom.xml clean package -DskipTests
 FROM eclipse-temurin:17-jre-jammy
 WORKDIR /app
 
-COPY --from=build /app/notficationservice/target/*.jar notificationservice.jar
+COPY --from=build /app/notificationservice/target/*.jar notificationservice.jar
 
 EXPOSE 9005
 ENTRYPOINT ["java", "-jar", "notificationservice.jar"]
