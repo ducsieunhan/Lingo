@@ -3,10 +3,11 @@ import { Avatar, Button, Input } from "antd";
 import { DislikeFilled, LikeFilled, UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addComment, retrieveCommentsOfTest } from "../../slice/commentSlice";
-
+import { useParams } from "react-router-dom";
 const SingleComment = ({
   comment,
   testId,
+  testTitle,
   isReply = false,
   currentCommentMode,
   setCurrentCommentMode,
@@ -17,7 +18,7 @@ const SingleComment = ({
   const [showReplyInput, setShowReplyInput] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
   const [replyText, setReplyText] = useState("");
-
+  const { name } = useParams();
   const handleReplySubmit = () => {
     if (!replyText.trim()) return;
 
@@ -25,8 +26,10 @@ const SingleComment = ({
       addComment({
         content: replyText,
         testId,
+        testTitle: name,
         replyId: comment.id,
         userId: currentUser?.keycloakId || null,
+        commentOwnerId: comment.userId,
         type: "ANSWER",
       })
     ).then(() => {
@@ -45,12 +48,15 @@ const SingleComment = ({
       day: "numeric",
     });
   };
-  console.log("current user", currentUser)
 
   return (
-    <div className={`${isReply ? "ml-12 mt-4" : ""}`}>
+    <div className={`${isReply ? "ml-12 mt-4" : ""}`} id={`comment-${comment.id}`}>
       <div className="flex space-x-3 gap-1">
-        <Avatar className={`!bg-${isReply ? "gray" : "red"}-500`} icon={<UserOutlined />} />
+        <Avatar
+          className={`!bg-${isReply ? "gray" : "red"}-500`}
+          icon={<UserOutlined />}
+          src={comment.avatar}
+        />
         <div className="flex-1">
           {/* Comment Card */}
           <div className="rounded-lg p-4 bg-gray-50 border border-gray-200">
@@ -114,6 +120,7 @@ const SingleComment = ({
                 key={reply.id}
                 comment={reply}
                 testId={testId}
+                testTitle={testTitle}
                 isReply={true}
                 currentCommentMode={currentCommentMode}
                 setCurrentCommentMode={setCurrentCommentMode}

@@ -1,10 +1,10 @@
 // src/pages/AIAssessmentPage.jsx
 // (KHÔNG CẦN THAY ĐỔI FILE NÀY)
 import React, { useState } from "react";
-import WritingTool from "../../components/ai-tools/WritingTool";
-import SpeakingTool from "../../components/ai-tools/SpeakingTool";
-import ReadingTool from "../../components/ai-tools/ReadingTool";
-import ListeningTool from "../../components/ai-tools/ListeningTool";
+import WritingTool from "../components-ATI/ai-tools/WritingTool";
+import SpeakingTool from "../components-ATI/ai-tools/SpeakingTool";
+import ReadingTool from "../components-ATI/ai-tools/ReadingTool";
+import ListeningTool from "../components-ATI/ai-tools/ListeningTool";
 
 
 const skills = [

@@ -17,8 +17,8 @@ import BoxComment from "../../components/tests/BoxComment";
 import RightSider from "../../components/tests/RightSider";
 import HistoryAttempts from "../../components/tests/BeforePage/HistoryAttempts";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useRef } from "react";
 import { retrieveCommentsOfTest } from "../../slice/commentSlice";
 
 const BeforeTestPage = () => {
@@ -27,9 +27,51 @@ const BeforeTestPage = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
+  const hasScrolled = useRef(false);
+  const { commentOfTest, loading } = useSelector((state) => state.comments);
+
   useEffect(() => {
-    dispatch(retrieveCommentsOfTest(id))
-  }, [])
+    dispatch(retrieveCommentsOfTest(id));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    const scrollToCommentId = location.state?.scrollToCommentId;
+
+    if (scrollToCommentId && !hasScrolled.current && !loading && commentOfTest.length > 0) {
+
+      const attemptScroll = (attempts = 0, maxAttempts = 15) => {
+        const commentElement = document.getElementById(scrollToCommentId);
+
+        if (commentElement) {
+
+          setTimeout(() => {
+            commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            commentElement.style.transition = 'background-color 0.3s ease';
+
+            setTimeout(() => {
+              commentElement.style.backgroundColor = '';
+            }, 2500);
+          }, 100);
+
+          hasScrolled.current = true;
+        } else if (attempts < maxAttempts) {
+
+          setTimeout(() => {
+            attemptScroll(attempts + 1, maxAttempts);
+          }, 200);
+        }
+      };
+
+      setTimeout(() => attemptScroll(), 300);
+    }
+
+    return () => {
+      if (location.state?.scrollToCommentId) {
+        hasScrolled.current = false;
+      }
+    };
+  }, [location.state, loading, commentOfTest]);
 
   const handleDoTest = () => navigate(location.pathname + "/doTests");
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { retrieveAllTests } from "../../slice/tests";
+import { retrieveAllTests } from "../slice/tests";
 
 // --- Icon Components (SVG nhúng trực tiếp) ---
 const LightningIcon = () => (
@@ -42,8 +42,8 @@ const TestCard = ({ test }) => {
   const progress = test.attempts > 0 ? Math.min((test.attempts / 5) * 100, 100) : 0;
 
   return (
-    <div className="bg-white border border-blue-300 rounded-lg shadow-sm p-4 flex flex-col items-center text-center h-full">
-      <div className="bg-blue-600 text-white rounded-md w-8 h-8 flex items-center justify-center font-bold text-lg mb-2">
+    <div className="bg-white border border-green-300 rounded-lg shadow-sm p-4 flex flex-col items-center text-center h-full">
+      <div className="bg-green-600 text-white rounded-md w-8 h-8 flex items-center justify-center font-bold text-lg mb-2">
         {test.type === 'IELTS' ? 'I' : 'W'}
       </div>
       <h3 className="text-sm font-semibold text-gray-700 min-h-[2.8rem] flex items-center">
@@ -52,12 +52,12 @@ const TestCard = ({ test }) => {
       <div className="text-xs text-gray-500 mb-1">
         {test.numOfQuestions} questions • {test.timeLimit} mins
       </div>
-      <div className="text-2xl font-bold text-blue-600 my-2">
+      <div className="text-2xl font-bold text-green-600 my-2">
         {Math.round(progress)}%
       </div>
       <Link
         to={`/tests/${test.id}/${test.title}`}
-        className="w-full !bg-blue-600 hover:!bg-blue-700 !text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
+        className="w-full !bg-green-600 hover:!bg-green-700 !text-white font-semibold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition duration-200"
       >
         <LightningIcon />
         Take Test
@@ -103,7 +103,7 @@ const Pagination = ({
         disabled={currentPage === 1}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === 1
           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-          : "bg-white text-gray-700 hover:bg-blue-100"
+          : "bg-white text-gray-700 hover:bg-green-100"
           } border border-gray-300`}
       >
         Prev
@@ -114,8 +114,8 @@ const Pagination = ({
           key={number}
           onClick={() => setCurrentPage(number)}
           className={`px-4 py-2 rounded-md transition-colors border ${currentPage === number
-            ? "bg-blue-600 text-white border-blue-600"
-            : "bg-white text-gray-700 hover:bg-blue-100 border-gray-300"
+            ? "bg-green-600 text-white border-green-600"
+            : "bg-white text-gray-700 hover:bg-green-100 border-gray-300"
             }`}
         >
           {number}
@@ -127,7 +127,7 @@ const Pagination = ({
         disabled={currentPage === totalPages}
         className={`px-3 py-2 rounded-md transition-colors ${currentPage === totalPages
           ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-          : "bg-white text-gray-700 hover:bg-blue-100"
+          : "bg-white text-gray-700 hover:bg-green-100"
           } border border-gray-300`}
       >
         Next
@@ -137,7 +137,7 @@ const Pagination = ({
 };
 
 // --- Component chính của trang ---
-function IeltsListListening() {
+function IeltsListSpeaking() {
   const [currentPage, setCurrentPage] = useState(1);
   const [testsPerPage] = useState(12);
   const dispatch = useDispatch();
@@ -151,7 +151,7 @@ function IeltsListListening() {
   const allTests = tests?.result || [];
 
   // Filter tests by SPEAKING category
-  const speakingTests = allTests.filter((test) => test.category === "LISTENING");
+  const speakingTests = allTests.filter((test) => test.category === "READING");
 
   // Logic phân trang
   const indexOfLastTest = currentPage * testsPerPage;
@@ -165,7 +165,7 @@ function IeltsListListening() {
         <header className="text-center mb-8">
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">
             Thư viện đề&nbsp;
-            <span className="inline-block border-b-4 border-blue-400 pb-1">
+            <span className="inline-block border-b-4 border-green-400 pb-1">
               IELTS Speaking
             </span>
             &nbsp;Academic
@@ -180,7 +180,7 @@ function IeltsListListening() {
           {/* Loading state */}
           {loading && (
             <div className="text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
               <p className="mt-4 text-gray-600">Đang tải dữ liệu...</p>
             </div>
           )}
@@ -225,4 +225,4 @@ function IeltsListListening() {
   );
 }
 
-export default IeltsListListening;
+export default IeltsListSpeaking;

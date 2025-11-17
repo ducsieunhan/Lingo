@@ -53,21 +53,36 @@ class CommentServiceImpl implements CommentService {
             comment.setReply(commentRepository.findById(dto.getReplyId()).orElse(null));
         }
 
-        if ("ANSWER".equalsIgnoreCase(String.valueOf(dto.getType()))) {
+        // Send notification when replying to a comment
+        if ("ANSWER".equalsIgnoreCase(String.valueOf(dto.getType()))
+                && dto.getCommentOwnerId() != null
+                && dto.getUserId() != null
+                && !dto.getUserId().equals(dto.getCommentOwnerId())) { // Don't notify if replying to own comment
             try {
+                log.info("Preparing notification for reply - From userId={} to commentOwnerId={}",
+                        dto.getUserId(), dto.getCommentOwnerId());
+
                 ReqNotificationPost requestNotify = new ReqNotificationPost();
                 requestNotify.setMessage(dto.getContent());
-                requestNotify.setUrl(String.format("/tests/%s/%s", dto.getTestId(), dto.getTestTitle().replaceAll("_", "-")));
+                // Include the comment ID in the URL so we can scroll to it
+                requestNotify.setUrl(String.format("/tests/%s/%s#comment-%s",
+                        dto.getTestId(),
+                        dto.getTestTitle() != null ? dto.getTestTitle().replaceAll("_", "-") : dto.getTestId(),
+                        dto.getReplyId())); // Add the parent comment ID as hash
                 requestNotify.setUserId(dto.getCommentOwnerId());
                 requestNotify.setTypeName("COMMENT_REPLY");
                 requestNotify.setTitle("Một bình luận của bạn vừa được phản hồi");
                 requestNotify.setNotificationTypeId(6);
 
                 notifyClient.createNotification(requestNotify);
-                log.info("Notification sent to userId={}", dto.getUserId());
+                log.info("Notification successfully sent to commentOwnerId={}", dto.getCommentOwnerId());
             } catch (Exception e) {
-                log.error("Error sending notification", e);
+                log.error("Failed to send notification to commentOwnerId={}: {}",
+                        dto.getCommentOwnerId(), e.getMessage(), e);
             }
+        } else {
+            log.debug("Notification not sent - Type: {}, CommentOwnerId: {}, UserId: {}",
+                    dto.getType(), dto.getCommentOwnerId(), dto.getUserId());
         }
 
         Comment saved = commentRepository.save(comment);

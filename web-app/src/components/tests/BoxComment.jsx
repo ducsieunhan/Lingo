@@ -1,14 +1,16 @@
-
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom"; // Add this import
 import { Card, Input, Button, Select } from "antd";
 import SingleComment from "./SingleComment";
 import { retrieveCommentsOfTest, addComment } from "../../slice/commentSlice";
 import { retrieveAccountByUsername } from "../../slice/accounts";
 
-const BoxComment = ({ testId }) => {
+const BoxComment = ({ testId, testTitle }) => {
   const { TextArea } = Input;
   const dispatch = useDispatch();
+  const location = useLocation(); // Add this
+  const hasScrolled = useRef(false); // Add this
   const { commentOfTest, loading } = useSelector((state) => state.comments);
   const { user } = useSelector((state) => state.authentication);
   const { currentUser } = useSelector((state) => state.accounts);
@@ -57,8 +59,10 @@ const BoxComment = ({ testId }) => {
       addComment({
         content: newComment,
         testId,
+        testTitle,
         type: "COMMENT",
         userId: currentUser?.keycloakId || null,
+        commentOwnerId: null, // No owner for top-level comments
       })
     ).then(() => {
       setCurrentCommentMode("COMMENT");
@@ -70,7 +74,7 @@ const BoxComment = ({ testId }) => {
   const handleSortChange = (value) => setSort(value);
 
   return (
-    <Card className="!shadow-lg !pb-3 !mt-7">
+    <Card id="comments-section" className="!shadow-lg !pb-3 !mt-7">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">
           Bình luận ({commentOfTest?.length || 0})
@@ -114,6 +118,7 @@ const BoxComment = ({ testId }) => {
                 key={comment.id}
                 comment={comment}
                 testId={testId}
+                testTitle={testTitle}
                 currentCommentMode={currentCommentMode}
                 setCurrentCommentMode={setCurrentCommentMode}
               />

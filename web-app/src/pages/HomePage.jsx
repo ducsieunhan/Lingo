@@ -3,13 +3,14 @@ import AuthContext from '../contexts/AuthContext';
 import { useDispatch } from 'react-redux';
 import { loginGoogle } from '../slice/authentication';
 import { toast } from 'react-toastify';
-import Hero from '../components/client/homepage/Hero';
-import WhyChoose from '../components/client/homepage/WhyChoose';
-import AIIELTS from '../components/client/homepage/AIIELTS';
-import SkillsCourses from '../components/client/homepage/SkillsCourses';
-import Testimonials from '../components/client/homepage/Testimonials';
-import CTASection from '../components/client/homepage/CTASection';
-import Partners from '../components/client/homepage/Partners';
+import Hero from '../components-ATI/homepage/Hero';
+import WhyChoose from '../components-ATI/homepage/WhyChoose';
+import Partners from '../components-ATI/homepage/Partners';
+import AIIELTS from '../components-ATI/homepage/AIIELTS';
+import SkillsCourses from '../components-ATI/homepage/SkillsCourses';
+import Testimonials from '../components-ATI/homepage/Testimonials';
+import CTASection from '../components-ATI/homepage/CTASection';
+
 
 const HomePage = () => {
     const dispatch = useDispatch();

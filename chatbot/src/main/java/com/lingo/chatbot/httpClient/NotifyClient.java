@@ -1,12 +1,10 @@
-package com.lingo.testservice.httpClient;
+package com.lingo.chatbot.httpClient;
 
 
 import com.lingo.common_library.dto.ReqNotificationPost;
 import com.lingo.common_library.dto.ResNotification;
-import com.lingo.testservice.model.dto.request.ReqBroadcast;
 import jakarta.validation.Valid;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +15,4 @@ public interface NotifyClient {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResNotification> createNotification(
             @Valid @RequestBody ReqNotificationPost reqNotificationPost);
-    @PostMapping(value = "/broadcast", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> broadcastNotification(@RequestBody ReqBroadcast req);
 }

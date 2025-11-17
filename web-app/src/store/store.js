@@ -13,6 +13,7 @@ import writingSlice from "../slice-ATI/writing";
 import notificationSlice from "../slice/notifications";
 import settingsSlice from "../slice/notificationSettings";
 import chatReducer from "../slice/chat";
+import commentSlice from "../slice/commentSlice";
 const reducer = {
     test: testReducer,
     questions: questionReducer,
@@ -27,7 +28,8 @@ const reducer = {
     speaking: speakingSlice,
     writing: writingSlice,
     notifications: notificationSlice,
-    settings: settingsSlice
+    settings: settingsSlice,
+    comments: commentSlice
 };
 export const store = configureStore({
     reducer: reducer,

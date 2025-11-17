@@ -3,7 +3,7 @@ import { X, Send, Paperclip } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { askAI, askAIWithFile } from "../../slice/chat";
 import { v4 as uuidv4 } from 'uuid';
-import chatbotImg from "../../components/client/images/icon_chatbot.png";
+import chatbotImg from "../images/icon_chatbot.png";
 import { useChatbot } from "../../contexts/ChatbotContext";
 const ChatMessage = ({ role, content }) => {
   const isUser = role === "user";

@@ -1,8 +1,9 @@
-import { CheckCircleOutlined, CloseOutlined, FireOutlined, TrophyOutlined } from "@ant-design/icons";
-import { Avatar, Button, Card, Dropdown, List, Spin } from "antd" // Thêm Spin
+import { CheckCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { Avatar, Button, Card, Dropdown, List, Spin } from "antd";
 import { useEffect, useState } from "react";
-import { BiSolidBell, BiSolidBellRing } from "react-icons/bi"
+import { BiSolidBell, BiSolidBellRing } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import { markNotificationAsRead, removeNotification, retrieveUserNotifications } from "../../slice/notifications";
 
 const formatTimeAgo = (isoString) => {
@@ -29,6 +30,7 @@ const Announce = () => {
   const [openAnnounce, setOpenAnnouce] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate(); // Initialize navigate
   const { notifications, loading } = useSelector(state => state.notifications);
   const { user } = useSelector((state) => state.authentication);
   const accountId = user?.sub;
@@ -40,11 +42,57 @@ const Announce = () => {
   }, [dispatch, accountId, openAnnounce]);
 
   const handleMarkAsReadClick = (e, notiId) => {
+    e.stopPropagation(); // Prevent triggering notification click
     dispatch(markNotificationAsRead(notiId));
   };
 
   const handleRemoveNotification = (e, notiId) => {
+    e.stopPropagation(); // Prevent triggering notification click
     dispatch(removeNotification(notiId));
+  };
+
+  const handleNotificationClick = (notification) => {
+    // Mark as read if unread
+    if (!notification.read) {
+      dispatch(markNotificationAsRead(notification.id));
+    }
+
+    // Close dropdown
+    setOpenAnnouce(false);
+
+    // Navigate to the URL
+    if (notification.url) {
+      // Check if URL contains a hash (e.g., #comment-123)
+      const [path, hash] = notification.url.split('#');
+
+      navigate(path);
+
+      // Wait for page to load, then scroll to the specific comment
+      setTimeout(() => {
+        if (hash) {
+          const commentElement = document.getElementById(hash);
+          if (commentElement) {
+            // Scroll to the comment
+            commentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Add highlight effect
+            commentElement.style.transition = 'background-color 0.3s ease';
+            commentElement.style.backgroundColor = '#fef3c7'; // Yellow highlight
+
+            // Remove highlight after 2 seconds
+            setTimeout(() => {
+              commentElement.style.backgroundColor = '';
+            }, 2000);
+          }
+        } else {
+          // If no hash, just scroll to comments section
+          const commentsSection = document.getElementById('comments-section');
+          if (commentsSection) {
+            commentsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }, 500); // Increased delay to ensure page is fully loaded
+    }
   };
 
   const handleOpenChange = (nextOpen) => {
@@ -68,7 +116,7 @@ const Announce = () => {
       style={{ width: 320 }}
       bodyStyle={{ padding: 0, maxHeight: 500, overflowY: 'auto' }}
     >
-      {loading && <Spin style={{ padding: '20px 0', width: '100%' }} />}
+      {loading && <Spin style={{ padding: '20px 0', width: '100%', display: 'block', textAlign: 'center' }} />}
       {!loading && (
         <List
           itemLayout="horizontal"
@@ -80,6 +128,13 @@ const Announce = () => {
                 backgroundColor: item.read ? "#f9fafb" : "#ffffff",
                 transition: "background-color 0.2s",
                 cursor: "pointer",
+              }}
+              onClick={() => handleNotificationClick(item)}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = item.read ? "#f3f4f6" : "#f0f9ff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = item.read ? "#f9fafb" : "#ffffff";
               }}
               actions={[
                 !item.read && (
@@ -138,7 +193,6 @@ const Announce = () => {
     </Card>
   );
 
-
   return (
     <Dropdown
       overlay={menu}
@@ -156,6 +210,7 @@ const Announce = () => {
         )}
       ></Button>
     </Dropdown>
-  )
-}
+  );
+};
+
 export default Announce;

@@ -47,7 +47,7 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
             </p>
             <Link
               to="/writing-test"
-              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               onClick={onClose}
             >
               <RocketOutlined />
@@ -67,7 +67,7 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
             </p>
             <Link
               to="/speaking"
-              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               onClick={onClose}
             >
               <FieldTimeOutlined />
@@ -120,7 +120,7 @@ const AIIELTS = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
+                className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg font-medium btn-hover academic-button"
               >
                 Academic
               </button>
@@ -142,7 +142,7 @@ const AIIELTS = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-900 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
+                className="bg-blue-600 hover:bg-blue-900 text-white px-6 py-2.5 rounded-lg font-medium btn-hover academic-button"
               >
                 Academic
               </button>

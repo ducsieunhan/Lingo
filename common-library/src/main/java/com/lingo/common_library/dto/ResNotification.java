@@ -22,4 +22,5 @@ public class ResNotification {
     private Date createdAt;
     private String type ;
     private String typeDescription ;
+    private String url;
 }

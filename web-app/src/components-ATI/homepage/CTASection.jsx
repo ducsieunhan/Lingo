@@ -1,7 +1,7 @@
 // src/components/CTASection.jsx
 import React from "react";
 import { Link } from "react-router-dom"; // Import Link
-import { useChatbot } from "../../../contexts/ChatbotContext";
+import { useChatbot } from "../../contexts/ChatbotContext";
 
 const CTASection = () => {
   const { setIsOpen } = useChatbot();

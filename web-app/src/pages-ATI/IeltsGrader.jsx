@@ -396,8 +396,8 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
           id="prompt-input"
           rows="5"
           className={`w-full p-4 rounded-lg border transition ${errors.prompt
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             } ${isLocked ? "bg-gray-100 cursor-not-allowed" : ""}`}
           placeholder="Ví dụ: 'The chart below shows the percentage of the population...'"
           value={promptText}
@@ -438,8 +438,8 @@ const InputColumn = ({ onGrade, isLoading, lockedData }) => {
           id="essay-input"
           rows="15"
           className={`w-full p-4 rounded-lg border transition ${errors.essay
-              ? "border-red-500 focus:ring-red-500"
-              : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+            ? "border-red-500 focus:ring-red-500"
+            : "border-gray-300 focus:ring-blue-500 focus:border-blue-500"
             }`}
           placeholder="Dán bài làm của bạn tại đây..."
           value={essayText}
