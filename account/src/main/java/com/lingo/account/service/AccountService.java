@@ -211,4 +211,10 @@ public class AccountService {
     this.accountRepository.save(account);
     log.info("Updated avatar for account: {}", account.getId());
   }
+
+  public ResAccountDTO getAccountByUsername(String username) throws NotFoundException {
+    Account account = (Account) this.accountRepository.findByUsername(username)
+            .orElseThrow(() -> new NotFoundException(Constants.ErrorCode.USER_NOT_FOUND));
+    return accountMapper.toResDTO(account);
+  }
 }
