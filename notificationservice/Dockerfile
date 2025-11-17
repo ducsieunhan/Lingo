@@ -14,5 +14,5 @@ WORKDIR /app
 
 COPY --from=build /app/notficationservice/target/*.jar notificationservice.jar
 
-EXPOSE 9002
+EXPOSE 9005
 ENTRYPOINT ["java", "-jar", "notificationservice.jar"]
