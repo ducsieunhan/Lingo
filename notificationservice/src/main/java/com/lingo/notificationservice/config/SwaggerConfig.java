@@ -12,8 +12,8 @@ public class SwaggerConfig {
   OpenAPI customOpenAPI() {
     return new OpenAPI()
             .info(new Info()
-                    .title("Simple CRUD API")
-                    .version("1.0")
-                    .description("Documentation of the API using Swaager OpenAPI"));
+                    .title("Lingo Notification Service API")
+                    .version("1.0.0")
+                    .description("API documentation for Lingo Notification Service"));
   }
 }

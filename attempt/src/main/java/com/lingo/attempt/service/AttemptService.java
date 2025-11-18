@@ -1,9 +1,6 @@
 package com.lingo.attempt.service;
 
-import com.lingo.attempt.dto.ReqAttemptDTO;
-import com.lingo.attempt.dto.ResAttemptDTO;
-import com.lingo.attempt.dto.ResAttemptShortDTO;
-import com.lingo.attempt.dto.ResCorrectAns;
+import com.lingo.attempt.dto.*;
 import com.lingo.attempt.mapper.AttemptMapper;
 import com.lingo.attempt.model.Attempt;
 import com.lingo.attempt.model.AttemptSectionResult;
@@ -41,6 +38,8 @@ public class AttemptService {
   }
   
   public Long createAttempt(ReqAttemptDTO req) {
+    logger.info("Length type test: {}", req.getField().length);
+
     validateRequest(req);
     Attempt attempt = buildAttempt(req);
 
@@ -53,6 +52,30 @@ public class AttemptService {
 
     attempt = this.attemptRepository.save(attempt);
     return attempt.getAttemptId();
+  }
+
+
+  public ResAttemptDTO updateAttempt(ReqAttemptPut req) {
+    if (req == null || req.getAttemptId() == null) {
+      throw new EmptyException("Attempt ID is required");
+    }
+    Attempt existingAttempt = this.attemptRepository.findById(Long.valueOf(req.getAttemptId()))
+            .orElseThrow(() -> new NotFoundException(Constants.ATTEMPT_NOT_FOUND));
+    if (req.getUserId() != null) {
+      existingAttempt.setUserId(req.getUserId());
+    }
+    if (req.getScore() != null) {
+      existingAttempt.setScore(req.getScore());
+    }
+    if (req.getTimeTaken() != null) {
+      existingAttempt.setTimeTaken(req.getTimeTaken());
+    }
+    if (req.getType() != null) {
+      existingAttempt.setType(req.getType());
+    }
+    Attempt updatedAttempt = this.attemptRepository.save(existingAttempt);
+
+    return buildResponse(updatedAttempt, updatedAttempt.getUserAnswers(), updatedAttempt.getSectionResults());
   }
 
   public ResAttemptDTO getSingleAttempt(Long attemptId) {
@@ -103,6 +126,41 @@ public class AttemptService {
     }
   }
 
+  public void deleteAttempt(Long attemptId) {
+    if (attemptId == null) {
+      throw new EmptyException("Attempt ID is required");
+    }
+
+    Attempt attempt = this.attemptRepository.findById(attemptId)
+            .orElseThrow(() -> new NotFoundException(Constants.ATTEMPT_NOT_FOUND));
+
+    logger.info("Deleting attempt with ID: {}", attemptId);
+    this.attemptRepository.delete(attempt);
+    logger.info("Successfully deleted attempt with ID: {}", attemptId);
+  }
+
+  public long countUserAttempts(String userId) {
+    if (userId == null || userId.trim().isEmpty()) {
+      throw new EmptyException("User ID is required");
+    }
+
+    long count = this.attemptRepository.countByUserId(userId);
+    logger.info("User {} has {} attempts", userId, count);
+    return count;
+  }
+
+  public Long getMaxScoreByUser(String userId) {
+    if (userId == null || userId.trim().isEmpty()) {
+      throw new EmptyException("User ID is required");
+    }
+
+    Optional<Long> maxScore = this.attemptRepository.findMaxScoreByUserId(userId);
+    Long result = maxScore.orElse(0L);
+    logger.info("Max score for user {}: {}", userId, result);
+    return result;
+  }
+
+
   private void validateRequest(ReqAttemptDTO req) {
     if (req == null || req.getAnswers() == null || req.getAnswers().isEmpty()) {
       throw new EmptyException(Constants.EMPTY_REQUEST);
@@ -142,6 +200,7 @@ public class AttemptService {
   private Attempt buildAttempt(ReqAttemptDTO req) {
     Attempt attempt = new Attempt();
     attempt.setQuizId(req.getQuizId());
+    attempt.setTestTitle(req.getTestTitle());
     attempt.setTimeTaken(req.getTimeTaken());
     attempt.setType(req.getType());
     // user id get with JWT
@@ -290,8 +349,4 @@ public class AttemptService {
 
     return currentAttempt;
   }
-
-
-
-
 }

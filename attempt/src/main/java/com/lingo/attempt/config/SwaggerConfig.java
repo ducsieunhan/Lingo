@@ -12,8 +12,8 @@ public class SwaggerConfig {
   OpenAPI customOpenAPI() {
     return new OpenAPI()
             .info(new Info()
-                    .title("Simple CRUD API")
+                    .title("Attempt Management API")
                     .version("1.0")
-                    .description("Documentation of the API using Swaager OpenAPI"));
+                    .description("API for managing user quiz and test attempts"));
   }
 }

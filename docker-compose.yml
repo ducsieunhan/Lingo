@@ -141,6 +141,25 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=docker
       - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
+  notificationservice:
+    build:
+      context: .
+      dockerfile: notificationservice/Dockerfile
+    ports:
+      - "9005:9005"
+    networks:
+      - backend
+    depends_on:
+      discoveryserver:
+        condition: service_started
+      mysql:
+        condition: service_healthy
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/notificationservice
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
+      - HOST_IP_ADDRESS=${HOST_IP_ADDRESS}
   frontend:
     build:
       context: ./web-app

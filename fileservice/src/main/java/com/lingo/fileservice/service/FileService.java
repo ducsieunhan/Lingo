@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,8 +68,7 @@ class FileServiceImpl implements FileService {
         // String objectName;
         @Value("${spring.cloud.gcp.credentials.location}")
         String credentialFilePath;
-        Dotenv dotenv= Dotenv.load();
-        String credentialFileName= dotenv.get("CREDENTIAL_FILE_NAME");
+
         final MediaResourceClient mediaResourceClient;
         final QuestionClient questionClient;
 
@@ -81,7 +79,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream(credentialFileName))))
+                                        .getResourceAsStream(credentialFilePath))))
                         .build().getService();
                 Page<Blob> blobs = storage.list(bucketName, BlobListOption.pageSize(1));
                 return blobs.getValues().iterator().hasNext();
@@ -93,7 +91,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream(credentialFileName))))
+                                        .getResourceAsStream(credentialFilePath))))
                                 .build().getService();
                 String objectName = folderName.endsWith("/") ? folderName : folderName + "/";
 
@@ -127,7 +125,7 @@ class FileServiceImpl implements FileService {
                 Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream(credentialFileName))))
+                                        .getResourceAsStream(credentialFilePath))))
                         .build().getService();
                 String objectName = file.getOriginalFilename();
                 String sanitizedFileName = objectName.replaceAll(" ", "_");
@@ -196,7 +194,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream(credentialFileName))))
+                                        .getResourceAsStream(credentialFilePath))))
                                 .build().getService();
                 Blob blob = storage.get(bucketName, dto.getUpdatedFileName());
                 if (blob == null) {

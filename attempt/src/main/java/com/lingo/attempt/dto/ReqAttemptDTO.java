@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class ReqAttemptDTO {
   private Long quizId;
+  private String testTitle;
   private String userId;
   private Long timeTaken;
   private String type; // toeic ielts

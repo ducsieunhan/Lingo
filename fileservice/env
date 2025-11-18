@@ -1,0 +1,35 @@
+# gcs properties
+GOOGLE_PROJECT_ID=lingo-472101
+GOOGLE_PRIVATE_KEY_ID=15e886f10d3f20ae4d05db02119f97d89cb377fd
+GOOGLE_PRIVATE_KEY=-----BEGIN PRIVATE KEY-----
+            MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDaSADxD1m37jqP
+            qFB8uJ7a4Z2hXEb80yhWNvf5m4pTOFXwiE8S1ccX5h+qKq2xOGKdeNFTP3mRsoLk
+            HjfiR9E5xME4LEdvEiUEvBZXoWbHJTQ5bYJXuKSDJopZM4u58FIngJpUUk+sNGGX
+            KKiTlEalvgYCJSViVHJr2yuqP9JUghHHwI5YoD5Qo7MlfrlP42ZybLkjxxxdvb+d
+            CL7QwVBgQypNQELot1INHyjXo4FCi57kfSJgTnLsnc3FS0e3waRW6MX6hVJO13LR
+            fwuLts0Ys4O6DTDvU8ff05cZtRkqc6k5z6Z0biwEwHiZCWCbTzMLlgCQgj8zX5oF
+            tP4ZnjolAgMBAAECggEABeASRmrHW3AKG3vITtMZU4LnH0TAlGWKnGd2XT2Wh47o
+            oUTJ/BPM/BOxnn7vlemSnfJ2j+sRdp57b3BwyKJuO0PUf5KRiafPX0VAxLMPdSTH
+            NxR/gaTyqKUM7EG67RJO48lOXh6pDlWKmur5Pp+rFyL6PmyJiRAE1GpdzoNRQf0B
+            hkPjQV7L6ERZvDGzwzjHxW0vEA72KAvOyIfxFT0/8SRT8P5nV8LwM7s6l12UXYnE
+            aQRQRcOY4pNcWrQkmsBB8hgqmI1bKbxr9BL0pLbmC2pO6lkkQ0j4feOKQ0GaDzaA
+            o+VgfJQjYyGFVNu9vzAYekI+NFbutoh3ZAB4nDIEAQKBgQD6iOA+g1nBnHue8shJ
+            dc5taXvcV04gPRgd6SlsKUVTFc+hPZR6xDnJPyZhQVdUdN3hU6BHOWeKuiIWAPo1
+            QSFpiLHyV+taYeT2yTK9ZZI7kGX09OhPY1Fpe4y1Rz6umhMGfObvH5dTW7T4oPxi
+            YnVloS/107IEfx2ib+qRwr3M5QKBgQDfCwHClt07Pkcioatp6a01qsLunSiN+gyM
+            wWiqt/ryfqg0HdfZ0uO1HZUtYN3rVclSWZw7yzO6mltdfWx0umtNnuMieo3RvpFL
+            x3DFx5aGv2YuT+AA1Pkc9fo7+WAql0MNM55bVCsGC5kTEgR87R5Zjf6lWx/lKHn/
+            EEvJH1kkQQKBgAuYNBCQkaHVNR9pCv3jVtdXb2UGIVZ6nVgdB067JjsvIjnLGMkJ
+            tcbrhkIv/POqqO4ZqaxCKtmPva4ZA3tddUdmDR4zFXBMYYVOUGvVfIwHJcDNaMbr
+            yMPB9QQatPrtpH3DYAinBKDV+K0c/jErb1VxvT96OZ3dqChxV4DBa3lFAoGAW/63
+            OCJvl1rljkQuZl3qgkMvaanKq1yiRoATgq6lw9U33V8dw4s3PmG4QOI+Ri24/s1V
+            Ilh6upGl85ai4DZvwbEyL+tqiUNXvHDDc+ARlvxk0d9CHjW5lhdiodAGuSpwjoZm
+            33aE1FZ+SZ5Z2YkXxopJqLxAGI2sW+bFy2uxocECgYALO8Ug9Jg48ptsU7pT6wt0
+            Ap6SYxHIts6GOOHpX/leZNg5EO4xLM0oO5+293zFAu/81O/jksP3bwOMz4UCZgoI
+            MQnhYWGHCiEmkmMsZH7Pocae8Ae5ZimDRLcRjoC/BVjVkhALR43Qnyx5/xM4wo03
+            bbh+AU0Lfe5wT2VWPNrO1A==
+            -----END PRIVATE KEY-----
+GOOGLE_CLIENT_EMAIL=lingo-upload-service@lingo-472101.iam.gserviceaccount.com
+GOOGLE_CLIENT_ID=112798697848738400131
+
+CREDENTIAL_FILE_NAME=keys/lingo-472101-5107c163d671.json

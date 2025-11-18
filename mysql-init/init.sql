@@ -16,6 +16,11 @@ GRANT ALL PRIVILEGES ON `attemptservice`.* TO 'attempt'@'%';
 -- TEST_SERVICE
 CREATE DATABASE IF NOT EXISTS `testservice` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'test'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON `testservice`.* TO 'test'@'%';
+GRANT ALL PRIVILEGES ON `testservice`.* TO 'test'@'%';1
+
+-- NOTIFICATION_SERVICE
+CREATE DATABASE IF NOT EXISTS `notificationservice` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS 'notification'@'%' IDENTIFIED BY '123456';
+GRANT ALL PRIVILEGES ON `notificationservice`.* TO 'notification'@'%';1
 
 FLUSH PRIVILEGES;

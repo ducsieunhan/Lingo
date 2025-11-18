@@ -13,6 +13,7 @@ import java.util.List;
 public class ResAttemptShortDTO {
   private Long attemptId;
   private Long quizId;
+  private String testTitle;
   private Date submittedAt;
   private Long score;
   private Long timeTaken;

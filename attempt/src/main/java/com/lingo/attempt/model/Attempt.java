@@ -21,6 +21,7 @@ public class Attempt {
   private Long attemptId;
   private String userId;
   private Long quizId;
+  private String testTitle;
   private Long score;
   private Long timeTaken;
   private Date submittedAt;

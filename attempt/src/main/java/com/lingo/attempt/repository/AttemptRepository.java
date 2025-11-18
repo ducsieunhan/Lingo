@@ -14,7 +14,13 @@ import java.util.Optional;
 public interface AttemptRepository extends JpaRepository<Attempt, Long> {
   List<Attempt> findByUserId(String userId);
 
-  @Query("SELECT new com.lingo.attempt.dto.ResAttemptShortDTO(a.attemptId, a.quizId, a.submittedAt, a.score, a.timeTaken, a.type,null) " +
+  @Query("SELECT new com.lingo.attempt.dto.ResAttemptShortDTO(a.attemptId, a.quizId, a.testTitle, a.submittedAt, a.score, a.timeTaken, a.type,null) " +
           "FROM Attempt a WHERE a.userId = :userId")
   List<ResAttemptShortDTO> getUserAttemptsShort(String userId);
+
+  long countByUserId(String userId);
+
+  @Query("SELECT MAX(a.score) FROM Attempt a WHERE a.userId = :userId")
+  Optional<Long> findMaxScoreByUserId(String userId);
+
 }
