@@ -43,9 +43,8 @@ const Hero = () => {
                             Practice Tests
                         </h1>
                         <p className="text-gray-700 md:text-2xl mb-8 leading-relaxed">
-                            LexiPrep for IELTS – Practice & take mock tests online with a free
-                            test bank, including real & Cambridge tests. Simulated
-                            computer-based interface, with instant scoring.
+     Lingo for IELTS – Practice & take mock tests online with a free test bank, including real & Cambridge tests. Simulated computer-based interface, with instant scoring.
+
                         </p>
                         <div className="flex flex-col sm:flex-row gap-4">
                             <Link

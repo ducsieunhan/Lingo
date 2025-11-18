@@ -29,41 +29,41 @@ const practiceSkills = [
     iconBg: "bg-blue-100",
     iconColor: "text-blue-600",
   },
-  {
-    Icon: PenSquare,
-    title: "Writing",
-    description:
-      "Practice & take IELTS Writing mock tests with tasks of the same difficulty as real IELTS exams.",
-    buttons: [
-      {
-        type: "link",
-        text: "Academic",
-        href: "/writing",
-        style: "academic",
-      },
-    ],
-    // === THAY ĐỔI: Đổi sang màu Blue ===
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-  },
-  {
-    Icon: Mic,
-    title: "Speaking",
-    description:
-      "Practice & take IELTS Speaking mock tests with real exam-level difficulty.",
-    // === THAY ĐỔI: Bỏ "Coming Soon" ===
-    buttons: [
-      {
-        type: "link",
-        text: "Academic",
-        href: "/speaking", // Cần đảm bảo trang AI có tab Speaking
-        style: "academic",
-      },
-    ],
-    // === THAY ĐỔI: Đổi sang màu Blue ===
-    iconBg: "bg-blue-100",
-    iconColor: "text-blue-600",
-  },
+  // {
+  //   Icon: PenSquare,
+  //   title: "Writing",
+  //   description:
+  //     "Practice & take IELTS Writing mock tests with tasks of the same difficulty as real IELTS exams.",
+  //   buttons: [
+  //     {
+  //       type: "link",
+  //       text: "Academic",
+  //       href: "/writing",
+  //       style: "academic",
+  //     },
+  //   ],
+  //   // === THAY ĐỔI: Đổi sang màu Blue ===
+  //   iconBg: "bg-blue-100",
+  //   iconColor: "text-blue-600",
+  // },
+  // {
+  //   Icon: Mic,
+  //   title: "Speaking",
+  //   description:
+  //     "Practice & take IELTS Speaking mock tests with real exam-level difficulty.",
+  //   // === THAY ĐỔI: Bỏ "Coming Soon" ===
+  //   buttons: [
+  //     {
+  //       type: "link",
+  //       text: "Academic",
+  //       href: "/speaking", // Cần đảm bảo trang AI có tab Speaking
+  //       style: "academic",
+  //     },
+  //   ],
+  //   // === THAY ĐỔI: Đổi sang màu Blue ===
+  //   iconBg: "bg-blue-100",
+  //   iconColor: "text-blue-600",
+  // },
 ];
 
 // 2. Component phụ để render các nút (Academic, General, Disabled)

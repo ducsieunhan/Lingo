@@ -1,10 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
-import { X, Send, Paperclip } from "lucide-react";
+import { X, Send, Paperclip, XCircle } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { askAI, askAIWithFile } from "../../slice/chat";
 import { v4 as uuidv4 } from 'uuid';
-import chatbotImg from "../images/icon_chatbot.png";
+import chatbotImg from "../images/Lingo.png";
 import { useChatbot } from "../../contexts/ChatbotContext";
+
 const ChatMessage = ({ role, content }) => {
   const isUser = role === "user";
   const renderContent = (text) => {
@@ -34,6 +35,7 @@ export default function Chatbot() {
   const { isOpen, setIsOpen } = useChatbot();
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState("");
+  const [attachedFile, setAttachedFile] = useState(null);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -42,14 +44,16 @@ export default function Chatbot() {
 
   const userId = useSelector((state) => state.authentication?.user?.id);
   const [conversationId, setConversationId] = useState("");
+
   useEffect(() => {
     if (userId) {
       setConversationId(userId)
     }
     setConversationId(uuidv4())
-
   }, []);
+
   console.log("conversationId", conversationId)
+
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -70,7 +74,6 @@ export default function Chatbot() {
       ]);
     }
   }, [isOpen]);
-
 
   useEffect(() => {
     if (messageResponse) {
@@ -97,21 +100,28 @@ export default function Chatbot() {
   }, [error]);
 
   const handleSendMessage = async () => {
-    if (!inputValue.trim()) return;
+    if (!inputValue.trim() && !attachedFile) return;
+
+    const messageToSend = inputValue || `Analyzing file: ${attachedFile?.name}`;
 
     const userMessage = {
       id: Date.now(),
       type: "user",
-      content: inputValue,
+      content: attachedFile ? `${inputValue}\n📎 ${attachedFile.name}` : inputValue,
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMessage]);
 
-    const messageToSend = inputValue;
+    const currentFile = attachedFile;
     setInputValue("");
+    setAttachedFile(null);
 
     try {
-      await dispatch(askAI({ userId: conversationId, message: messageToSend })).unwrap();
+      if (currentFile) {
+        await dispatch(askAIWithFile({ file: currentFile, userId: conversationId, message: messageToSend })).unwrap();
+      } else {
+        await dispatch(askAI({ userId: conversationId, message: messageToSend })).unwrap();
+      }
     } catch (err) {
       console.error("Failed to send message:", err);
     }
@@ -120,21 +130,13 @@ export default function Chatbot() {
   const handleFileUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const fileMessage = {
-        id: Date.now(),
-        type: "user",
-        content: `📎 Uploaded: ${file.name}`,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, fileMessage]);
+      setAttachedFile(file);
       event.target.value = null;
-
-      try {
-        await dispatch(askAIWithFile({ file, userId: conversationId, message: `Analyzing file: ${file.name}` })).unwrap();
-      } catch (err) {
-        console.error("Failed to upload file:", err);
-      }
     }
+  };
+
+  const handleRemoveFile = () => {
+    setAttachedFile(null);
   };
 
   const handleKeyPress = (e) => {
@@ -150,17 +152,18 @@ export default function Chatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="bg-blue-700 hover:bg-blue-800 text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center group relative transition-all duration-300 hover:scale-110"
+          // Thêm cursor-pointer
+          className="text-white w-16 h-16 rounded-full shadow-2xl flex items-center justify-center group relative transition-all duration-300 hover:scale-110 cursor-pointer"
           aria-label="Open AI Chatbot"
         >
-          <img src={chatbotImg} alt="AI Bot" className="w-15 h-15" />
+          <img src={chatbotImg} alt="AI Bot" className="w-20 h-15" />
         </button>
       )}
 
       {/* Expanded Chat Window */}
       {isOpen && (
         <div
-          className="w-96 h-[600px] bg-white rounded-2xl shadow-2xl flex flex-col border border-gray-200"
+          className="w-96 h-[400px] bg-white rounded-2xl shadow-2xl flex flex-col border border-gray-200"
           style={{
             background: 'linear-gradient(135deg, #1e40af 0%, #172554 100%)'
           }}
@@ -168,16 +171,17 @@ export default function Chatbot() {
           {/* Header */}
           <div className="flex justify-between items-center text-white px-5 py-4 rounded-t-2xl">
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center p-1">
+              <div className="w-15 h-15 rounded-lg flex items-center justify-center p-1">
                 <img src={chatbotImg} alt="LexiBot" className="object-contain" />
               </div>
               <div>
-                <h3 className="font-bold text-lg">Discuss with LexiPrep</h3>
+                <h3 className="font-bold text-lg">Chat with Lingo</h3>
               </div>
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-gray-300 hover:text-white hover:bg-white/20 rounded-full p-2"
+              // Thêm cursor-pointer
+              className="text-gray-300 hover:text-white hover:bg-white/20 rounded-full p-2 cursor-pointer"
               aria-label="Close chat"
             >
               <X size={20} />
@@ -217,8 +221,24 @@ export default function Chatbot() {
           {/* Input Area */}
           <div className="p-4 border-t border-gray-200 bg-gray-50 rounded-b-2xl">
             <div className="text-center text-xs text-gray-400 mb-2">
-              Powered by <span className="font-semibold text-gray-500">LexiBot</span> — AI may occasionally make mistakes.
+              Powered by <span className="font-semibold text-gray-500">Lingo</span> — AI may occasionally make mistakes.
             </div>
+
+            {/* File Preview */}
+            {attachedFile && (
+              <div className="mb-2 flex items-center gap-2 bg-blue-50 border border-blue-200 rounded-lg px-3 py-2">
+                <Paperclip size={16} className="text-blue-600" />
+                <span className="text-sm text-blue-700 flex-1 truncate">{attachedFile.name}</span>
+                <button
+                  onClick={handleRemoveFile}
+                  // Thêm cursor-pointer
+                  className="text-blue-600 hover:text-blue-800 cursor-pointer"
+                  title="Remove file"
+                >
+                  <XCircle size={18} />
+                </button>
+              </div>
+            )}
 
             <div className="relative flex items-center">
               {/* File Upload */}
@@ -231,7 +251,8 @@ export default function Chatbot() {
               />
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="text-gray-400 hover:text-blue-600 p-2 rounded-full absolute left-2 top-1/2 -translate-y-1/2"
+                // Thêm cursor-pointer
+                className="text-gray-400 hover:text-blue-600 p-2 rounded-full absolute left-2 top-1/2 -translate-y-1/2 cursor-pointer"
                 title="Upload file"
                 disabled={loading}
               >
@@ -257,8 +278,9 @@ export default function Chatbot() {
               {/* Send Button */}
               <button
                 onClick={handleSendMessage}
-                disabled={!inputValue.trim() || loading}
-                className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white w-9 h-9 rounded-full flex items-center justify-center ml-1"
+                disabled={(!inputValue.trim() && !attachedFile) || loading}
+                // Thêm cursor-pointer
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white w-9 h-9 rounded-full flex items-center justify-center ml-1 cursor-pointer"
               >
                 <Send size={18} />
               </button>

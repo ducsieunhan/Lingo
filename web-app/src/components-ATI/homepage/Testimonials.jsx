@@ -65,8 +65,7 @@ const Testimonials = () => {
             Feedback from our users
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Hàng nghìn học viên đã đạt mục tiêu IELTS và thành công trong hành
-            trình du học, định cư
+            Thousands of students have achieved their IELTS goals and succeeded in their journeys of studying abroad and settling down.
           </p>
         </div>
 
