@@ -79,7 +79,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                                        .getResourceAsStream(credentialFilePath))))
                         .build().getService();
                 Page<Blob> blobs = storage.list(bucketName, BlobListOption.pageSize(1));
                 return blobs.getValues().iterator().hasNext();
@@ -91,7 +91,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                                        .getResourceAsStream(credentialFilePath))))
                                 .build().getService();
                 String objectName = folderName.endsWith("/") ? folderName : folderName + "/";
 
@@ -125,7 +125,7 @@ class FileServiceImpl implements FileService {
                 Storage storage = StorageOptions.newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                                        .getResourceAsStream(credentialFilePath))))
                         .build().getService();
                 String objectName = file.getOriginalFilename();
                 String sanitizedFileName = objectName.replaceAll(" ", "_");
@@ -194,7 +194,7 @@ class FileServiceImpl implements FileService {
                                 .newBuilder().setProjectId(projectId)
                         .setCredentials(ServiceAccountCredentials
                                 .fromStream(Objects.requireNonNull(this.getClass().getClassLoader()
-                                        .getResourceAsStream("keys/lingo-472101-15e886f10d3f.json"))))
+                                        .getResourceAsStream(credentialFilePath))))
                                 .build().getService();
                 Blob blob = storage.get(bucketName, dto.getUpdatedFileName());
                 if (blob == null) {
