@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface MediaResourceRepository extends JpaRepository<MediaResource, Long> {
     Optional<MediaResource> findByResourceContent(String resourceContent);
 
-    // Optional<MediaResource> findByQuestionId(long id);
+//     Optional<MediaResource> findFirstByQuestionId(long id);
 }

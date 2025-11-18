@@ -16,6 +16,7 @@ import com.lingo.testservice.repository.QuestionRepository;
 import com.lingo.testservice.repository.TestRepository;
 import com.lingo.testservice.utils.enums.MediaResourceCategory;
 
+import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -83,10 +84,12 @@ class QuestionServiceImpl implements QuestionService {
         return mapper.toQuestionResponse(question);
     }
 
+    @Transactional
     @Override
     public ResQuestionDTO update(ReqUpdateQuestionDTO dto, long id) {
         Optional<Question> questionOptional = repository.findById(id);
-        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getResourceContent());
+
+//        Optional<MediaResource> resourceOptional = resourceRepository.findByResourceContent(dto.getResourceContent());
         questionOptional.ifPresent(question -> {
             if (dto.getPart() != null) {
                 question.setPart(dto.getPart());
@@ -107,9 +110,10 @@ class QuestionServiceImpl implements QuestionService {
                 question.setTitle(dto.getTitle());
             }
             question.setExplanationResourceContent(dto.getExplanationResourceContent());
-            if (resourceOptional.isPresent()) {
-                MediaResource resource = resourceOptional.get();
+            if (question.getResource() != null) {
+                MediaResource resource = question.getResource();
                 resource.setResourceContent(dto.getResourceContent());
+//                resourceRepository.save(resource);
                 question.setResource(resource);
             }
 

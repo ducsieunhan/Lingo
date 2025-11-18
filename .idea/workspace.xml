@@ -5,21 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/config/OpenApiConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/config/OpenApiConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/config/OpenApiConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/config/OpenApiConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/chatbot/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commentservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/controller/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/commentservice/src/main/java/com/lingo/commentservice/controller/CommentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileservice/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/controller/FileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/controller/FileController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/AnswerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/AnswerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/MediaResourceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/MediaResourceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/QuestionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/QuestionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/controller/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/repository/MediaResourceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/repository/MediaResourceRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/QuestionService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,15 +49,11 @@
                 <list>
                   <RecentBranch>
                     <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1763399175" />
-                  </RecentBranch>
-                  <RecentBranch>
-                    <option name="branchName" value="IntegrateNotify" />
-                    <option name="lastUsedInstant" value="1763306527" />
+                    <option name="lastUsedInstant" value="1763469990" />
                   </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="observability" />
-                    <option name="lastUsedInstant" value="1763304798" />
+                    <option name="lastUsedInstant" value="1762099354" />
                   </RecentBranch>
                 </list>
               </option>
@@ -102,47 +88,41 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Application.AccountApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ApiGatewayApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.AttemptApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.ChatbotApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.CommentserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.DiscoveryserverApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.FileserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.NotificationserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.TestserviceApplication.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Project/Lingo/fileservice/src/main/resources&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Application.AccountApplication.executor": "Run",
+    "Application.ApiGatewayApplication.executor": "Run",
+    "Application.AttemptApplication.executor": "Run",
+    "Application.ChatbotApplication.executor": "Run",
+    "Application.CommentserviceApplication.executor": "Run",
+    "Application.DiscoveryserverApplication.executor": "Run",
+    "Application.FileserviceApplication.executor": "Run",
+    "Application.NotificationserviceApplication.executor": "Run",
+    "Application.TestserviceApplication.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Project/Lingo/fileservice/src/main/resources/keys",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.keymap"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Project\Lingo\fileservice\src\main\resources" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.lingo.chatbot.config" />
-      <recent name="com.lingo.fileservice.config" />
-      <recent name="com.lingo.testservice.config" />
-      <recent name="com.lingo.testservice.httpClient" />
+      <recent name="C:\Project\Lingo\fileservice\src\main\resources\keys" />
     </key>
   </component>
   <component name="RunManager" selected="Application.ChatbotApplication">
-    <configuration name="ApiGatewayApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.api_gateway.ApiGatewayApplication" />
-      <module name="api-gateway" />
+    <configuration name="AccountApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.account.AccountApplication" />
+      <module name="account" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.api_gateway.*" />
+          <option name="PATTERN" value="com.lingo.account.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -189,12 +169,12 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TestserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lingo.testservice.TestserviceApplication" />
-      <module name="testservice" />
+    <configuration name="NotificationserviceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.lingo.notificationservice.NotificationserviceApplication" />
+      <module name="notificationservice" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lingo.testservice.*" />
+          <option name="PATTERN" value="com.lingo.notificationservice.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -217,11 +197,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.ChatbotApplication" />
         <item itemvalue="Application.FileserviceApplication" />
-        <item itemvalue="Application.TestserviceApplication" />
+        <item itemvalue="Application.ChatbotApplication" />
+        <item itemvalue="Application.NotificationserviceApplication" />
         <item itemvalue="Application.CommentserviceApplication" />
-        <item itemvalue="Application.ApiGatewayApplication" />
+        <item itemvalue="Application.AccountApplication" />
       </list>
     </recent_temporary>
   </component>
