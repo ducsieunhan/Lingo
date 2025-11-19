@@ -120,7 +120,7 @@ export default function WritingAnalysisPanel({ width, aiData, wordCount }) {
                 >
                   <div className="bg-white w-16 h-16 rounded-full flex items-center justify-center">
                     <span className="text-xl font-bold text-teal-600">
-                      {overallScore}
+                      {overallScore.toFixed(1)}
                     </span>
                   </div>
                 </div>

@@ -34,7 +34,7 @@ const AfterTestPage = () => {
 
   useEffect(() => {
     dispatch(retrieveAttempt(attemptId));
-  }, [attemptId, dispatch]);
+  }, [attemptId]);
 
   // console.log(attempt);
 
@@ -118,13 +118,13 @@ const AfterTestPage = () => {
 
             <Card className="!shadow-lg !pb-3">
               <div className="flex justify-between items-center mb-4 flex-col md:flex-row md:gap-0 !gap-3">
-                <h1 className="text-2xl font-bold text-gray-800">Test result - {attempt?.testTitle?.includes("_") ? attempt.testTitle.split("_").join(" ") : attempt.testTitle}</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Kết Quả Bài Làm - New Economy TOEIC Test 10</h1>
                 <div className="flex !space-x-2">
                   <Button icon={<ArrowLeftOutlined />} size="middle">
-                    <span className="text-gray-700">Back to test list</span>
+                    <span className="text-gray-700">Quay lại danh sách</span>
                   </Button>
                   <Button icon={<EyeFilled />} size="middle" type="primary" onClick={handleScroll} >
-                    <span>See result</span>
+                    <span>Xem đáp án</span>
                   </Button>
                 </div>
               </div>
@@ -136,9 +136,9 @@ const AfterTestPage = () => {
               <div className="text-center mb-6">
                 <div className="flex items-center justify-center space-x-3 mb-4">
                   <CrownOutlined className="text-4xl !text-yellow-300" />
-                  <h2 className="text-4xl font-bold text-gray-800">{totalPoint.toFixed(1) + "/" + maxPoint.toFixed(1)}</h2>
+                  <h2 className="text-4xl font-bold text-gray-800">{totalPoint + "/" + maxPoint}</h2>
                 </div>
-                <p className="text-lg text-gray-600">{attempt.type} Score</p>
+                <p className="text-lg text-gray-600">Điểm TOEIC</p>
               </div>
 
               <Row gutter={[16, 16]}>
@@ -151,8 +151,11 @@ const AfterTestPage = () => {
             </Card>
 
             <Card className="!shadow-lg !pb-3 !mt-7">
-              <h3 className="text-xl font-bold text-gray-800 mb-6">Detailed scores by skill</h3>
+              <h3 className="text-xl font-bold text-gray-800 mb-6">Điểm chi tiết theo kỹ năng</h3>
               <div className="space-y-6">
+                {/* <SectionPoint skill="Listening" score={495} total={495} percent={100} />
+                <SectionPoint skill="Reading" score={495} total={495} percent={90} /> */}
+
                 {
                   attempt.sectionResults.map(s => {
                     return (
@@ -164,7 +167,7 @@ const AfterTestPage = () => {
             </Card>
 
             {/* Section answer */}
-            <SectionAnswer type={attempt.type} />
+            <SectionAnswer />
 
             {/* comment */}
             <BoxComment />

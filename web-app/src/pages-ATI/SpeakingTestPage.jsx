@@ -12,7 +12,7 @@ import { retrieveQuestionForTest } from "../slice/questions";
 
 
 function SpeakingTestPage() {
-  const { testId, title } = useParams();
+  const { testId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector((state) => state.authentication);
@@ -265,7 +265,7 @@ function SpeakingTestPage() {
       if (!saveSingleFile.fulfilled.match(uploadAction)) {
         throw new Error(uploadAction.payload || "Lỗi khi tải file lên Cloud.");
       }
-      const audioUrl = "uploadAction.payload?.mediaUrl";
+      const audioUrl = uploadAction.payload?.mediaUrl;
       console.log("File đã tải lên Cloud:", audioUrl);
 
       const formData = new FormData();
@@ -285,7 +285,6 @@ function SpeakingTestPage() {
 
       const attemptData = {
         quizId: quizId,
-        testTitle: title,
         userId: userId,
         timeTaken: totalElapsedTime,
         type: "IELTS",
@@ -313,7 +312,7 @@ function SpeakingTestPage() {
       console.log("Đã tạo attempt thành công, ID:", newAttemptId);
       toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
 
-      navigate(`/tests/speaking/${testId}/${title}/results/${newAttemptId}`);
+      navigate(`/speaking-result/${newAttemptId}`);
 
     } catch (error) {
       console.error("Lỗi khi nộp bài:", error);

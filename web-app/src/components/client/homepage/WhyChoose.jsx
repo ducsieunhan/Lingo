@@ -1,58 +1,58 @@
-// src/components/client/homepage/WhyChoose.jsx
+// src/components/WhyChoose.jsx
 import React from "react";
-// import { ArrowDown } from "lucide-react"; // Bỏ import ArrowDown
+import { ArrowDown } from "lucide-react";
 
-// Import tất cả 4 icon .png
+// === THAY ĐỔI 1: Import tất cả 4 icon .png ===
+// (Đảm bảo bạn đã đặt 4 file này vào đúng đường dẫn)
 import targetPngUrl from "../images/icons/target.png";
 import teacherPngUrl from "../images/icons/teacher.png";
 import analyticsPngUrl from "../images/icons/analytics.png";
 import trophyPngUrl from "../images/icons/trophy.png";
 
 const WhyChoose = () => {
-    // Cập nhật mảng features với text tiếng Anh
+    // === THAY ĐỔI 2: Cập nhật mảng features chỉ dùng 'imgSrc' ===
     const features = [
         {
             imgSrc: targetPngUrl,
-            title: "Personalized Learning Path",
+            title: "Lộ trình cá nhân hóa",
             description:
-                "Assess your ability and build a learning path tailored to each student.",
+                "Đánh giá năng lực và xây dựng lộ trình học phù hợp với từng học viên",
             gradient: "bg-gradient-to-br from-blue-500 to-blue-700",
         },
         {
             imgSrc: teacherPngUrl,
-            title: "8.0+ IELTS Instructors",
+            title: "Giảng viên 8.0+ IELTS",
             description:
-                "A team of instructors with 8.0+ IELTS certificates and extensive teaching experience.",
+                "Đội ngũ giảng viên có chứng chỉ IELTS 8.0+ và kinh nghiệm giảng dạy lâu năm",
             gradient: "bg-gradient-to-br from-blue-700 to-indigo-800",
         },
         {
             imgSrc: analyticsPngUrl,
-            title: "4-Skill Analysis",
+            title: "Phân tích 4 kỹ năng",
             description:
-                "Track and analyze detailed learning progress across all 4 skills.",
+                "Theo dõi và phân tích chi tiết tiến độ học tập qua 4 kỹ năng",
             gradient: "bg-gradient-to-br from-green-500 to-green-700",
         },
         {
             imgSrc: trophyPngUrl,
-            title: "Unlimited Mock Tests",
+            title: "Thi thử không giới hạn",
             description:
-                "A mock test system that 100% simulates the real exam with an updated test bank.",
+                "Hệ thống thi thử mô phỏng 100% kỳ thi thật với kho đề thi cập nhật",
             gradient: "bg-gradient-to-br from-yellow-500 to-orange-600",
         },
     ];
 
     return (
-        <section className="py-20 bg-white">
+        <section className="py-20 bg-white-200">
             <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
 
                 <div className="text-center mb-16">
-                    {/* Đã dịch sang tiếng Anh */}
                     <h2 className="text-3xl md:text-5xl font-bold text-blue-950 mb-4">
-                        Why Choose Us?
+                        Tại sao chọn chúng tôi?
                     </h2>
-                    {/* Đã dịch sang tiếng Anh */}
                     <p className="text-2xl text-gray-600 max-w-3xl mx-auto">
-                        We deliver effective IELTS learning through modern technology and a team of leading experts.
+                        Chúng tôi cam kết mang đến phương pháp học IELTS hiệu quả nhất với
+                        công nghệ hiện đại và đội ngũ chuyên gia hàng đầu
                     </p>
                 </div>
 
@@ -64,11 +64,15 @@ const WhyChoose = () => {
                         >
                             <div className="relative z-10 flex flex-col h-full">
                                 <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-6">
+
+                                    {/* === THAY ĐỔI 3: Chỉ dùng thẻ <img> === */}
                                     <img
                                         src={feature.imgSrc}
                                         alt={feature.title}
-                                        className="w-10 h-10 object-contain" // object-contain để ảnh không bị méo
+                                        className="w-9 h-9 object-contain" // object-contain để ảnh không bị méo
                                     />
+                                    {/* === HẾT THAY ĐỔI 3 === */}
+
                                 </div>
                                 <h3 className="text-xl font-bold text-white mb-4">
                                     {feature.title}
@@ -77,13 +81,11 @@ const WhyChoose = () => {
                                     {feature.description}
                                 </p>
 
-                                {/* --- KHỐI MŨI TÊN ĐÃ BỊ XÓA --- */}
-                                {/* <div className="mt-auto">
+                                <div className="mt-auto">
                                     <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center transition-transform group-hover:scale-110">
                                         <ArrowDown className="w-5 h-5 text-white" />
                                     </div>
-                                </div> 
-                                */}
+                                </div>
                             </div>
                         </div>
                     ))}

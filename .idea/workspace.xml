@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7807224a-69f2-4995-954d-4271220bc1ae" name="Changes" comment="">
+
       <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/httpClient/NotifyClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/httpClient/NotifyClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/httpClient/TestClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/httpClient/TestClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ReqBroadCast.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/model/ReqBroadCast.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/BotNotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/BotNotificationService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ReminderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/chatbot/src/main/java/com/lingo/chatbot/service/ReminderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/dto/ReqNotificationPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/common-library/src/main/java/com/lingo/common_library/dto/ReqNotificationPost.java" afterDir="false" />
+
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/fileservice/src/main/java/com/lingo/fileservice/service/FileService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/repository/MediaResourceRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/repository/MediaResourceRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/QuestionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/testservice/src/main/java/com/lingo/testservice/service/QuestionService.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,10 +56,6 @@
             <RecentBranchesForRepo>
               <option name="branches">
                 <list>
-                  <RecentBranch>
-                    <option name="branchName" value="chatbotDemo" />
-                    <option name="lastUsedInstant" value="1763561952" />
-                  </RecentBranch>
                   <RecentBranch>
                     <option name="branchName" value="main" />
                     <option name="lastUsedInstant" value="1763559585" />
@@ -109,6 +113,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "chatbotDemo",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "C:/Project/Lingo/fileservice/src/main/resources/keys",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
@@ -191,6 +196,8 @@
       <list>
         <item itemvalue="Application.ChatbotApplication" />
         <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.FileserviceApplication" />
+        <item itemvalue="Application.ChatbotApplication" />
         <item itemvalue="Application.NotificationserviceApplication" />
         <item itemvalue="Application.CommentserviceApplication" />
         <item itemvalue="Application.AccountApplication" />

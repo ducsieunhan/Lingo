@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit";
-import { deleteAttempt, getAllAttempts, getAttempt, getAttemptUserShort, getCountUserAttempts, getUserMaxScore, postAttempt, putAttempt } from "../config/api";
+import { getAllAttempts, getAttempt, getAttemptUserShort, postAttempt, putAttempt } from "../config/api";
 
 const initialState = {
   attempts: [
@@ -13,9 +13,6 @@ const initialState = {
     answers: []
   },
   attemptId: '',
-  maxScore: null,
-  totalTests: 0,
-  deleteSuccess: false,
   loading: false,
   error: null
 };
@@ -97,30 +94,15 @@ export const retrieveAllAttempts = createAsyncThunk(
   }
 )
 
-export const retrieveUserMaxScore = createAsyncThunk("attempts/retrieveMaxScore", async (userId) => await getUserMaxScore(userId));
-export const retrieveUserTotalTest = createAsyncThunk("attempts/retrieveTotal", async (userId) => await getCountUserAttempts(userId));
-export const removeAttempt = createAsyncThunk("attempts/delete", async (attemptId) => await deleteAttempt(attemptId));
-
-
 const attemptSlice = createSlice({
   name: "attempts",
   initialState,
   extraReducers: (builder) => {
     builder
       .addMatcher(
-        isPending(
-          createAttempts,
-          updateAttempt,
-          retrieveAttempts,
-          retrieveAttempt,
-          retrieveAllAttempts,
-          retrieveUserMaxScore,
-          retrieveUserTotalTest,
-          removeAttempt
-        ),
+        isPending(createAttempts, updateAttempt, retrieveAttempts, retrieveAttempt, retrieveAllAttempts),
         (state) => {
           state.loading = true;
-          state.error = null;
         }
       )
       .addMatcher(
@@ -128,6 +110,7 @@ const attemptSlice = createSlice({
         (state, action) => {
           state.attemptId = action.payload;
           state.loading = false;
+          state.error = null;
         }
       )
       .addMatcher(
@@ -135,6 +118,7 @@ const attemptSlice = createSlice({
         (state, action) => {
           state.attempt = action.payload;
           state.loading = false;
+          state.error = null;
         }
       )
       .addMatcher(
@@ -142,6 +126,7 @@ const attemptSlice = createSlice({
         (state, action) => {
           state.attempts = action.payload;
           state.loading = false;
+          state.error = null;
         }
       )
       .addMatcher(
@@ -149,40 +134,11 @@ const attemptSlice = createSlice({
         (state, action) => {
           state.allAttempts = action.payload;
           state.loading = false;
+          state.error = null;
         }
       )
       .addMatcher(
-        isFulfilled(retrieveUserMaxScore),
-        (state, action) => {
-          state.maxScore = action.payload;
-          state.loading = false;
-        }
-      )
-      .addMatcher(
-        isFulfilled(retrieveUserTotalTest),
-        (state, action) => {
-          state.totalTests = action.payload;
-          state.loading = false;
-        }
-      )
-      .addMatcher(
-        isFulfilled(removeAttempt),
-        (state) => {
-          state.deleteSuccess = true;
-          state.loading = false;
-        }
-      )
-      .addMatcher(
-        isRejected(
-          createAttempts,
-          updateAttempt,
-          retrieveAttempts,
-          retrieveAttempt,
-          retrieveAllAttempts,
-          retrieveUserMaxScore,
-          retrieveUserTotalTest,
-          removeAttempt
-        ),
+        isRejected(createAttempts, updateAttempt, retrieveAttempts, retrieveAttempt, retrieveAllAttempts),
         (state, action) => {
           state.error = action.payload;
           state.loading = false;
@@ -190,6 +146,5 @@ const attemptSlice = createSlice({
       );
   }
 });
-
 
 export default attemptSlice.reducer;

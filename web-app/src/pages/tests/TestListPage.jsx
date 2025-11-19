@@ -25,16 +25,18 @@ const TestListPage = () => {
   const pageSize = parseInt(searchParams.get("size") || "9", 10);
 
   const status = searchParams.get("status") || "";
-
-  const { attempts } = useSelector((state) => state.attempts);
+  const { loading, attempts } = useSelector((state) => state.attempts);
   const { user } = useSelector((state) => state.authentication);
+  const { meta } = useSelector((state) => state.tests);
 
-  const { meta, loading: testsLoading } = useSelector((state) => state.tests);
+  // console.log(meta);
+
 
   const userId = user?.sub;
 
   useEffect(() => {
     const Page = `page=${page}&size=${pageSize}&`;
+
     let filterExpr = "";
 
     if (status === "done" || status === "notdone") {
@@ -68,6 +70,7 @@ const TestListPage = () => {
   }, [dispatch, attempts, category, search, sort, page, pageSize, status]);
 
 
+  // get all attempt user did along with test 
   useEffect(() => {
     dispatch(retrieveAttempts(userId));
   }, [userId]);
@@ -91,11 +94,13 @@ const TestListPage = () => {
     handleNavigate("search", e.target.value);
   }
 
+
   const onShowSizeChange = (current, pageSize) => {
     dispatch(setPage(current));
     dispatch(setPageSize(pageSize));
   };
 
+  if (loading) return <Spin fullscreen={true} />
 
   return (
     <div className="bg-gray-50 pt-10 ">
@@ -103,55 +108,52 @@ const TestListPage = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-8">
-
           <div className="lg:col-span-7 ">
 
-            {testsLoading ? (
-              <div className="flex justify-center items-center h-96">
-                <Spin size="large" />
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Danh sách bài thi</h1>
+              <p className="text-gray-600">Chọn bài thi phù hợp với trình độ và mục tiêu của bạn</p>
+            </div>
+
+            {/* <Category /> */}
+            <div className="mb-8"><ExamCate handleNavigate={handleNavigate} /></div>
+
+            {/* search */}
+
+            <Card className="!shadow-md !mb-7 ">
+              <div className="!flex !flex-row space-x-6">
+                <Input
+                  placeholder="Tìm kiếm bài thi theo tên, mã số"
+                  size="large"
+                  prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
+                  allowClear
+                  onPressEnter={handleSearch}
+                />
+
+                <Select size="large" placeholder="Sắp xếp" style={{ width: 150 }} onChange={handleChangeSelect}>
+                  <Option value="attempts">Lượt làm bài</Option>
+                  <Option value="comment">Lượt bình luận</Option>
+                  <Option value="">Điểm đánh giá</Option>
+                </Select>
               </div>
-            ) : (
-              <>
-                <div className="mb-8">
-                  <h1 className="text-3xl font-bold text-gray-900 mb-2">Danh sách bài thi</h1>
-                  <p className="text-gray-600">Chọn bài thi phù hợp với trình độ và mục tiêu của bạn</p>
-                </div>
 
-                <div className="mb-8"><ExamCate handleNavigate={handleNavigate} /></div>
+              <FilterTab handleNavigate={handleNavigate} />
 
-                <Card className="!shadow-md !mb-7 ">
-                  <div className="!flex !flex-row space-x-6">
-                    <Input
-                      placeholder="Tìm kiếm bài thi theo tên, mã số"
-                      size="large"
-                      prefix={<SearchOutlined style={{ color: "rgba(0,0,0,.45)" }} />}
-                      allowClear
-                      onPressEnter={handleSearch}
-                    />
 
-                    <Select size="large" placeholder="Sắp xếp" style={{ width: 150 }} onChange={handleChangeSelect}>
-                      <Option value="attempts">Lượt làm bài</Option>
-                      <Option value="comment">Lượt bình luận</Option>
-                      <Option value="">Điểm đánh giá</Option>
-                    </Select>
-                  </div>
+            </Card>
 
-                  <FilterTab handleNavigate={handleNavigate} />
-                </Card>
+            {/* items */}
 
-                {/* items */}
-                <TestItem />
+            <TestItem />
 
-                <div className="mt-4">
-                  <Pagination align="center"
-                    showSizeChanger
-                    onShowSizeChange={onShowSizeChange}
-                    defaultCurrent={meta?.page + 1}
-                    total={meta?.pages}
-                  />
-                </div>
-              </>
-            )}
+            <div className="mt-4">
+              <Pagination align="center"
+                showSizeChanger
+                onShowSizeChange={onShowSizeChange}
+                defaultCurrent={meta?.page + 1}
+                total={meta?.pages}
+              />
+            </div>
 
           </div>
 

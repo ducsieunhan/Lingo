@@ -11,9 +11,8 @@ function WritingTestPage() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { id: testId, title } = useParams();
+  const { id: testId } = useParams();
 
-  // Kiểm tra chế độ: có testId = Lock Mode (có đề sẵn), không có = Practice Mode (tự nhập đề)
   const isLockMode = !!testId;
 
   const {
@@ -34,16 +33,15 @@ function WritingTestPage() {
 
     return {
       id: task.testId,
-      taskType: task.part,
-      promptText: task.title,
-      promptImage: task.resourceContent
+      taskType: task.part,       // "Task 1"
+      promptText: task.title,   // "The chart shows..."
+      promptImage: task.resourceContent // Link ảnh (nếu có)
     };
   }, [isLockMode, questions]);
 
 
-  // CHỈ fetch đề bài khi ở Lock Mode
   useEffect(() => {
-    if (isLockMode && testId) {
+    if (isLockMode) {
       console.log(`Fetching test với ID: ${testId}`);
       dispatch(retrieveQuestionForTest(testId))
         .unwrap()
@@ -69,29 +67,12 @@ function WritingTestPage() {
           return;
         }
 
-        // PRACTICE MODE: Không lưu attempt, chuyển thẳng sang trang kết quả
-        if (!isLockMode) {
-          console.log("🎯 Practice Mode: Không lưu attempt, chuyển sang trang practice result");
-          toast.success("Đang chấm bài...");
-
-          navigate(`results/practice`, {
-            state: {
-              task: taskText,
-              essay: essayText,
-              promptImage: null
-            }
-          });
-          return;
-        }
-
-        // LOCK MODE: Tạo và lưu attempt
         const userId = user?.sub;
-        const quizId = lockedData.id;
+        const quizId = isLockMode ? lockedData.id : 0;
         const gradingIeltsId = "mock-writing-" + Date.now();
 
         const attemptData = {
           quizId: quizId,
-          testTitle: title,
           userId: userId,
           timeTaken: 3600,
           type: "IELTS",
@@ -102,7 +83,8 @@ function WritingTestPage() {
           ]
         };
 
-        console.log("💾 Lock Mode: Tạo attempt với quiz id:", quizId);
+        console.log("Tạo attempt với quiz id: ", quizId);
+
 
         const action = await dispatch(createAttempts(attemptData));
 
@@ -117,11 +99,12 @@ function WritingTestPage() {
         }
 
         toast.success("Nộp bài thành công! Đang chuyển trang kết quả.");
-        navigate(`results/${newAttemptId}`, {
+        navigate(`/writing-result/${newAttemptId}`, {
           state: {
             task: taskText,
             essay: essayText,
-            promptImage: lockedData.promptImage
+            // (Thêm ảnh nếu có)
+            promptImage: isLockMode ? lockedData.promptImage : null
           }
         });
 
@@ -131,11 +114,10 @@ function WritingTestPage() {
         setIsLoading(false);
       }
     },
-    [navigate, dispatch, isLockMode, lockedData, user, title]
+    [navigate, dispatch, isLockMode, lockedData, user]
   );
 
   const renderContent = () => {
-    // CHỈ hiển thị loading/error khi ở Lock Mode
     if (isLockMode && pageLoading) {
       return (
         <div className="text-center p-20 bg-white rounded-xl shadow-lg border border-gray-200">
@@ -158,7 +140,6 @@ function WritingTestPage() {
       );
     }
 
-    // Render InputColumn cho cả 2 mode
     return (
       <InputColumn
         onGrade={handleGrade}
@@ -176,9 +157,7 @@ function WritingTestPage() {
             AI Writing Assessment
           </h1>
           <p className="text-lg md:text-xl text-indigo-100">
-            {isLockMode
-              ? "Hoàn thành bài viết theo đề bài được cung cấp"
-              : "Nhập đề bài và bài làm của bạn để được chấm điểm chi tiết"}
+            Nhập đề bài và bài làm của bạn để được chấm điểm chi tiết.
           </p>
         </div>
         {renderContent()}

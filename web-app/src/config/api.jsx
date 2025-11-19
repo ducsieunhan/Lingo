@@ -96,24 +96,6 @@ export const getAllAttempts = () => {
   return publicInstance.get(`api/v1/attempt/all`)
 };
 
-export const getUserMaxScore = (userId) => {
-  return publicInstance.get(`api/v1/attempt/max-score`, {
-    params: { userId }
-  });
-}
-
-export const getCountUserAttempts = (userId) => {
-  return publicInstance.get(`api/v1/attempt/count`, {
-    params: { userId }
-  });
-}
-
-export const deleteAttempt = (attemptId) => {
-  return publicInstance.delete(`api/v1/attempt/${attemptId}`);
-}
-
-
-
 
 // account
 

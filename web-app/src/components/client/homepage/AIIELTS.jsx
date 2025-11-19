@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // Link đã được import
-import { PenSquare, Mic, ArrowRight } from "lucide-react";
-import beePngUrl from "../images/bee.png";
+import { Link } from "react-router-dom";
+import { Landmark, ArrowRight } from "lucide-react";
+// === THAY ĐỔI: Import thêm CloseOutlined ===
 import {
   HighlightOutlined,
   RocketOutlined,
   ClockCircleOutlined,
   FieldTimeOutlined,
-  CloseOutlined,
+  CloseOutlined, // Thêm icon này
 } from "@ant-design/icons";
 
 const PracticeModeModal = ({ isOpen, onClose }) => {
@@ -27,7 +27,7 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
         {/* Nút đóng (X) */}
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600 cursor-pointer"
+          className="absolute top-6 right-6 text-gray-400 hover:text-gray-600"
         >
           <CloseOutlined style={{ fontSize: "24px" }} />
         </button>
@@ -40,17 +40,18 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
               <HighlightOutlined style={{ fontSize: "40px" }} />
             </div>
             <h3 className="text-2xl font-semibold mb-3 text-gray-800">
-              AI Practice Mode
+              Chế độ luyện tập
             </h3>
             <p className="text-gray-500 mb-8 flex-grow">
-              Practice with customizable time and AI support.
+              Luyện tập với thời gian gian tùy chỉnh cùng sự hỗ trợ của AI.
             </p>
             <Link
-              to="/tests/writing"
-              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              to="/writing-test"
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
+              onClick={onClose}
             >
               <RocketOutlined />
-              Practice with AI
+              Luyện tập với AI
             </Link>
           </div>
 
@@ -59,18 +60,18 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
               <ClockCircleOutlined style={{ fontSize: "40px" }} />
             </div>
             <h3 className="text-2xl font-semibold mb-3 text-gray-800">
-              Simulation Mode
+              Chế độ thi thử
             </h3>
             <p className="text-gray-500 mb-8 flex-grow">
-              Real exam simulation with limited time and no AI support.
+              Mô phỏng thi thật với thời gian giới hạn và không có AI hỗ trợ.
             </p>
             <Link
               to="/speaking"
-              className="w-full !bg-gray-800 hover:!bg-gray-900 !text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              className="w-full bg-gray-800 hover:bg-gray-900 text-white font-semibold py-3 px-6 rounded-lg flex items-center justify-center gap-2 transition-colors"
               onClick={onClose}
             >
               <FieldTimeOutlined />
-              Timed Test
+              Thi thử tính giờ
             </Link>
           </div>
         </div>
@@ -81,7 +82,7 @@ const PracticeModeModal = ({ isOpen, onClose }) => {
 // === KẾT THÚC COMPONENT MODAL ===
 
 const AIIELTS = () => {
-  // === State này vẫn cần cho nút Writing ===
+  // === THÊM MỚI: State để quản lý modal ===
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -90,13 +91,14 @@ const AIIELTS = () => {
         {/* ... (Phần tiêu đề và con ong giữ nguyên) ... */}
         <div className="flex justify-center mb-8">
           <img
-            src={beePngUrl}
+            src="/images/bee.png"
             alt="Bee Mascot"
             className="w-50 h-auto transition-transform duration-300 hover:scale-110"
           />
         </div>
         <h2 className="text-3xl md:text-5xl font-bold text-blue-950 mb-6">
-          AI-Powered IELTS Writing & Speaking Evaluation
+          <span className="text-blue-600">AI IELTS</span> for providing better
+          test preparation
         </h2>
         <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-3xl mx-auto">
           Instantly get feedback on Writing and Speaking skills. Our AI
@@ -104,56 +106,58 @@ const AIIELTS = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto">
-          {/* Card 1: Writing (Vẫn mở Modal) */}
+          {/* Card 1: Cambridge */}
           <div className="bg-white p-10 rounded-2xl border border-gray-200 shadow-lg text-left flex flex-col">
             <div className="w-16 h-16 bg-blue-100/70 rounded-full flex items-center justify-center mb-5">
-              <PenSquare className="w-8 h-8 text-blue-600" />
+              <Landmark className="w-8 h-8 text-blue-600" />
             </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-3">Writing</h3>
             <p className="text-gray-600 text-lg mb-6 flex-grow">
               Practice & take IELTS Listening mock tests with materials matching
               the real test difficulty.
             </p>
+            {/* === THAY ĐỔI: Chuyển thành button mở modal === */}
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="bg-blue-600 hover:bg-blue-800 !text-white px-8 py-2.5 rounded-lg font-medium btn-hover cursor-pointer !text-[16.5px]"
+                className="bg-blue-600 hover:bg-blue-800 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
               >
                 Academic
               </button>
             </div>
+            {/* === XÓA BỎ: Đã xóa 2 chế độ hiển thị inline ở đây === */}
           </div>
 
-          {/* Card 2: Speaking (Chuyển thành Link, không mở modal) */}
+          {/* Card 2: Collins */}
           <div className="bg-white p-10 rounded-2xl border border-gray-200 shadow-lg text-left flex flex-col">
             <div className="w-16 h-16 bg-blue-100/70 rounded-full flex items-center justify-center mb-5">
-              <Mic className="w-8 h-8 text-blue-600" />
+              <Landmark className="w-8 h-8 text-blue-600" />
             </div>
             <h3 className="text-3xl font-bold text-gray-900 mb-3">Speaking</h3>
             <p className="text-gray-600 text-lg mb-6 flex-grow">
               Practice & take IELTS Listening mock tests with materials matching
               the real test difficulty.
             </p>
+            {/* === THAY ĐỔI: Chuyển thành button mở modal === */}
             <div className="flex items-center gap-4">
-              {/* === THAY ĐỔI: Chuyển <button> thành <Link> === */}
-              <Link
-                to="/speaking" // Điều hướng thẳng đến trang speaking (Timed Test)
-                // Thêm 'text-lg' và '!text-white' để chống xung đột CSS
-                className="bg-blue-600 hover:bg-blue-900 !text-white px-6 py-2.5 rounded-lg font-medium btn-hover academic-button cursor-pointer"
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-600 hover:bg-blue-900 text-white px-6 py-2.5 rounded-lg font-medium btn-hover"
               >
                 Academic
-              </Link>
+              </button>
             </div>
+            {/* === XÓA BỎ: Đã xóa 2 chế độ hiển thị inline ở đây === */}
           </div>
         </div>
       </div>
 
-      {/* Modal này giờ chỉ được gọi bởi nút Writing */}
+      {/* === THÊM MỚI: Gọi Modal component === */}
+      {/* Modal này sẽ được điều khiển bởi state 'isModalOpen' */}
       <PracticeModeModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-
     </section>
   );
 };

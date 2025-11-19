@@ -23,17 +23,4 @@ CREATE DATABASE IF NOT EXISTS `notificationservice` CHARACTER SET utf8mb4 COLLAT
 CREATE USER IF NOT EXISTS 'notification'@'%' IDENTIFIED BY '123456';
 GRANT ALL PRIVILEGES ON `notificationservice`.* TO 'notification'@'%';1
 
--- COMMENT_SERVICE
-CREATE DATABASE IF NOT EXISTS `commentservice` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'comment'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON `commentservice`.* TO 'comment'@'%';
-
--- CHATBOT
-CREATE DATABASE IF NOT EXISTS `chatbot` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'chatbot'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON `chatbot`.* TO 'chatbot'@'%';
-
--- NOTIFICATION_SERVICE
-CREATE DATABASE IF NOT EXISTS `notification` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER IF NOT EXISTS 'notification'@'%' IDENTIFIED BY '123456';
-GRANT ALL PRIVILEGES ON `notification`.* TO 'notification'@'%';
+FLUSH PRIVILEGES;

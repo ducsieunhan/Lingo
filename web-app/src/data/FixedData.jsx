@@ -12,28 +12,42 @@ export const TestType = [
 ];
 
 export const PartLengthToeic = [
-  { part: 1, length: 6, start: 1 },
-  { part: 2, length: 25, start: 7 },
-  { part: 3, length: 39, start: 32 },
-  { part: 4, length: 30, start: 71 },
-  { part: 5, length: 30, start: 101 },
-  { part: 6, length: 16, start: 131 },
-  { part: 7, length: 54, start: 149 },
+  {
+    "part": 1,
+    "length": 6,
+    "start": 1
+  },
+  {
+    "part": 2,
+    "length": 25,
+    "start": 7
+  },
+  {
+    "part": 3,
+    "length": 39,
+    "start": 32
+  },
+  {
+    "part": 4,
+    "length": 30,
+    "start": 71
+  },
+  {
+    "part": 5,
+    "length": 30,
+    "start": 101
+  },
+  {
+    "part": 6,
+    "length": 16,
+    "start": 131
+  },
+  {
+    "part": 7,
+    "length": 54,
+    "start": 149
+  },
 ];
-
-export const PartLengthIELTSListening = [
-  { part: 1, length: 10, start: 1 },
-  { part: 2, length: 10, start: 11 },
-  { part: 3, length: 10, start: 21 },
-  { part: 4, length: 10, start: 31 },
-];
-
-export const PartLengthIELTSReading = [
-  { part: 1, length: 13, start: 1 },
-  { part: 2, length: 13, start: 14 },
-  { part: 3, length: 14, start: 27 },
-];
-
 
 export const category = [
   {
