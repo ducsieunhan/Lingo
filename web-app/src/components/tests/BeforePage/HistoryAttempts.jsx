@@ -11,7 +11,7 @@ const HistoryAttempts = () => {
   const { user } = useSelector((state) => state.authentication);
   const histories = attempts.filter(a => String(a.quizId) === id) || 0;
   let path = window.location.pathname;
-  // console.log(histories);
+  console.log(histories);
 
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const HistoryAttempts = () => {
       title: 'Kết quả',
       dataIndex: 'score',
       key: 'score',
-      render: text => <div className='font-semibold'>{text}/9.0</div>
+      render: text => <div className='font-semibold'>{text}/200</div>
     },
     {
       title: 'Thời gian làm bài',

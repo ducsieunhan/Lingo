@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { initializeAuth } from "../slice/authentication";
 import { Spin } from "antd";
-import ScrollToTop from "../components/share/ScrollToTop";
 
 function RootLayout() {
   const navigate = useNavigate();
@@ -33,7 +32,6 @@ function RootLayout() {
   // if (loading) return <Spin spinning={loading} />
   return (
     <>
-      <ScrollToTop />
       <Outlet />
       <ToastContainer
         position="top-right"

@@ -24,7 +24,7 @@ const columns = [
     dataIndex: 'quizInfo',
     render: (_, record) => (
       <div>
-        <div className="text-sm font-medium text-gray-900">{record.testTitle}</div>
+        <div className="text-sm font-medium text-gray-900">IELTS Academic Reading Practice Test 1</div>
         {/* <div className="text-sm text-gray-500">{record.quizInfo.details}</div> */}
       </div>
     )
@@ -122,32 +122,9 @@ const columns = [
     key: 'action',
     render: (_, record) => (
       <Space size="middle">
-        <Link
-          to={
-            record.sectionResults[0].type === "Listening" || record.sectionResults[0].type === "Reading"
-              ? `/tests/${record.quizId}/${record.testTitle}/results/${record.attemptId}`
-              : record.sectionResults[0].type === "Writing"
-                ? `/tests/writing/${record.quizId}/${record.testTitle}/results/${record.attemptId}`
-                : `/tests/speaking/${record.quizId}/${record.testTitle}/results/${record.attemptId}`
-          }
-          className="!text-blue-600 hover:!text-blue-900 !mr-3"
-        >
-          <EyeOutlined /> Detail
-        </Link>
-
-        <Link
-          to={
-            record.type === "Listening" || record.type === "Reading"
-              ? `/tests/${record.quizId}/${record.testTitle}`
-              : record.type === "Writing"
-                ? `/tests/speaking`
-                : `/tests/speaking/${record.quizId}/${record.testTitle}`
-          }
-          className="!text-green-600 hover:!text-green-900"
-        >
-          <ReloadOutlined /> Retry
-        </Link>
-      </Space >
+        <Link className="!text-blue-600 hover:!text-blue-900 !mr-3"><EyeOutlined /> Detail</Link>
+        <Link className="!text-green-600 hover:!text-green-900"><ReloadOutlined /> Retry</Link>
+      </Space>
     ),
   },
 ];

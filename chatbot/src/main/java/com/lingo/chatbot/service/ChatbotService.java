@@ -1,24 +1,27 @@
 package com.lingo.chatbot.service;
 
-import com.lingo.chatbot.httpClient.NotifyClient;
 import com.lingo.chatbot.model.ChatRequest;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.memory.ChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
+import org.springframework.ai.chat.memory.repository.jdbc.MysqlChatMemoryRepositoryDialect;
 import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.content.Media;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MimeTypeUtils;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @FieldDefaults(level= AccessLevel.PRIVATE)
@@ -26,7 +29,6 @@ public class ChatbotService {
     final ChatClient chatClient;
     final JdbcChatMemoryRepository jdbcChatMemoryRepository;
     final ChatMemory chatMemory;
-    final NotifyClient notifyClient;
 //    final JdbcTemplate jdbcTemplate;
 String systemPrompt = """
 You are the official AI assistant of an English-learning platform specializing in TOEIC and IELTS preparation.
@@ -40,10 +42,9 @@ you may ask a short clarifying question only when more context is needed.
 """;
 
 
-    public ChatbotService(ChatClient.Builder chatClient, JdbcChatMemoryRepository jdbcChatMemoryRepository, ChatMemory chatMemoryInit, NotifyClient notifyClient) {
+    public ChatbotService(ChatClient.Builder chatClient, JdbcChatMemoryRepository jdbcChatMemoryRepository, ChatMemory chatMemoryInit) {
         this.chatMemory=chatMemoryInit;
         this.jdbcChatMemoryRepository = jdbcChatMemoryRepository;
-        this.notifyClient=notifyClient;
 //        this.jdbcTemplate= jdbcTemplate;
 
 //        ChatMemoryRepository chatMemoryRepository = JdbcChatMemoryRepository.builder()
@@ -71,7 +72,6 @@ you may ask a short clarifying question only when more context is needed.
 
         return chatClient
                 .prompt(prompt)
-                .tools(new ApplicationProvidedService(notifyClient))
                 .advisors(advisorSpec -> advisorSpec.param(
                         ChatMemory.CONVERSATION_ID, conversationId
                 ))

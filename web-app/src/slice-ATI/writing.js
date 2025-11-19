@@ -12,7 +12,7 @@ export const createSubmit = createAsyncThunk(
   async (formData, { rejectWithValue }) => {
     try {
       const response = await submitWriting(formData);
-      return response;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message || "Lỗi không xác định");
     }
